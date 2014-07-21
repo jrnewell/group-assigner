@@ -1,0 +1,59 @@
+{
+  "name": "group-assigner",
+  "version": "0.0.1",
+  "author": "James Newell <james.newell@gmail.com>",
+  "description": "Starter project using the gulp build system to make single page apps",
+  "repository": {
+    "type": "git",
+    "url": "http://sephiroth/gitbucket/git/james/group-assigner.git"
+  },
+  "bugs": {
+    "url": "http://sephiroth/gitbucket/james/group-assigner/issues"
+  },
+  "keywords": [
+    "gulp", "starter", "seed", "project", "spa", "angular"
+  ],
+  "engines": [
+    "node >= 0.10.29",
+    "coffee-script >= 1.7.1"
+  ],
+  "browserify": {
+    "transform": [
+      "coffeeify"
+    ]
+  },
+  "devDependencies": {
+    "coffee-script": "*",
+    "lodash": "*",
+    "gulp": "*",
+    "gulp-util": "*",
+    "gulp-jade": "*",
+    "gulp-coffee": "*",
+    "gulp-concat": "*",
+    "gulp-uglify": "*",
+    "gulp-imagemin": "*",
+    "gulp-rimraf": "*",
+    "gulp-stylus": "*",
+    "nib": "*",
+    "gulp-changed": "*",
+    "gulp-open": "*",
+    "gulp-minify-css": "*",
+    "gulp-strip-debug": "*",
+    "gulp-plumber": "*",
+    "gulp-header": "*",
+    "gulp-replace": "*",
+    "gulp-if": "*",
+    "gulp-min-map": "*",
+    "gulp-notify": "*",
+    "gulp-livereload": "~1.5.0",
+    "run-sequence": "*",
+    "connect": "~2.23.0",
+    "connect-livereload": "*",
+    "tiny-lr": "*",
+    "event-stream": "*",
+    "browserify": "*",
+    "coffeeify": "*",
+    "vinyl-source-stream": "*",
+    "watchify": "*"
+  }
+}

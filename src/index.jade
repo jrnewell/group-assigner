@@ -1,0 +1,19 @@
+doctype html
+html(lang="en" ng-app="MyProject")
+  head
+
+    include ./includes/_meta
+
+    // stylesheets
+    for css in stylesheets
+      link(rel="stylesheet", type="text/css", href="/css/#{css}")
+
+    // scripts
+    for js in scripts
+      script(type="text/javascript" src="/js/#{js}")
+
+  body(ng-cloak="", ng-controller="AppCtrl")
+    .container
+      .row
+        .col-md-12
+          .h3 {{ message }}
