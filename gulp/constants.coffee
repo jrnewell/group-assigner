@@ -24,7 +24,7 @@ srcPaths =
             "vendor/font-awesome"
             "vendor/jquery"
             "vendor/modernizr"
-            "vendor/spin"
+            "vendor/ladda"
   ]
 
 watchPaths =
@@ -59,6 +59,7 @@ jadeLocals =
     "bootstrap.css"
     "bootflat.css"
     "font-awesome.css"
+    "ladda.css"
     "app.css"
   ]
   scripts: [
@@ -69,6 +70,7 @@ jadeLocals =
     "bootstrap.js"
     "icheck.min.js"
     "spin.js"
+    "ladda.js"
     "angular.js"
     "app.js"
   ]

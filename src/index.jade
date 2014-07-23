@@ -64,5 +64,9 @@ html(lang="en" ng-app="MyProject")
                   | {{simulation.name}}
       .row
         .col-md-4.col-md-offset-4
-          button#assignBtn.btn.btn-danger.btn-block.btn-lg(type="button" ng-click="assignToGroups()") Assign Students to Groups
+          button#assignBtn.ladda-button.btn.btn-block(data-color="red" data-style="zoom-in" ng-click="assignToGroups()")
+            span.ladda-label Assign Students to Groups
+      //.row(ng-show="assignments")
+        .col-md-12
+          p {{assignments}}
 
