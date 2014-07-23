@@ -4,4 +4,7 @@ AppCtrl = require "./controllers/app"
 
 app = angular.module('MyProject', [])
 
-app.controller "AppCtrl", ["$scope", AppCtrl]
+app.controller "AppCtrl", ["$scope", "$timeout", AppCtrl]
+
+$(document).ready () ->
+  $("select").selecter()

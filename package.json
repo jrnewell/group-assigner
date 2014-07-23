@@ -22,9 +22,11 @@
       "coffeeify"
     ]
   },
+  "dependencies": {
+    "lodash": "*"
+  },
   "devDependencies": {
     "coffee-script": "*",
-    "lodash": "*",
     "gulp": "*",
     "gulp-util": "*",
     "gulp-jade": "*",

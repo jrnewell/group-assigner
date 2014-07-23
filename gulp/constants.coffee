@@ -24,6 +24,7 @@ srcPaths =
             "vendor/font-awesome"
             "vendor/jquery"
             "vendor/modernizr"
+            "vendor/spin"
   ]
 
 watchPaths =
@@ -67,6 +68,7 @@ jadeLocals =
     "modernizr.js"
     "bootstrap.js"
     "icheck.min.js"
+    "spin.js"
     "angular.js"
     "app.js"
   ]
