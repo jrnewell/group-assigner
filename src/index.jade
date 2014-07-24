@@ -42,9 +42,17 @@ html(lang="en" ng-app="MyProject")
             .panel-body
               #add-simulation
                 .form-group
-                  label(for="selector-simulator-max") Maximum Number of Students per Group
-                  select(id="selector-simulator-max" name="selector-simulator-max" data-selecter-options='{"cover":"true"}' ng-model="newSimMax")
+                  label(for="selector-simulator-groupsize") Students per Group
+                  .label-note (two groups per simulation)
+                  select(id="selector-simulator-groupsize" name="selector-simulator-groupsize" data-selecter-options='{"cover":"true"}' ng-model="newSimGroupSize")
                     option(value="1") One
+                    option(value="2") Two
+                    option(value="3") Three
+                    option(value="4") Four
+                    option(value="5") Five
+                .form-group
+                  label(for="selector-simulator-min") Minimum Number of Students Required for Simulation
+                  select(id="selector-simulator-min" name="selector-simulator-min" data-selecter-options='{"cover":"true"}' ng-model="newSimMin")
                     option(value="2") Two
                     option(value="3") Three
                     option(value="4") Four
@@ -60,7 +68,7 @@ html(lang="en" ng-app="MyProject")
                   h4 {{simulations.length}} Simulation{{simulations.length == 1 ? '' : 's'}}
                 li.list-group-item(ng-repeat="simulation in simulations | orderBy:'name'")
                   button.close(type="button" aria-hidden="true" ng-click="delSimulation(simulation)") ×
-                  span.simMaxItem {{simulation.max}}
+                  span.simGroupSizeItem {{simulation.groupSize}}
                   | {{simulation.name}}
       .row
         .col-md-4.col-md-offset-4

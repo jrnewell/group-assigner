@@ -5,9 +5,15 @@ _ = require('lodash')
 AppCtrl = ($scope, $timeout) ->
   $scope.message = "Hello World"
 
+  # $scope.students = (i.toString() for i in [1..30])
+  # $scope.simulations = [
+  #   {name: "My Simulation", groupSize: 2}, {name: "My Simulation2", groupSize: 2}, {name: "My Simulation3", groupSize: 3},
+  #   {name: "My Simulation4", groupSize: 2}, {name: "My Simulation5", groupSize: 1}, {name: "My Simulation6", groupSize: 2},
+  #   {name: "My Simulation7", groupSize: 2}, {name: "My Simulation8", groupSize: 2}, {name: "My Simulation9", groupSize: 2}]
   $scope.students = ["A", "B", "C", "D", "E", "F", "G"]
-  $scope.simulations = [{name: "My Simulation", max: 2}, {name: "My Simulation2", max: 1}, {name: "My Simulation3", max: 3}]
-  $scope.newSimMax = "1"
+  $scope.simulations = [{name: "My Simulation", groupSize: 2}, {name: "My Simulation2", groupSize: 1}, {name: "My Simulation3", groupSize: 3}]
+  $scope.newSimGroupSize = "1"
+  $scope.newSimMin = "2"
 
   $scope.addStudent = () ->
     return if _.isEmpty($scope.newStudent) or _.contains($scope.students, $scope.newStudent)
@@ -21,16 +27,19 @@ AppCtrl = ($scope, $timeout) ->
 
   $scope.addSimulation = () ->
     return if _.isEmpty($scope.newSimName) or _.contains($scope.simulations, $scope.newSimName)
-    newSimMax = parseInt($scope.newSimMax)
-    return if newSimMax < 1 or newSimMax > 5
-    console.log "addSimulation: #{$scope.newSimName} #{newSimMax}"
+    newSimGroupSize = parseInt($scope.newSimGroupSize)
+    newSimMin = parseInt($scope.newSimMin)
+    return if newSimGroupSize < 1 or newSimGroupSize > 5
+    console.log "addSimulation: #{$scope.newSimName} #{newSimGroupSize} #{newSimMin}"
     $scope.simulations.push
       name: $scope.newSimName
-      max: newSimMax
-    $scope.newSimMax = "1"
+      groupSize: newSimGroupSize
+      minSize: newSimMin
+    $scope.newSimGroupSize = "1"
+    $scope.newSimMin = "2"
     # shoud move to directive
     $timeout () ->
-      $("#selector-simulator-max").val("1").trigger("change")
+      $("#selector-simulator-groupSize").val("1").trigger("change")
     $scope.newSimName = ""
 
   $scope.delSimulation = (simulation) ->
@@ -44,10 +53,11 @@ AppCtrl = ($scope, $timeout) ->
     randAssignments = () ->
       assignments = []
       for simulation in $scope.simulations
-        {name, max} = simulation
+        {name, groupSize, newSimMin} = simulation
         assignment =
           name: name
-          max: max
+          groupSize: groupSize
+          newSimMin: newSimMin
           groups: []
         assignments.push assignment
 
@@ -57,24 +67,37 @@ AppCtrl = ($scope, $timeout) ->
         side = side1
 
         for student in randShuffle
-          if (side.length >= max)
-            if side is side1
-              side = side2
-            else
-              assignment.groups.push
+          side.push student
+          if (side1.length == groupSize and side2.length == groupSize)
+            assignment.groups.push
                 side1: side1
                 side2: side2
               side1 = []
               side2 = []
               side = side1
-
-          side.push student
+          else
+            side = (if side is side1 then side2 else side1)
 
         # do we get the last group?
         if side1.length > 0 or side2.length > 0
-          assignment.groups.push
-            side1: side1
-            side2: side2
+          if (side1.length + side2.length >= minSize)
+            assignment.groups.push
+              side1: side1
+              side2: side2
+          else
+            # disperse among other groups
+            disperse = side1.concat side2
+            dispIdx = 0
+            groupIdx = 0
+            side = side1
+            while (dispIdx < disperse.length)
+              assignment.groups[groupIdx][side].push disperse[dispIdx]
+              if side is side1
+                side = side2
+              else
+                side = side1
+                groupIdx = (groupIdx + 1) % assignment.groups.length
+              dispIdx += 1
 
       return assignments
 
@@ -193,6 +216,7 @@ AppCtrl = ($scope, $timeout) ->
 
 
   $scope.assignToGroups = () ->
+    # shoud move to directive
     #el = document.getElementById("assignBtn")
     #l = Ladda.create(el)
     #l.start()
