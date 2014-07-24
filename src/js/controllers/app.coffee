@@ -41,108 +41,156 @@ AppCtrl = ($scope, $timeout) ->
   calculateGroups = () ->
     console.log "calculate!"
 
-    # setup data structures
-    studentQueues = {}
-    for student in $scope.students
-      queue = _.without($scope.students, student)
-      studentQueues[student] =
-        partners: _.shuffle(queue)
-        opponents: _.shuffle(queue)
+    randAssignments = () ->
+      assignments = []
+      for simulation in $scope.simulations
+        {name, max} = simulation
+        assignment =
+          name: name
+          max: max
+          groups: []
+        assignments.push assignment
 
-    studentChooseQueue = _.shuffle($scope.students)
-    simulationOrder =  _.shuffle($scope.simulations)
-    assignments = []
-
-    # utility functions
-    sendToBack = (array, item) ->
-      _(array).without(item).push(item).value()
-
-    incIdx = (array, idx) ->
-      (idx + 1) % array.length
-
-    for simulation in simulationOrder
-      {name, max} = simulation
-      assignment =
-        name: name
-        max: max
-        groups: []
-      assignments.push assignment
-
-      studentsUnassigned = _.clone($scope.students)
-      chooseIdx = 0
-      while (studentsUnassigned.length > 0)
-        console.log "while: #{chooseIdx} #{studentsUnassigned.length}"
-        chooser = studentChooseQueue[chooseIdx]
-
-        # skip this student if he is assigned already
-        unless _.contains(studentsUnassigned, chooser)
-          chooseIdx = incIdx studentChooseQueue, chooseIdx
-          continue
-
-        studentChooseQueue = sendToBack studentChooseQueue, chooser
-        studentsUnassigned = _.without(studentsUnassigned, chooser)
-        chooserQueues = studentQueues[chooser]
-        side1 = [chooser]
+        randShuffle = _.shuffle($scope.students)
+        side1 = []
         side2 = []
+        side = side1
 
-        assignToSide = (side, queue) ->
-          groupSize = Math.min max, studentsUnassigned.length
-          idx = 0
-          while (side.length < groupSize)
-            console.log "assignToSide: #{idx} #{side.length} #{groupSize}"
-            student = queue[idx]
+        for student in randShuffle
+          if (side.length >= max)
+            if side is side1
+              side = side2
+            else
+              assignment.groups.push
+                side1: side1
+                side2: side2
+              side1 = []
+              side2 = []
+              side = side1
 
-            # skip this student if he is assigned already
-            unless _.contains(studentsUnassigned, student)
-              idx = incIdx queue, idx
-              continue
+          side.push student
 
-            side.push student
-            idx = incIdx queue, idx
-            #queue = sendToBack queue, student
-            studentsUnassigned = _.without(studentsUnassigned, student)
+        # do we get the last group?
+        if side1.length > 0 or side2.length > 0
+          assignment.groups.push
+            side1: side1
+            side2: side2
 
-          return queue
+      return assignments
 
-        chooserQueues.partners = assignToSide side1, chooserQueues.partners
+    getRandomInt = (min, max) ->
+       Math.floor(Math.random() * (max - min)) + min
 
-        # get chooser's opponents
-        if studentsUnassigned.length > 0
-          oppIdx = 0
-          oppQueue = chooserQueues.opponents
-          opposer = oppQueue[oppIdx]
-          while (!_.contains(studentsUnassigned, opposer))
-            oppIdx = incIdx oppQueue, oppIdx
-            opposer = oppQueue[oppIdx]
-          #chooserQueues.opponents = sendToBack oppQueue, opposer
+    scoreAssignments = (assignments) ->
+      # setup data structures
+      partnerData = {}
+      for student in $scope.students
+        mates = _.without($scope.students, student)
+        dataObj =
+          partners: {}
+          opponents: {}
+        partnerData[student] = dataObj
 
-          side2.push opposer
-          studentsUnassigned = _.without(studentsUnassigned, opposer)
-          chooserQueues.opponents = assignToSide side2, studentQueues[opposer].partners
+        # initialize to zero
+        for mate in mates
+          dataObj.partners[mate] = 0
+          dataObj.opponents[mate] = 0
 
-        # push teammates/opponents to the back of the queue
-        updateQueue = (team1, team2) ->
-          for student in team1
-            teammates = _.without(team1, student)
-            queue = studentQueues[student].partners
-            for mate in teammates
-              queue = sendToBack queue, mate
-            studentQueues[student].partners = queue
+      #console.log "partnerData: #{JSON.stringify(partnerData)}"
 
-            queue = studentQueues[student].opponents
-            for opponent in team2
-              queue = sendToBack queue, opponent
-            studentQueues[student].opponents = queue
+      for assignment in assignments
+        for group in assignment.groups
+          updatePartnerData = (side, opponents) ->
+            for student in side
+              dataObj = partnerData[student]
+              mates = _.without(side, student)
+              for mate in mates
+                dataObj.partners[mate] += 1
+              for opponent in opponents
+                dataObj.partners[opponent] += 1
 
-        updateQueue side1, side2
-        updateQueue side2, side1
+          updatePartnerData group.side1, group.side2
+          updatePartnerData group.side2, group.side1
 
-        assignment.groups.push
-          side1: side1
-          side2: side2
+      #console.log "partnerData: #{JSON.stringify(partnerData)}"
 
-    $scope.assignments = JSON.stringify(assignments)
-    console.log "done: #{$scope.assignments}"
+      score = 0
+      for student, dataObj of partnerData
+        for partner, partnerVal of dataObj.partners
+          score += (partnerVal ** 2) * 2
+        for opponent, oppVal of dataObj.opponents
+          score += (partnerVal ** 2)
+      return score
+
+    mutateAssignments = (assignments) ->
+      for assignment in assignments
+        mutations = getRandomInt 1, 50
+        #console.log "mutations: #{mutations}"
+        for i in [1..mutations]
+          {groups} = assignment
+          group1 = getRandomInt 0, groups.length
+          side1 = (if getRandomInt 0, 2 == 0 then 'side1' else 'side2')
+          leng1 = groups[group1][side1].length
+          continue unless leng1 > 0
+          idx1 = getRandomInt 0, leng1
+
+          group2 = getRandomInt 0, groups.length
+          side2 = (if getRandomInt 0, 2 == 0 then 'side1' else 'side2')
+          leng2 = groups[group2][side2].length
+          continue unless leng2 > 0
+          idx2 = getRandomInt 0, leng2
+
+          continue if group1 == group2 and side1 == side2 and idx1 == idx2
+          swap1 = groups[group1][side1][idx1]
+          swap2 = groups[group2][side2][idx2]
+          continue unless swap1 and swap2
+          groups[group1][side1][idx1] = swap2
+          groups[group2][side2][idx2] = swap1
+
+      return assignments
+
+    progenate = (generation) ->
+      scores = ({score: scoreAssignments(a), assignments: a} for a in generation)
+      scores = _.sortBy(scores, 'score')
+      preLeng = scores.length
+      cutOff = scores[0..(Math.floor(scores.length * 0.2)-1)]
+      progency = (s.assignments for s in cutOff)
+      for i in [1..3]
+        progency = progency.concat(mutateAssignments(s.assignments) for s in cutOff)
+
+      while progency.length < preLeng
+        progency.push randAssignments()
+
+      return progency
+
+    winningAssignment = (generation) ->
+      scores = ({score: scoreAssignments(a), assignments: a} for a in generation)
+      scores = _.sortBy(scores, 'score')
+      return scores[0].assignments
+
+    winner = null
+    winnerScore = Number.MAX_VALUE
+    checkForWinner = (generation) ->
+      genWinner = winningAssignment(generation)
+      genScore = scoreAssignments(genWinner)
+      if genScore < winnerScore
+        console.log "new winner: #{genScore}"
+        winnerScore = genScore
+        winner = genWinner
+
+    # initialize with random assignments
+    generation = (randAssignments() for i in [1..100])
+    checkForWinner generation
+
+    maxIterations = 100
+    for iteration in [1..maxIterations]
+      console.log "iteration: #{iteration}"
+      generation = progenate generation
+      checkForWinner generation
+
+    console.log JSON.stringify(winner)
+    console.log "winnerScore: #{winnerScore}"
+
 
   $scope.assignToGroups = () ->
     #el = document.getElementById("assignBtn")
