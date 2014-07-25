@@ -32,6 +32,15 @@ gulp.task "deploy-html", ->
     .pipe(minMap(["js", "css"], minFiles))
     .pipe gulp.dest("release")
 
+gulp.task "deploy-web-workers", ->
+  gulp.src("build/js/workers/**/*")
+    .pipe(stripDebug())
+    .pipe(replace(/(\.min)?\.js/g, ($0, $1) ->
+      if $1 then $0 else '.min.js'))
+    .pipe(uglify())
+    .pipe(header(headerText, {}))
+    .pipe gulp.dest("release/js/workers")
+
 gulp.task "deploy-js", ->
   streams = []
   jsMinFiles = minFiles.js
@@ -80,7 +89,7 @@ gulp.task "deploy-min-images", ->
 gulp.task "deploy-assets", ["deploy-fonts", "deploy-nonmin-images", "deploy-min-images"]
 
 gulp.task "deploy", (callback) ->
-  runSequence "deploy-clean", "deploy-html", ["deploy-js", "deploy-css"], "deploy-assets", callback
+  runSequence "deploy-clean", "deploy-html", ["deploy-web-workers", "deploy-js", "deploy-css"], "deploy-assets", callback
 
 module.exports = [
   "deploy-clean"
