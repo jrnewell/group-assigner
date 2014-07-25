@@ -1,7 +1,7 @@
 'use strict'
 
 AppCtrl = ($scope, $timeout) ->
-  $scope.assignments = null
+  $scope.assignments = [{"name":"My Simulation","groupSize":2,"minSize":2,"groups":[{"side1":["B","D"],"side2":["F","G"]},{"side1":["E","C"],"side2":["A"]}]},{"name":"My Simulation2","groupSize":1,"minSize":2,"groups":[{"side1":["C","F"],"side2":["D"]},{"side1":["B"],"side2":["G"]},{"side1":["A"],"side2":["E"]}]},{"name":"My Simulation3","groupSize":3,"minSize":2,"groups":[{"side1":["E","D","G","C"],"side2":["F","B","A"]}]}]
 
   # $scope.students = (i.toString() for i in [1..30])
   # $scope.simulations = [
@@ -61,7 +61,7 @@ AppCtrl = ($scope, $timeout) ->
           console.log JSON.stringify(data.assignments)
           #$scope.assignments = JSON.stringify(data.assignments)
           $scope.$apply (scope) ->
-            scope.assignments = JSON.stringify(data.assignments)
+            scope.assignments = data.assignments
           l.stop()
         when "progress"
           l.setProgress data.progress

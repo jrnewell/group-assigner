@@ -45,7 +45,7 @@ calculateGroups = (students, simulations) ->
           # disperse among other groups
           disperse = side1.concat side2
           dispIdx = 0
-          groupIdx = 0
+          groupIdx = assignment.groups.length - 1
           side = 'side1'
           while (dispIdx < disperse.length)
             assignment.groups[groupIdx][side].push disperse[dispIdx]
@@ -53,7 +53,7 @@ calculateGroups = (students, simulations) ->
               side = 'side2'
             else
               side = 'side1'
-              groupIdx = (groupIdx + 1) % assignment.groups.length
+              groupIdx = (if groupIdx == 1 then assignment.groups.length - 1 else groupIdx - 1)
             dispIdx += 1
 
     return assignments

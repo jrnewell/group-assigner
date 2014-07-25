@@ -76,8 +76,29 @@ html(lang="en" ng-app="MyProject")
             span.ladda-label Assign Students to Groups
       .row(ng-if="assignments !== null").padded-row
         .col-md-12
-          h3 Assignments
           p {{assignments}}
+          h3 Assignments
+          .panel.panel-default(ng-repeat="assignment in assignments")
+            .panel-heading
+              h3.panel-title {{assignment.name}}
+            .panel-body
+              h5 Groups
+              ul.list-group
+                li.list-group-item(ng-repeat="group in assignment.groups")
+                  p {{$index + 1}}
+                  .row
+                    .col-md-5.col-md-offset-1
+                      ul.list-unstyled.side-left
+                        li(ng-repeat="student in group.side1")
+                          span
+                            i.fa.fa-user
+                          | {{student}}
+                    .col-md-5
+                      ul.list-unstyled.side-right
+                        li(ng-repeat="student in group.side2")
+                          span
+                            i.fa.fa-user
+                          | {{student}}
       .row.padded-row
         .col-md-12
           .footer
