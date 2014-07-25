@@ -1,6 +1,8 @@
 gulp = require "gulp"
+gutil = require "gulp-util"
 jade = require "gulp-jade"
 coffee = require "gulp-coffee"
+sourcemaps = require "gulp-sourcemaps"
 rimraf = require "gulp-rimraf"
 stylus = require "gulp-stylus"
 nib = require "nib"
@@ -13,6 +15,7 @@ browserify = require "browserify"
 watchify = require "watchify"
 source = require "vinyl-source-stream"
 notify = require "gulp-notify"
+prettyHrtime = require "pretty-hrtime"
 _ = require "lodash"
 constants = require "./constants"
 
@@ -52,9 +55,19 @@ gulp.task "vendor", ["vendor-js", "vendor-css", "vendor-img", "vendor-fonts"]
 # build src tasks
 #
 
-# scripts (browserify)
+# scripts
 
-gulp.task "scripts", () ->
+gulp.task "web-workers", () ->
+  return gulp.src(srcPaths.workers)
+    .pipe(plumber())
+    .pipe(changed(destPaths.workers, {extension: ".js"}))
+    .pipe(sourcemaps.init())
+    .pipe(coffee())
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest(destPaths.workers))
+    .pipe gulpIf(shared.isWatching, liveReload(tlr))
+
+gulp.task "browserify", () ->
   bundleMethod = (if shared.isWatching then watchify else browserify)
 
   bundler = bundleMethod
@@ -71,18 +84,32 @@ gulp.task "scripts", () ->
 
     @emit "end"
 
+  startTime = null
+  startLog = () ->
+    startTime = process.hrtime()
+    gutil.log "Starting '#{gutil.colors.cyan 'bundle'}'..."
+
+  endLog = () ->
+    taskTime = process.hrtime(startTime)
+    prettyTime = prettyHrtime(taskTime)
+    gutil.log "Finished '#{gutil.colors.cyan 'bundle'}' in #{gutil.colors.magenta prettyTime}"
+
   bundle = () ->
+    startLog()
     return bundler
       .bundle {debug: true}
       .on 'error', handleErrors
       .pipe(plumber())
       .pipe source(browserifyMain.dest)
       .pipe gulp.dest(destPaths.scripts)
+      .on "end", endLog
       .pipe gulpIf(shared.isWatching, liveReload(tlr))
 
   bundler.on "update", bundle if shared.isWatching
 
   return bundle()
+
+gulp.task "scripts", ["web-workers", "browserify"]
 
 # style sheets
 

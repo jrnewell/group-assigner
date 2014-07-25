@@ -4,6 +4,7 @@ tlr = require("tiny-lr")()
 srcPaths =
   coffee:   "src/js/**/*.coffee"
   js:       "src/js/**/*.js"
+  workers:  "src/js/workers/**/*.coffee"
   stylus: [
             "src/css/**/*.styl"
             "!src/css/**/imports/*.styl"
@@ -25,25 +26,28 @@ srcPaths =
             "vendor/jquery"
             "vendor/modernizr"
             "vendor/ladda"
+            "vendor/lodash"
   ]
 
 watchPaths =
-  coffee: srcPaths.coffee
-  js:     srcPaths.js
-  stylus: srcPaths.stylus
-  css:    srcPaths.css
+  coffee:  srcPaths.coffee
+  js:      srcPaths.js
+  workers: srcPaths.workers
+  stylus:  srcPaths.stylus
+  css:     srcPaths.css
   jade: [
-          srcPaths.jade[0]
-          "gulp/constants.coffee"
+           srcPaths.jade[0]
+           "gulp/constants.coffee"
   ]
-  html:   srcPaths.html
-  images: srcPaths.images
-  fonts:  srcPaths.fonts
+  html:    srcPaths.html
+  images:  srcPaths.images
+  fonts:   srcPaths.fonts
 
 
 # gulp destinations
 destPaths =
   scripts:      "build/js"
+  workers:      "build/js/workers"
   stylesheets:  "build/css"
   html:         "build"
   images:       "build/img"
@@ -72,6 +76,7 @@ jadeLocals =
     "spin.js"
     "ladda.js"
     "angular.js"
+    "lodash.js"
     "app.js"
   ]
 
