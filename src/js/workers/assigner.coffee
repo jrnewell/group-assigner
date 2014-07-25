@@ -165,13 +165,19 @@ calculateGroups = (students, simulations) ->
   maxIterations = 100
   for iteration in [1..maxIterations]
     console.log "iteration: #{iteration}"
+    self.postMessage
+      cmd: "progress"
+      progress: iteration / maxIterations
+
     generation = progenate generation
     checkForWinner generation
 
   #console.log JSON.stringify(winner)
   console.log "winnerScore: #{winnerScore}"
 
-  self.postMessage(winner)
+  self.postMessage
+    cmd: "assignments"
+    assignments: winner
   self.close()
 
 # listen for messages
@@ -179,5 +185,5 @@ self.addEventListener('message', (ev) ->
   data = ev.data
   switch data.cmd
     when "calculate" then calculateGroups(data.students, data.simulations)
-    else console.log "Unknown assigner command: #{data}"
+    else console.log "Unknown assigner command: #{JSON.stringify(data)}"
 , false)

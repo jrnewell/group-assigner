@@ -1,7 +1,7 @@
 'use strict'
 
 AppCtrl = ($scope, $timeout) ->
-  $scope.message = "Hello World"
+  $scope.assignments = null
 
   # $scope.students = (i.toString() for i in [1..30])
   # $scope.simulations = [
@@ -47,15 +47,27 @@ AppCtrl = ($scope, $timeout) ->
   $scope.assignToGroups = () ->
     console.log "assignToGroups"
     # shoud move to directive
-    #el = document.getElementById("assignBtn")
-    #l = Ladda.create(el)
-    #l.start()
+    el = document.getElementById("assignBtn")
+    l = Ladda.create(el)
+    l.start()
 
     # use web worker
     worker = new Worker("/js/workers/assigner.js")
     worker.addEventListener('message', (ev) ->
-      console.log "Recieved msg from web worker"
-      console.log JSON.stringify(ev.data)
+      data = ev.data
+      switch data.cmd
+        when "assignments"
+          console.log "Recieved msg from web worker"
+          console.log JSON.stringify(data.assignments)
+          #$scope.assignments = JSON.stringify(data.assignments)
+          $scope.$apply (scope) ->
+            scope.assignments = JSON.stringify(data.assignments)
+          l.stop()
+        when "progress"
+          l.setProgress data.progress
+        else console.log "Unknown assigner command: #{JSON.stringify(data)}"
+
+
     , false)
 
     console.log "posting msg to worker"

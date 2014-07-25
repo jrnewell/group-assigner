@@ -70,11 +70,18 @@ html(lang="en" ng-app="MyProject")
                   button.close(type="button" aria-hidden="true" ng-click="delSimulation(simulation)") ×
                   span.simGroupSizeItem {{simulation.groupSize}}
                   | {{simulation.name}}
-      .row
+      .row.padded-row
         .col-md-4.col-md-offset-4
           button#assignBtn.ladda-button.btn.btn-block(data-color="red" data-style="zoom-in" ng-click="assignToGroups()")
             span.ladda-label Assign Students to Groups
-      //.row(ng-show="assignments")
+      .row(ng-if="assignments !== null").padded-row
         .col-md-12
+          h3 Assignments
           p {{assignments}}
+      .row.padded-row
+        .col-md-12
+          .footer
+            .container
+              .clearfix
+              .footer-copyright.text-center Copyright © 2014 James Newell.  All rights reserved.
 
