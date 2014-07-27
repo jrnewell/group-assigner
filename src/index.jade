@@ -92,15 +92,9 @@ html(lang="en" ng-app="MyProject")
                 li.list-group-item(ng-repeat="game in assignment.games")
                   p {{$index + 1}}
                   .row
-                    .col-md-5.col-md-offset-1
-                      ul.list-unstyled.side-left
-                        li(ng-repeat="student in game[0]")
-                          span
-                            i.fa.fa-user
-                          | {{student}}
-                    .col-md-5
-                      ul.list-unstyled.side-right
-                        li(ng-repeat="student in game[1]")
+                    div(ng-repeat="group in game" ng-class="getGroupClass(game, $index)")
+                      ul.list-unstyled.group-assignment(ng-class="'group-' + ($index + 1)")
+                        li(ng-repeat="student in group")
                           span
                             i.fa.fa-user
                           | {{student}}

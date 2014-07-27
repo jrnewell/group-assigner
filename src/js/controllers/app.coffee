@@ -49,6 +49,13 @@ AppCtrl = ($scope, $timeout) ->
     console.log "delSimulation: #{simulation}"
     $scope.simulations = _.without($scope.simulations, simulation)
 
+  $scope.getGroupClass = (game, index) ->
+    switch game.length
+      when 2 then (if (index == 0) then ["col-md-5", "col-md-offset-1"] else "col-md-5")
+      when 3 then "col-md-4"
+      when 4 then "col-md-3"
+      else "col-md-12"
+
   $scope.assignToGroups = () ->
     console.log "assignToGroups"
     # shoud move to directive
