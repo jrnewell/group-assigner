@@ -30,6 +30,7 @@ AppCtrl = ($scope, $timeout) ->
     newSimGroupSize = parseInt($scope.newSimGroupSize)
     newSimMin = parseInt($scope.newSimMin)
     newSimNumGroups = parseInt($scope.newSimNumGroups)
+    newSimMin = newSimNumGroups if newSimMin < newSimNumGroups
     return if newSimGroupSize < 1 or newSimGroupSize > 5
     console.log "addSimulation: #{$scope.newSimName} #{newSimGroupSize} #{newSimMin}"
     $scope.simulations.push
