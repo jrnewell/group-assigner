@@ -43,7 +43,6 @@ html(lang="en" ng-app="MyProject")
               #add-simulation
                 .form-group
                   label(for="selector-simulator-groupsize") Students per Group
-                  .label-note (two groups per simulation)
                   select(id="selector-simulator-groupsize" name="selector-simulator-groupsize" data-selecter-options='{"cover":"true"}' ng-model="newSimGroupSize")
                     option(value="1") One
                     option(value="2") Two
@@ -57,6 +56,12 @@ html(lang="en" ng-app="MyProject")
                     option(value="3") Three
                     option(value="4") Four
                     option(value="5") Five
+                .form-group
+                  label(for="selector-simulator-numgroups") Number of Groups per Simulation
+                  select(id="selector-simulator-numgroups" name="selector-simulator-numgroups" data-selecter-options='{"cover":"true"}' ng-model="newSimNumGroups")
+                    option(value="2") Two
+                    option(value="3") Three
+                    option(value="4") Four
                 .form-group
                   label(for="simulation-name") Simulation Name
                   .input-group
@@ -84,18 +89,18 @@ html(lang="en" ng-app="MyProject")
             .panel-body
               h5 Groups
               ul.list-group
-                li.list-group-item(ng-repeat="group in assignment.groups")
+                li.list-group-item(ng-repeat="game in assignment.games")
                   p {{$index + 1}}
                   .row
                     .col-md-5.col-md-offset-1
                       ul.list-unstyled.side-left
-                        li(ng-repeat="student in group.side1")
+                        li(ng-repeat="student in game[0]")
                           span
                             i.fa.fa-user
                           | {{student}}
                     .col-md-5
                       ul.list-unstyled.side-right
-                        li(ng-repeat="student in group.side2")
+                        li(ng-repeat="student in game[1]")
                           span
                             i.fa.fa-user
                           | {{student}}

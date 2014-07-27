@@ -10,50 +10,49 @@ calculateGroups = (students, simulations) ->
   randAssignments = () ->
     assignments = []
     for simulation in simulations
-      {name, groupSize, minSize} = simulation
+      {name, groupSize, minSize, numGroups} = simulation
       assignment =
         name: name
         groupSize: groupSize
         minSize: minSize
-        groups: []
+        numGroups: numGroups
+        games: []
       assignments.push assignment
 
       randShuffle = _.shuffle(students)
-      side1 = []
-      side2 = []
-      side = side1
+      groups = ([] for i in [1..numGroups])
+      groupIdx = 0
 
       for student in randShuffle
-        side.push student
-        if (side1.length == groupSize and side2.length == groupSize)
-          assignment.groups.push
-              side1: side1
-              side2: side2
-            side1 = []
-            side2 = []
-            side = side1
+        group = groups[groupIdx]
+        group.push student
+        if (groupIdx == (numGroups - 1) and group.length == groupSize)
+          assignment.games.push groups
+          groups = ([] for i in [1..numGroups])
+          groupIdx = 0
         else
-          side = (if side is side1 then side2 else side1)
+          groupIdx = (groupIdx + 1) % numGroups
+
+      numleftOvers = _.reduce(groups, ((sum, group) -> sum + group.length), 0)
 
       # do we get the last group?
-      if side1.length > 0 or side2.length > 0
-        if (side1.length + side2.length >= minSize)
-          assignment.groups.push
-            side1: side1
-            side2: side2
+      if numleftOvers > 0
+        if (numleftOvers >= minSize)
+          assignment.games.push groups
         else
           # disperse among other groups
-          disperse = side1.concat side2
+          disperse = _.flatten(groups)
           dispIdx = 0
-          groupIdx = assignment.groups.length - 1
-          side = 'side1'
+          gameIdx = assignment.games.length - 1
+          groupIdx = 0
           while (dispIdx < disperse.length)
-            assignment.groups[groupIdx][side].push disperse[dispIdx]
-            if side is 'side1'
-              side = 'side2'
+            assignment.games[gameIdx][groupIdx].push disperse[dispIdx]
+            if groupIdx == assignment.games[gameIdx].length - 1
+              groupIdx = 0
+              gameIdx = (if gameIdx == 1 then assignment.games.length - 1 else gameIdx - 1)
             else
-              side = 'side1'
-              groupIdx = (if groupIdx == 1 then assignment.groups.length - 1 else groupIdx - 1)
+              groupIdx += 1
+
             dispIdx += 1
 
     return assignments
@@ -79,7 +78,7 @@ calculateGroups = (students, simulations) ->
     #console.log "partnerData: #{JSON.stringify(partnerData)}"
 
     for assignment in assignments
-      for group in assignment.groups
+      for game in assignment.games
         updatePartnerData = (side, opponents) ->
           for student in side
             dataObj = partnerData[student]
@@ -89,8 +88,10 @@ calculateGroups = (students, simulations) ->
             for opponent in opponents
               dataObj.partners[opponent] += 1
 
-        updatePartnerData group.side1, group.side2
-        updatePartnerData group.side2, group.side1
+        for party in game
+          opponents = _.without(game, party)
+          for opponent in opponents
+            updatePartnerData party, opponent
 
     #console.log "partnerData: #{JSON.stringify(partnerData)}"
 
@@ -107,25 +108,25 @@ calculateGroups = (students, simulations) ->
       mutations = getRandomInt 1, 50
       #console.log "mutations: #{mutations}"
       for i in [1..mutations]
-        {groups} = assignment
-        group1 = getRandomInt 0, groups.length
-        side1 = (if getRandomInt 0, 2 == 0 then 'side1' else 'side2')
-        leng1 = groups[group1][side1].length
+        {games} = assignment
+        game1 = getRandomInt 0, games.length
+        group1 = getRandomInt 0, games[game1].length
+        leng1 = games[game1][group1].length
         continue unless leng1 > 0
         idx1 = getRandomInt 0, leng1
 
-        group2 = getRandomInt 0, groups.length
-        side2 = (if getRandomInt 0, 2 == 0 then 'side1' else 'side2')
-        leng2 = groups[group2][side2].length
+        game2 = getRandomInt 0, games.length
+        group2 = getRandomInt 0, games[game2].length
+        leng2 = games[game2][group2].length
         continue unless leng2 > 0
         idx2 = getRandomInt 0, leng2
 
-        continue if group1 == group2 and side1 == side2 and idx1 == idx2
-        swap1 = groups[group1][side1][idx1]
-        swap2 = groups[group2][side2][idx2]
+        continue if game1 == game2 and group1 == group2 and idx1 == idx2
+        swap1 = games[game1][group1][idx1]
+        swap2 = games[game2][group2][idx2]
         continue unless swap1 and swap2
-        groups[group1][side1][idx1] = swap2
-        groups[group2][side2][idx2] = swap1
+        games[game1][group1][idx1] = swap2
+        games[game2][group2][idx2] = swap1
 
     return assignments
 
