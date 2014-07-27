@@ -87,6 +87,31 @@ html(lang="en" ng-app="MyProject")
             .panel-heading
               h3.panel-title {{assignment.name}}
             .panel-body
+              h5 Info
+              .row
+                .col-md-3.col-md-offset-1
+                  .text-center.well.well-sm
+                    h6 Group Size
+                    h4 {{assignment.groupSize}}
+                .col-md-4
+                  .text-center.well.well-sm
+                    h6 Min Num of Students
+                    h4 {{assignment.minSize}}
+                .col-md-3
+                  .text-center.well.well-sm
+                    h6 Num of Groups
+                    h4 {{assignment.numGroups}}
+                  //- table.table
+                  //-   thead
+                  //-     tr
+                  //-       th.text-center Group Size
+                  //-       th.text-center Min Num of Students
+                  //-       th.text-center Num of Groups
+                  //-   tbody
+                  //-     tr.text-center
+                  //-       td {{assignment.groupSize}}
+                  //-       td {{assignment.minSize}}
+                  //-       td {{assignment.numGroups}}
               h5 Groups
               ul.list-group
                 li.list-group-item(ng-repeat="game in assignment.games")
