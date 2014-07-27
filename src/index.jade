@@ -16,7 +16,10 @@ html(lang="en" ng-app="MyProject")
     .container
       .row
         .col-md-12#app-title-wrapper
-          h2#app-title Group Assigner
+          h2#app-title
+            span.label.label-primary
+              i.fa.fa-users
+            | Group Assigner
       .row
         .col-md-6
           .panel.panel-primary
@@ -128,5 +131,10 @@ html(lang="en" ng-app="MyProject")
           .footer
             .container
               .clearfix
+                .footer-logo
+                  a(href="#")
+                    span.label.label-primary
+                      i.fa.fa-users
+                      | Group Assigner
               .footer-copyright.text-center Copyright © 2014 James Newell.  All rights reserved.
 
