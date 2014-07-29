@@ -50,6 +50,7 @@ AppCtrl = ($scope, $timeout) ->
     console.log "delSimulation: #{simulation}"
     $scope.simulations = _.without($scope.simulations, simulation)
 
+  # to directive?
   $scope.getGroupClass = (game, index) ->
     switch game.length
       when 2 then (if (index == 0) then ["col-md-5", "col-md-offset-1"] else "col-md-5")
@@ -64,6 +65,8 @@ AppCtrl = ($scope, $timeout) ->
     l = Ladda.create(el)
     l.start()
 
+    $scope.calculatingProgress = "Calculating (0%)"
+
     # use web worker
     worker = new Worker("/js/workers/assigner.js")
     worker.addEventListener('message', (ev) ->
@@ -75,16 +78,19 @@ AppCtrl = ($scope, $timeout) ->
           #$scope.assignments = JSON.stringify(data.assignments)
           $scope.$apply (scope) ->
             scope.assignments = data.assignments
+            scope.calculatingProgress = null
           l.stop()
         when "progress"
           l.setProgress data.progress
+          $scope.$apply (scope) ->
+            scope.calculatingProgress = "Calculating (#{Math.floor(data.progress * 100)}%)"
         else console.log "Unknown assigner command: #{JSON.stringify(data)}"
-
-
     , false)
 
     worker.addEventListener('error', (err) ->
       l.stop()
+      $scope.$apply (scope) ->
+        scope.calculatingProgress = "Error Calculating"
       console.error "Error: #{err.message}"
     , false)
 
