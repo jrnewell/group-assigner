@@ -15,26 +15,22 @@ selecter = ($timeout) ->
         callback: (val, idx) ->
           return unless val?
           intVal = parseInt(val)
-          console.log "selecter change: #{val} #{intVal} #{scope.selecterVal} #{idx}"
+          console.log "selecter change: #{intVal}"
           return if intVal == scope.selecterVal
-          console.log "jim"
-          #scope.$apply (scope) ->
+
+          # TODO: do I need these nested timeouts?
           $timeout () ->
             scope.selecterVal = intVal
-          #$timeout () ->
-          #scope.$emit "testing"
             if attrs.selecterChg?
               $timeout () -> scope.selecterChg()
 
       scope.$watch "selecterVal", (newVal, oldVal) ->
-        console.log "newVal, oldVal: #{newVal} #{oldVal}"
         return unless scope.selecterVal?
         console.log "updating #{attrs.selecterVal}: #{scope.selecterVal}"
         inputEl.val(scope.selecterVal).trigger("change")
 
       if attrs.selecterOpts?
         scope.$watchCollection "selecterOpts", (obj, oldObj) ->
-          console.log "old, oldObj: #{JSON.stringify(obj)} #{JSON.stringify(oldObj)}"
           return unless scope.selecterOpts?
           inputEl.selecter("destroy") if obj != oldObj
           console.log "updating #{attrs.selecterOpts}: #{JSON.stringify(scope.selecterOpts)}"

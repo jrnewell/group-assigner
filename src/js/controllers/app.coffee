@@ -14,14 +14,14 @@ AppCtrl = ($scope, $timeout) ->
 
   numbers = [ "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty"]
   $scope.newSim =
-    groupSize: 3
-    minSize: 3
+    groupSize: 1
+    minSize: 2
     minOptions: {
       2: "Two"
       3: "Three"
       4: "Four"
     }
-    numGroups: 3
+    numGroups: 2
 
   $scope.addStudent = () ->
     return if _.isEmpty($scope.newStudent) or _.contains($scope.students, $scope.newStudent)
@@ -35,9 +35,7 @@ AppCtrl = ($scope, $timeout) ->
 
   $scope.addSimulation = () ->
     return if _.isEmpty($scope.newSimName) or _.contains($scope.simulations, $scope.newSimName)
-    # newSimGroupSize = parseInt($scope.newSim.groupSize)
-    # newSimMin = parseInt($scope.newSim.min)
-    # newSimNumGroups = parseInt($scope.newSim.numGroups)
+
     {groupSize, minSize, numGroups} = $scope.newSim
     minSize = numGroups if minSize < numGroups
     return if groupSize < 1 or groupSize > 5
@@ -57,13 +55,6 @@ AppCtrl = ($scope, $timeout) ->
       }
       numGroups: 2
 
-    # shoud move to directive
-    # $timeout () ->
-    #   $("#selector-simulator-groupSize").val($scope.newSim.groupSize).trigger("change")
-    #   $("#selector-simulator-min").selecter("refresh")
-    #   $("#selector-simulator-min").siblings(".selecter-selected").text(numbers[$scope.newSim.min])
-    #   $("#selector-simulator-numgroups").val($scope.newSim.numGroups).trigger("change")
-
     $scope.newSimName = ""
 
   $scope.delSimulation = (simulation) ->
@@ -79,35 +70,17 @@ AppCtrl = ($scope, $timeout) ->
       else "col-md-12"
 
   $scope.changeMinSize = () ->
-    console.log "test"
-
     {groupSize, minSize, numGroups} = $scope.newSim
     console.log "changeMinSize: #{groupSize} #{minSize} #{numGroups}"
 
-    #newSimGroupSize = parseInt($scope.newSim.groupSize)
-    #newSimNumGroups = parseInt($scope.newSim.numGroups)
     minBottom = numGroups
     minTop = (numGroups * groupSize)
     $scope.newSim.minOptions = _.reduce([minBottom..minTop], (obj, num) ->
-        console.log "#{num} #{numbers[num]}"
         obj[num] = numbers[num]
         return obj
     , {})
     $scope.newSim.minSize = minBottom if minSize < minBottom
     $scope.newSim.minSize = minTop if minSize > minTop
-    console.log JSON.stringify($scope.newSim.minOptions)
-    console.log "minSize: #{$scope.newSim.minSize}"
-
-    # console.log newSimGroupSize
-    # console.log newSimNumGroups
-    # console.log $scope.newSim.min
-    # console.log JSON.stringify($scope.newSim.minOptions)
-
-    # $timeout () ->
-    #   $("#selector-simulator-min").selecter("refresh")
-    #   $("#selector-simulator-min").siblings(".selecter-selected").text(numbers[$scope.newSim.min])
-
-  #$scope.$on "testing", $scope.changeMinSize
 
   $scope.assignToGroups = () ->
     console.log "assignToGroups"
@@ -126,7 +99,6 @@ AppCtrl = ($scope, $timeout) ->
         when "assignments"
           console.log "Recieved msg from web worker"
           console.log JSON.stringify(data.assignments)
-          #$scope.assignments = JSON.stringify(data.assignments)
           $scope.$apply (scope) ->
             scope.assignments = data.assignments
             scope.calculatingProgress = null
