@@ -46,7 +46,7 @@ html(lang="en" ng-app="MyProject")
               #add-simulation
                 .form-group
                   label(for="selector-simulator-groupsize") Students per Group
-                  select(id="selector-simulator-groupsize" name="selector-simulator-groupsize" data-selecter-options='{"cover":"true"}' ng-model="newSimGroupSize")
+                  select(id="selector-simulator-groupsize" name="selector-simulator-groupsize" selecter selecter-val="newSim.groupSize" selecter-chg="changeMinSize()")
                     option(value="1") One
                     option(value="2") Two
                     option(value="3") Three
@@ -54,14 +54,10 @@ html(lang="en" ng-app="MyProject")
                     option(value="5") Five
                 .form-group
                   label(for="selector-simulator-min") Minimum Number of Students Required for Simulation
-                  select(id="selector-simulator-min" name="selector-simulator-min" data-selecter-options='{"cover":"true"}' ng-model="newSimMin")
-                    option(value="2") Two
-                    option(value="3") Three
-                    option(value="4") Four
-                    option(value="5") Five
+                  select(id="selector-simulator-min" name="selector-simulator-min" selecter selecter-val="newSim.minSize" selecter-opts="newSim.minOptions")
                 .form-group
                   label(for="selector-simulator-numgroups") Number of Groups per Simulation
-                  select(id="selector-simulator-numgroups" name="selector-simulator-numgroups" data-selecter-options='{"cover":"true"}' ng-model="newSimNumGroups")
+                  select(id="selector-simulator-numgroups" name="selector-simulator-numgroups" selecter selecter-val="newSim.numGroups" selecter-chg="changeMinSize()")
                     option(value="2") Two
                     option(value="3") Three
                     option(value="4") Four

@@ -1,10 +1,13 @@
 'use strict'
 
 AppCtrl = require "./controllers/app"
+selecter = require "./directives/selecter"
 
 app = angular.module('MyProject', [])
 
 app.controller "AppCtrl", ["$scope", "$timeout", AppCtrl]
 
-$(document).ready () ->
-  $("select").selecter()
+app.directive "selecter", ["$timeout", selecter]
+
+# $(document).ready () ->
+#   $("select").selecter()
