@@ -2,7 +2,7 @@
 
 AppCtrl = ($scope, $timeout, ngDialog) ->
 
-  $scope.assignments = [{"name":"My Simulation","groupSize":2,"minSize":2,"numGroups":2,"games":[[["F","A"],["D","G"]],[["B","C"],["E"]]]},{"name":"My Simulation2","groupSize":1,"minSize":2,"numGroups":2,"games":[[["A"],["C"]],[["E"],["G"]],[["F","B"],["D"]]]},{"name":"My Simulation3","groupSize":3,"minSize":2,"numGroups":2,"games":[[["G","B","F","C"],["D","A","E"]]]}]
+  $scope.assignments = [{"name":"My Simulation","groupSize":2,"minSize":2,"numGroups":2,"groupNames":[{"name":"Group 1"},{"name":"Group 2"}],"games":[[["C","F"],["D","E"]],[["G","B"],["A"]]]},{"name":"My Simulation2","groupSize":1,"minSize":2,"numGroups":2,"groupNames":[{"name":"Group 1"},{"name":"Group 2"}],"games":[[["D"],["F"]],[["C"],["B"]],[["G","A"],["E"]]]},{"name":"My Simulation3","groupSize":3,"minSize":2,"numGroups":2,"groupNames":[{"name":"Group 1"},{"name":"Group 2"}],"games":[[["G","C","B","F"],["D","A","E"]]]}]
 
   # $scope.students = (i.toString() for i in [1..30])
   # $scope.simulations = [
@@ -10,7 +10,7 @@ AppCtrl = ($scope, $timeout, ngDialog) ->
   #   {name: "My Simulation4", groupSize: 2}, {name: "My Simulation5", groupSize: 1}, {name: "My Simulation6", groupSize: 2},
   #   {name: "My Simulation7", groupSize: 2}, {name: "My Simulation8", groupSize: 2}, {name: "My Simulation9", groupSize: 2}]
   $scope.students = ["A", "B", "C", "D", "E", "F", "G"]
-  $scope.simulations = [{name: "My Simulation", groupSize: 2, minSize: 2, numGroups: 2}, {name: "My Simulation2", groupSize: 1, minSize: 2, numGroups: 2}, {name: "My Simulation3", groupSize: 3, minSize: 2, numGroups: 2}]
+  $scope.simulations = [{name: "My Simulation", groupSize: 2, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}]}, {name: "My Simulation2", groupSize: 1, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}]}, {name: "My Simulation3", groupSize: 3, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}]}]
 
   numbers = [ "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty"]
 
@@ -44,15 +44,22 @@ AppCtrl = ($scope, $timeout, ngDialog) ->
   $scope.addSimulation = () ->
     return if _.isEmpty($scope.newSimName) or _.contains($scope.simulations, $scope.newSimName)
 
-    {groupSize, minSize, numGroups} = $scope.newSim
+    {groupSize, minSize, numGroups, groupNames} = $scope.newSim
     minSize = numGroups if minSize < numGroups
     return if groupSize < 1 or groupSize > 5
+
+    # populate unset group names
+    resizeGroupNames()
+    for groupName, index in groupNames
+      groupNames.name = "Group #{index + 1}" unless groupName.name?
+
     console.log "addSimulation: #{$scope.newSimName} #{groupSize} #{minSize} #{numGroups}"
     $scope.simulations.push
       name: $scope.newSimName
       groupSize: numGroups
       minSize: minSize
       numGroups: numGroups
+      groupNames: groupNames
     resetNewSim()
 
   $scope.delSimulation = (simulation) ->
@@ -80,7 +87,7 @@ AppCtrl = ($scope, $timeout, ngDialog) ->
     $scope.newSim.minSize = minBottom if minSize < minBottom
     $scope.newSim.minSize = minTop if minSize > minTop
 
-  $scope.$watch "newSim.numGroups", (newVal, oldVal) ->
+  resizeGroupNames = () ->
     {numGroups, groupNames} = $scope.newSim
     return if numGroups == groupNames.length
     console.log "newSim.numGroups changed: #{numGroups}"
@@ -90,12 +97,10 @@ AppCtrl = ($scope, $timeout, ngDialog) ->
       $scope.newSim.groupNames = groupNames.concat ({name: null} for i in [1..(numGroups - groupNames.length)])
     console.log JSON.stringify($scope.newSim.groupNames)
 
+  $scope.$watch "newSim.numGroups", resizeGroupNames
+
   $scope.assignToGroups = () ->
     console.log "assignToGroups"
-
-    # populate unset group names
-    for groupName, index in $scope.newSim.groupNames
-      $scope.newSim.groupNames[index] = {name: "Group #{index + 1}"} unless groupName?.name?
 
     # shoud move to directive
     el = document.getElementById("assignBtn")

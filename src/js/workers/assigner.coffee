@@ -10,12 +10,13 @@ calculateGroups = (students, simulations) ->
   randAssignments = () ->
     assignments = []
     for simulation in simulations
-      {name, groupSize, minSize, numGroups} = simulation
+      {name, groupSize, minSize, numGroups, groupNames} = simulation
       assignment =
         name: name
         groupSize: groupSize
         minSize: minSize
         numGroups: numGroups
+        groupNames: groupNames
         games: []
       assignments.push assignment
 

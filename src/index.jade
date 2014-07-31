@@ -85,7 +85,7 @@ html(lang="en" ng-app="GroupAssigner")
       .row(ng-if="assignments !== null").padded-row
         .col-md-12
           p {{assignments}}
-          h3 Assignments
+          h3 Results
           .panel.panel-default(ng-repeat="assignment in assignments")
             .panel-heading
               h3.panel-title {{assignment.name}}
@@ -104,12 +104,13 @@ html(lang="en" ng-app="GroupAssigner")
                   .text-center.well.well-sm
                     h6 Num of Groups
                     h4 {{assignment.numGroups}}
-              h5 Groups
+              h5 Assignments
               ul.list-group
                 li.list-group-item(ng-repeat="game in assignment.games")
-                  p {{$index + 1}}
+                  div.pull-left.game-label {{$index + 1}}
                   .row
                     div(ng-repeat="group in game" ng-class="getGroupClass(game, $index)")
+                      p {{assignment.groupNames[$index].name}}
                       ul.list-unstyled.group-assignment(ng-class="'group-' + ($index + 1)")
                         li(ng-repeat="student in group")
                           span
