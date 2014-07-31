@@ -121,6 +121,9 @@ AppCtrl = ($scope, $timeout, ngDialog) ->
             scope.assignments = data.assignments
             scope.calculatingProgress = null
           l.stop()
+          $timeout () ->
+            toastr.success "Calculation Finished"
+          , 800
         when "progress"
           l.setProgress data.progress
           $scope.$apply (scope) ->
@@ -131,7 +134,10 @@ AppCtrl = ($scope, $timeout, ngDialog) ->
     worker.addEventListener('error', (err) ->
       l.stop()
       $scope.$apply (scope) ->
-        scope.calculatingProgress = "Error Calculating"
+        scope.calculatingProgress = null
+      $timeout () ->
+        toastr.error "Error Calculating"
+      , 800
       console.error "Error: #{err.message}"
     , false)
 

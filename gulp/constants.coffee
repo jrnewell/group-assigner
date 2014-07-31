@@ -28,6 +28,7 @@ srcPaths =
             "vendor/ladda"
             "vendor/lodash"
             "vendor/ngDialog"
+            "vendor/toastr"
   ]
 
 watchPaths =
@@ -66,6 +67,7 @@ jadeLocals =
     "font-awesome.css"
     "ladda.css"
     "ngDialog.css"
+    "toastr.css"
     "app.css"
   ]
   scripts: [
@@ -80,6 +82,7 @@ jadeLocals =
     "angular.js"
     "lodash.js"
     "ngDialog.js"
+    "toastr.js"
     "app.js"
   ]
 
