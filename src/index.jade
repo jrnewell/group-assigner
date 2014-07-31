@@ -85,7 +85,11 @@ html(lang="en" ng-app="GroupAssigner")
       .row(ng-if="assignments !== null").padded-row
         .col-md-12
           p {{assignments}}
-          h3 Results
+          h3
+            span.pull-right
+              button.btn.btn-primary(type="button" ng-click="downloadAssigments()")
+                i.fa.fa-cloud-download.fa-lg
+            | Results
           .panel.panel-default(ng-repeat="assignment in assignments")
             .panel-heading
               h3.panel-title {{assignment.name}}

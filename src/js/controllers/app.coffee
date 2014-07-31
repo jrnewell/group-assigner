@@ -123,7 +123,7 @@ AppCtrl = ($scope, $timeout, ngDialog) ->
           l.stop()
           $timeout () ->
             toastr.success "Calculation Finished"
-          , 800
+          , 500
         when "progress"
           l.setProgress data.progress
           $scope.$apply (scope) ->
@@ -136,8 +136,8 @@ AppCtrl = ($scope, $timeout, ngDialog) ->
       $scope.$apply (scope) ->
         scope.calculatingProgress = null
       $timeout () ->
-        toastr.error "Error Calculating"
-      , 800
+        toastr.error "Error Encountered while Calculating"
+      , 500
       console.error "Error: #{err.message}"
     , false)
 
@@ -152,5 +152,12 @@ AppCtrl = ($scope, $timeout, ngDialog) ->
       template: "/js/templates/namesToGroups.html"
       className: 'ngdialog-theme-default'
       scope: $scope
+
+  $scope.downloadAssigments = () ->
+    console.log "downloadAssigments"
+    csvInput = "testing"
+
+    blob = new Blob([csvInput], { type: "text/plain;charset=utf-8" })
+    saveAs blob, "results.txt"
 
 module.exports = AppCtrl

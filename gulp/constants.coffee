@@ -29,6 +29,7 @@ srcPaths =
             "vendor/lodash"
             "vendor/ngDialog"
             "vendor/toastr"
+            "vendor/FileSaver"
   ]
 
 watchPaths =
@@ -83,6 +84,7 @@ jadeLocals =
     "lodash.js"
     "ngDialog.js"
     "toastr.js"
+    "FileSaver.js"
     "app.js"
   ]
 
