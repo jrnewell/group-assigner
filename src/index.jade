@@ -1,5 +1,5 @@
 doctype html
-html(lang="en" ng-app="MyProject")
+html(lang="en" ng-app="GroupAssigner")
   head
 
     include ./includes/_meta
@@ -62,6 +62,8 @@ html(lang="en" ng-app="MyProject")
                     option(value="3") Three
                     option(value="4") Four
                 .form-group
+                  button.btn.btn-default.btn-block(type="button" ng-click="giveNamesToGroups()") Give Names to Groups
+                .form-group
                   label(for="simulation-name") Simulation Name
                   .input-group
                     input.form-control(type="text" name="simulation-name" placeholder="New Simulation" ng-model="newSimName" ng-keyup="$event.keyCode == 13 && addSimulation()")
@@ -102,17 +104,6 @@ html(lang="en" ng-app="MyProject")
                   .text-center.well.well-sm
                     h6 Num of Groups
                     h4 {{assignment.numGroups}}
-                  //- table.table
-                  //-   thead
-                  //-     tr
-                  //-       th.text-center Group Size
-                  //-       th.text-center Min Num of Students
-                  //-       th.text-center Num of Groups
-                  //-   tbody
-                  //-     tr.text-center
-                  //-       td {{assignment.groupSize}}
-                  //-       td {{assignment.minSize}}
-                  //-       td {{assignment.numGroups}}
               h5 Groups
               ul.list-group
                 li.list-group-item(ng-repeat="game in assignment.games")

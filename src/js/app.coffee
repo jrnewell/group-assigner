@@ -3,11 +3,8 @@
 AppCtrl = require "./controllers/app"
 selecter = require "./directives/selecter"
 
-app = angular.module('MyProject', [])
+app = angular.module("GroupAssigner", ["ngDialog"])
 
-app.controller "AppCtrl", ["$scope", "$timeout", AppCtrl]
+app.controller "AppCtrl", ["$scope", "$timeout", "ngDialog", AppCtrl]
 
 app.directive "selecter", ["$timeout", selecter]
-
-# $(document).ready () ->
-#   $("select").selecter()

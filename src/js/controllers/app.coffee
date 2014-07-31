@@ -1,6 +1,6 @@
 'use strict'
 
-AppCtrl = ($scope, $timeout) ->
+AppCtrl = ($scope, $timeout, ngDialog) ->
 
   $scope.assignments = [{"name":"My Simulation","groupSize":2,"minSize":2,"numGroups":2,"games":[[["F","A"],["D","G"]],[["B","C"],["E"]]]},{"name":"My Simulation2","groupSize":1,"minSize":2,"numGroups":2,"games":[[["A"],["C"]],[["E"],["G"]],[["F","B"],["D"]]]},{"name":"My Simulation3","groupSize":3,"minSize":2,"numGroups":2,"games":[[["G","B","F","C"],["D","A","E"]]]}]
 
@@ -13,15 +13,23 @@ AppCtrl = ($scope, $timeout) ->
   $scope.simulations = [{name: "My Simulation", groupSize: 2, minSize: 2, numGroups: 2}, {name: "My Simulation2", groupSize: 1, minSize: 2, numGroups: 2}, {name: "My Simulation3", groupSize: 3, minSize: 2, numGroups: 2}]
 
   numbers = [ "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty"]
-  $scope.newSim =
-    groupSize: 1
-    minSize: 2
-    minOptions: {
-      2: "Two"
-      3: "Three"
-      4: "Four"
-    }
-    numGroups: 2
+
+  resetNewSim = () ->
+    $scope.newSim =
+      groupSize: 1
+      minSize: 2
+      minOptions:
+        2: "Two"
+        3: "Three"
+        4: "Four"
+      numGroups: 2
+      groupNames: [
+        {name: null}
+        {name: null}
+      ]
+    $scope.newSimName = ""
+
+  resetNewSim()
 
   $scope.addStudent = () ->
     return if _.isEmpty($scope.newStudent) or _.contains($scope.students, $scope.newStudent)
@@ -45,17 +53,7 @@ AppCtrl = ($scope, $timeout) ->
       groupSize: numGroups
       minSize: minSize
       numGroups: numGroups
-    $scope.newSim =
-      groupSize: 1
-      minSize: 2
-      minOptions: {
-        2: "Two"
-        3: "Three"
-        4: "Four"
-      }
-      numGroups: 2
-
-    $scope.newSimName = ""
+    resetNewSim()
 
   $scope.delSimulation = (simulation) ->
     console.log "delSimulation: #{simulation}"
@@ -82,8 +80,23 @@ AppCtrl = ($scope, $timeout) ->
     $scope.newSim.minSize = minBottom if minSize < minBottom
     $scope.newSim.minSize = minTop if minSize > minTop
 
+  $scope.$watch "newSim.numGroups", (newVal, oldVal) ->
+    {numGroups, groupNames} = $scope.newSim
+    return if numGroups == groupNames.length
+    console.log "newSim.numGroups changed: #{numGroups}"
+    if numGroups < groupNames.length
+      $scope.newSim.groupNames = groupNames[0..(numGroups - 1)]
+    else if numGroups > groupNames.length
+      $scope.newSim.groupNames = groupNames.concat ({name: null} for i in [1..(numGroups - groupNames.length)])
+    console.log JSON.stringify($scope.newSim.groupNames)
+
   $scope.assignToGroups = () ->
     console.log "assignToGroups"
+
+    # populate unset group names
+    for groupName, index in $scope.newSim.groupNames
+      $scope.newSim.groupNames[index] = {name: "Group #{index + 1}"} unless groupName?.name?
+
     # shoud move to directive
     el = document.getElementById("assignBtn")
     l = Ladda.create(el)
@@ -122,5 +135,11 @@ AppCtrl = ($scope, $timeout) ->
       cmd: "calculate"
       students: $scope.students
       simulations: $scope.simulations
+
+  $scope.giveNamesToGroups = () ->
+    ngDialog.open
+      template: "/js/templates/namesToGroups.html"
+      className: 'ngdialog-theme-default'
+      scope: $scope
 
 module.exports = AppCtrl

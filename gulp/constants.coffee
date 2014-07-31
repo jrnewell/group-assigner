@@ -27,6 +27,7 @@ srcPaths =
             "vendor/modernizr"
             "vendor/ladda"
             "vendor/lodash"
+            "vendor/ngDialog"
   ]
 
 watchPaths =
@@ -64,6 +65,7 @@ jadeLocals =
     "bootflat.css"
     "font-awesome.css"
     "ladda.css"
+    "ngDialog.css"
     "app.css"
   ]
   scripts: [
@@ -77,6 +79,7 @@ jadeLocals =
     "ladda.js"
     "angular.js"
     "lodash.js"
+    "ngDialog.js"
     "app.js"
   ]
 
