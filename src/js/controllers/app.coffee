@@ -99,13 +99,8 @@ AppCtrl = ($scope, $timeout, ngDialog) ->
 
   $scope.$watch "newSim.numGroups", resizeGroupNames
 
-  $scope.assignToGroups = () ->
+  $scope.assignToGroups = (ev, ladda) ->
     console.log "assignToGroups"
-
-    # shoud move to directive
-    el = document.getElementById("assignBtn")
-    l = Ladda.create(el)
-    l.start()
 
     $scope.calculatingProgress = "Calculating (0%)"
 
@@ -120,19 +115,19 @@ AppCtrl = ($scope, $timeout, ngDialog) ->
           $scope.$apply (scope) ->
             scope.assignments = data.assignments
             scope.calculatingProgress = null
-          l.stop()
+          ladda.done()
           $timeout () ->
             toastr.success "Calculation Finished"
           , 500
         when "progress"
-          l.setProgress data.progress
+          ladda.progress data.progress
           $scope.$apply (scope) ->
             scope.calculatingProgress = "Calculating (#{Math.floor(data.progress * 100)}%)"
         else console.log "Unknown assigner command: #{JSON.stringify(data)}"
     , false)
 
     worker.addEventListener('error', (err) ->
-      l.stop()
+      ladda.done()
       $scope.$apply (scope) ->
         scope.calculatingProgress = null
       $timeout () ->

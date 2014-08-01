@@ -2,12 +2,14 @@
 
 AppCtrl = require "./controllers/app"
 selecter = require "./directives/selecter"
+laddaButton = require "./directives/laddaButton"
 
-app = angular.module("GroupAssigner", ["ngDialog"])
+app = angular.module("GroupAssigner", ["ngAnimate", "ngDialog"])
 
 app.controller "AppCtrl", ["$scope", "$timeout", "ngDialog", AppCtrl]
 
 app.directive "selecter", ["$timeout", selecter]
+app.directive "laddaButton", [laddaButton]
 
 # move to service
 toastr.options =
