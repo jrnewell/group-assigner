@@ -152,9 +152,34 @@ AppCtrl = ($scope, $timeout, ngDialog) ->
 
   $scope.downloadAssigments = () ->
     console.log "downloadAssigments"
-    csvInput = "testing"
+    str = ""
 
-    blob = new Blob([csvInput], { type: "text/plain;charset=utf-8" })
-    saveAs blob, "results.txt"
+    for assignment in $scope.assignments
+      studentMap = {}
+      for game, gameIdx in assignment.games
+        for group, groupIdx in game
+          for student in group
+            studentMap[student] =
+              gameIdx: gameIdx
+              groupIdx: groupIdx
+
+      numGames = assignment.games.length
+      str += "#{assignment.name}\n,"
+      for i in [1..numGames]
+        str += "#{i},"
+      str += "\n"
+
+      _.each _.keys(studentMap).sort(), (student) ->
+        {gameIdx, groupIdx} = studentMap[student]
+        str += "#{student},"
+        str += ((if i == gameIdx then assignment.groupNames[groupIdx].name else null) for i in [0..(numGames-1)]).join ","
+        str += "\n"
+
+      str += "\n"
+
+    console.log str
+
+    blob = new Blob([str], { type: "text/plain;charset=utf-8" })
+    saveAs blob, "assignments.csv"
 
 module.exports = AppCtrl

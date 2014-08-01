@@ -83,7 +83,7 @@ html(lang="en" ng-app="GroupAssigner")
           ladda-button(id="assignBtn" ladda-opts="{color: 'red', mode: 'zoom-out'}" ladda-click="assignToGroups(event, ladda)" ng-transclude) Assign Students to Groups
       .row(ng-if="assignments !== null").padded-row
         .col-md-12
-          p {{assignments}}
+          //- p {{assignments}}
           h3
             span.pull-right
               button.btn.btn-primary(type="button" ng-click="downloadAssigments()")

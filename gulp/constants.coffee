@@ -1,4 +1,8 @@
 tlr = require("tiny-lr")()
+fs = require "fs"
+
+getVendorDirs = () ->
+  "vendor/#{dir}" for dir in fs.readdirSync("vendor")
 
 # gulp source
 srcPaths =
@@ -18,30 +22,15 @@ srcPaths =
   html:     "src/**/*.html"
   images:   "src/img/**/*"
   fonts:    "src/fonts/**/*"
-  vendors: [
-            "vendor/angular"
-            "vendor/bootflat"
-            "vendor/bootstrap"
-            "vendor/font-awesome"
-            "vendor/jquery"
-            "vendor/modernizr"
-            "vendor/ladda"
-            "vendor/lodash"
-            "vendor/ngDialog"
-            "vendor/toastr"
-            "vendor/FileSaver"
-  ]
+  vendors:  getVendorDirs()
 
 watchPaths =
   coffee:  srcPaths.coffee
   js:      srcPaths.js
   workers: srcPaths.workers
-  stylus:  srcPaths.stylus
+  stylus:  srcPaths.stylus[0]
   css:     srcPaths.css
-  jade: [
-           srcPaths.jade[0]
-           "gulp/constants.coffee"
-  ]
+  jade:    srcPaths.jade[0]
   html:    srcPaths.html
   images:  srcPaths.images
   fonts:   srcPaths.fonts
@@ -96,7 +85,7 @@ httpURL = "http://127.0.0.1:" + httpPort
 lrPort = 35729
 
 # copyright
-headerText = "/***\n * \n * My Project 2014 - Copyright James Newell\n *\n ***/\n"
+headerText = "/***\n * \n * Group Assigner 2014 - Copyright James Newell\n *\n ***/\n"
 
 # shared vars
 shared = isWatching: false
