@@ -78,7 +78,7 @@ html(lang="en" ng-app="GroupAssigner")
                   | {{simulation.name}}
       .row.padded-row
         .col-md-4.col-md-offset-4
-          #calculating-progress.calc-progress-animate(ng-show="calculatingProgress")
+          #calculating-progress.calc-progress-animate(ng-show="isCalculating")
             h4 {{calculatingProgress}}
           ladda-button(id="assignBtn" ladda-opts="{color: 'red', mode: 'zoom-out'}" ladda-click="assignToGroups(event, ladda)" ng-transclude) Assign Students to Groups
       .row(ng-if="assignments !== null").padded-row

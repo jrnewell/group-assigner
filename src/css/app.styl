@@ -12,14 +12,17 @@ body
   #calculating-progress
     text-align center
 
+  .ng-hide-add, .ng-hide-remove
+    display block !important
+
   .calc-progress-animate
-    &.ng-hide-add.ng-hide-add-active
-    &.ng-hide-remove.ng-hide-remove-active
-      -webkit-transition all linear 0.5s
-      transition all linear 0.5s
-      opacity 1
+    transition height 0.5s ease-out, opacity 0.3s ease-out 0.2s
+    height 50px
+    overflow hidden
+    opacity 1
 
     &.ng-hide
+      height 0
       opacity 0
 
   #app-title-wrapper

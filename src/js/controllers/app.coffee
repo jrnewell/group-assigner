@@ -11,6 +11,7 @@ AppCtrl = ($scope, $timeout, ngDialog) ->
   #   {name: "My Simulation7", groupSize: 2}, {name: "My Simulation8", groupSize: 2}, {name: "My Simulation9", groupSize: 2}]
   $scope.students = ["A", "B", "C", "D", "E", "F", "G"]
   $scope.simulations = [{name: "My Simulation", groupSize: 2, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}]}, {name: "My Simulation2", groupSize: 1, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}]}, {name: "My Simulation3", groupSize: 3, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}]}]
+  $scope.isCalculating = false
 
   numbers = [ "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty"]
 
@@ -102,6 +103,7 @@ AppCtrl = ($scope, $timeout, ngDialog) ->
   $scope.assignToGroups = (ev, ladda) ->
     console.log "assignToGroups"
 
+    $scope.isCalculating = true
     $scope.calculatingProgress = "Calculating (0%)"
 
     # use web worker
@@ -114,11 +116,12 @@ AppCtrl = ($scope, $timeout, ngDialog) ->
           console.log JSON.stringify(data.assignments)
           $scope.$apply (scope) ->
             scope.assignments = data.assignments
-            scope.calculatingProgress = null
-          ladda.done()
+            ladda.done()
+            scope.isCalculating = false
+
           $timeout () ->
             toastr.success "Calculation Finished"
-          , 500
+          , 700
         when "progress"
           ladda.progress data.progress
           $scope.$apply (scope) ->
@@ -128,11 +131,10 @@ AppCtrl = ($scope, $timeout, ngDialog) ->
 
     worker.addEventListener('error', (err) ->
       ladda.done()
-      $scope.$apply (scope) ->
-        scope.calculatingProgress = null
+      $scope.isCalculating = false
       $timeout () ->
         toastr.error "Error Encountered while Calculating"
-      , 500
+      , 700
       console.error "Error: #{err.message}"
     , false)
 
