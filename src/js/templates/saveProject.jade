@@ -1,0 +1,18 @@
+.ga-modal-header
+  h4
+    span
+      i.fa.fa-save
+    | Save Project
+.ga-modal-body
+  .form-group
+    label(for="project-name") Project Name
+    input.form-control(type="text" name="project-name" placeholder="My Project" ng-model="projectName" ng-keyup="$event.keyCode == 13 && confirm(projectName)")
+.ga-modal-footer
+  .container-fluid
+    .row
+      .col-md-6
+        .form-group
+          button.btn.btn-primary.btn-block(type="button" ng-click="confirm(projectName)") Save
+      .col-md-6
+        .form-group
+          button.btn.btn-default.btn-block(type="button" ng-click="closeThisDialog()") Cancel

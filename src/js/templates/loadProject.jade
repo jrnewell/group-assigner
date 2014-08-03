@@ -1,0 +1,17 @@
+.ga-modal-header
+  h4
+    span
+      i.fa.fa-file-text
+    | Load Project
+.ga-modal-body
+  div(ng-show="projectList.length == 0")
+    p No Saved Projects
+  .list-group
+    a.list-group-item(href="#" ng-repeat="name in projectList" ng-click="loadProjectDiagSelected(name); closeThisDialog()")
+      button.close(type="button" aria-hidden="true" ng-click="delProject(name)") ×
+      | {{name}}
+.ga-modal-footer
+  div(ng-show="projectList.length > 0")
+    button.btn.btn-default.btn-block(type="button" ng-click="closeThisDialog()") Cancel
+  div(ng-show="projectList.length == 0")
+    button.btn.btn-primary.btn-block(type="button" ng-click="closeThisDialog()") OK

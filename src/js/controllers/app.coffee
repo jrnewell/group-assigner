@@ -1,6 +1,6 @@
 'use strict'
 
-AppCtrl = ($scope, $timeout, ngDialog) ->
+AppCtrl = ($scope, $timeout, ngDialog, storage) ->
 
   $scope.assignments = [{"name":"My Simulation","groupSize":2,"minSize":2,"numGroups":2,"groupNames":[{"name":"Group 1"},{"name":"Group 2"}],"games":[[["C","F"],["D","E"]],[["G","B"],["A"]]]},{"name":"My Simulation2","groupSize":1,"minSize":2,"numGroups":2,"groupNames":[{"name":"Group 1"},{"name":"Group 2"}],"games":[[["D"],["F"]],[["C"],["B"]],[["G","A"],["E"]]]},{"name":"My Simulation3","groupSize":3,"minSize":2,"numGroups":2,"groupNames":[{"name":"Group 1"},{"name":"Group 2"}],"games":[[["G","C","B","F"],["D","A","E"]]]}]
 
@@ -14,6 +14,58 @@ AppCtrl = ($scope, $timeout, ngDialog) ->
   $scope.isCalculating = false
 
   numbers = [ "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty"]
+
+  saveProject = (name) ->
+    project =
+      students: $scope.students
+      simulations: $scope.simulations
+      assignments: $scope.assignments
+    storage.saveProject name, project
+
+  loadProject = (name) ->
+    obj = storage.loadProject name
+    return unless obj?
+    $timeout () ->
+      $scope.students = obj.project.students
+      $scope.simulations = obj.project.simulations
+      $scope.assignments = obj.project.assignments
+
+  updateLastProject = () ->
+    saveProject "_last"
+
+  lastProject = () ->
+    loadProject "_last"
+
+  lastProject()
+
+  $scope.delProject = (name) ->
+    storage.deleteProject(name)
+    $scope.projectList = storage.projectList()
+
+  $scope.loadProjectDiag = () ->
+    $scope.projectList = storage.projectList()
+    ngDialog.open
+      template: "/js/templates/loadProject.html"
+      className: 'ngdialog-theme-default'
+      scope: $scope
+
+  $scope.loadProjectDiagSelected = (name) ->
+    loadProject name
+    toastr.success "Project #{name} Loaded"
+    $scope.projectName = name
+
+  $scope.saveProjectDiag = () ->
+    promise = ngDialog.openConfirm
+      template: "/js/templates/saveProject.html"
+      className: 'ngdialog-theme-default'
+      scope: $scope
+
+    promise.then (data) ->
+      return unless data?
+      $scope.projectName = data
+      console.log "projectName: #{data}"
+      saveProject data
+      toastr.success "Project #{data} Saved"
 
   resetNewSim = () ->
     $scope.newSim =
@@ -37,10 +89,12 @@ AppCtrl = ($scope, $timeout, ngDialog) ->
     console.log "addStudent: #{$scope.newStudent}"
     $scope.students.push $scope.newStudent
     $scope.newStudent = ""
+    updateLastProject()
 
   $scope.delStudent = (student) ->
     console.log "delStudent: #{student}"
     $scope.students = _.without($scope.students, student)
+    updateLastProject()
 
   $scope.addSimulation = () ->
     return if _.isEmpty($scope.newSimName) or _.contains($scope.simulations, $scope.newSimName)
@@ -62,10 +116,12 @@ AppCtrl = ($scope, $timeout, ngDialog) ->
       numGroups: numGroups
       groupNames: groupNames
     resetNewSim()
+    updateLastProject()
 
   $scope.delSimulation = (simulation) ->
     console.log "delSimulation: #{simulation}"
     $scope.simulations = _.without($scope.simulations, simulation)
+    updateLastProject()
 
   # to directive?
   $scope.getGroupClass = (game, index) ->
@@ -117,6 +173,7 @@ AppCtrl = ($scope, $timeout, ngDialog) ->
           $scope.$apply (scope) ->
             scope.assignments = data.assignments
             ladda.done()
+            updateLastProject()
             scope.isCalculating = false
 
           $timeout () ->

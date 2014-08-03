@@ -24,6 +24,25 @@ html(lang="en" ng-app="GroupAssigner")
         .col-md-6
           .panel.panel-primary
             .panel-heading
+              h3.panel-title Project
+            .panel-body
+              .container-fluid
+                .row
+                  .col-md-6
+                    .form-group
+                      button.btn.btn-block(type="button" ng-click="loadProjectDiag()")
+                        span.pad-right
+                          i.fa.fa-file-text.fa-lg
+                        | Load Project
+                  .col-md-6
+                    .form-group
+                      button.btn.btn-info.btn-block(type="button" ng-click="saveProjectDiag()")
+                        span.pad-right
+                          i.fa.fa-save.fa-lg
+                        | Save Project
+
+          .panel.panel-primary
+            .panel-heading
               h3.panel-title Students
             .panel-body
               #add-student.input-group

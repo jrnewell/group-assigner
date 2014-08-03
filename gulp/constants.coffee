@@ -75,6 +75,7 @@ jadeLocals =
     "ngDialog.js"
     "toastr.js"
     "FileSaver.js"
+    "moment.js"
     "app.js"
   ]
 

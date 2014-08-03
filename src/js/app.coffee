@@ -3,13 +3,16 @@
 AppCtrl = require "./controllers/app"
 selecter = require "./directives/selecter"
 laddaButton = require "./directives/laddaButton"
+storage = require "./services/storage"
 
 app = angular.module("GroupAssigner", ["ngAnimate", "ngDialog"])
 
-app.controller "AppCtrl", ["$scope", "$timeout", "ngDialog", AppCtrl]
+app.controller "AppCtrl", ["$scope", "$timeout", "ngDialog", "storage", AppCtrl]
 
 app.directive "selecter", ["$timeout", selecter]
 app.directive "laddaButton", [laddaButton]
+
+app.factory "storage", [storage]
 
 # move to service
 toastr.options =
