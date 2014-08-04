@@ -67,7 +67,20 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
       saveProject data
       toastr.success "Project #{data} Saved"
 
-  $scope.importProjectDiag = () ->
+  $scope.importProject = (data) ->
+    try
+      project = angular.fromJson(data)
+      return unless project?
+      $timeout () ->
+        $scope.students = project.students
+        $scope.simulations = project.simulations
+        $scope.assignments = project.assignments
+        $scope.projectName = project.projectName if project.projectName
+        $timeout () ->
+          toastr.success (if project.projectName then "Project '#{project.projectName}' Imported" else "Project Imported")
+    catch ex
+      $timeout () ->
+        toastr.error "Problem Importing Project"
 
   $scope.exportProject = () ->
     project =

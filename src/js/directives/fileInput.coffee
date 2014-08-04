@@ -2,24 +2,41 @@
 
 fileInput = ($parse) ->
   return {
-    restrict: "EA"
-    template: "<input type='file' />"
-    replace: true
+    restrict: "A"
+    template: "<input type='file' class='hidden' /><div ng-transclude></div>"
+    transclude: true
+    scope: {
+      onFileLoad: "&"
+    }
 
     link: (scope, element, attrs) ->
-      modelGet = $parse(attrs.fileInput)
-      modelSet = modelGet.assign
-      onChange = $parse(attrs.onChange)
+      inputEl = $(element).children("input[type=file]")[0]
+      _$inputEl = $(inputEl)
+      _$element = $(element)
 
-      updateModel = () ->
-        scope.$apply () ->
-          modelSet scope, element[0].files[0]
-          onChange scope
+      _$inputEl.on "click", (ev) ->
+        ev.stopPropagation()
 
-      element.bind "change", updateModel
+      _$inputEl.on "change", (ev) ->
+        file = inputEl.files[0]
+        console.log "file choosen: " + file.name
+
+        reader = new FileReader()
+        reader.onloadend = (ev) ->
+          scope.onFileLoad({data: this.result})
+
+        reader.onerror = (err) ->
+          console.error "FileReader Error: #{err}"
+
+        reader.readAsText file
+
+      _$element.on "click", (ev) ->
+        ev.stopPropagation()
+        inputEl.click()
 
       scope.$on "$destroy", () ->
-        element.unbind()
+        _$element.off()
+        _$inputEl.off()
   }
 
 module.exports = fileInput

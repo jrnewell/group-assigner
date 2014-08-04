@@ -35,7 +35,7 @@ storage = () ->
         modified: moment().unix()
         project: project
     save name, obj
-    addToProjectList name
+    addToProjectList name unless name is "_last"
 
   loadProject = (name) ->
     obj = load name

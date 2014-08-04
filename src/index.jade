@@ -43,8 +43,8 @@ html(lang="en" ng-app="GroupAssigner")
                 .row
                   .col-md-6
                     .form-group
-                      button.btn.btn-block(type="button" ng-click="importProjectDiag()")
-                        span.pad-right
+                      button.btn.btn-block(type="button" ng-click="importProjectDiag()" file-input on-file-load="importProject(data)")
+                        span.pad-right()
                           i.fa.fa-download.fa-lg
                         | Import Project
                   .col-md-6
