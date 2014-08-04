@@ -68,11 +68,14 @@ gulp.task "web-workers", () ->
     .pipe gulpIf(shared.isWatching, liveReload(tlr))
 
 gulp.task "browserify", () ->
-  bundleMethod = (if shared.isWatching then watchify else browserify)
-
-  bundler = bundleMethod
+  bOpts =
     entries: browserifyMain.entries
     extensions: [".js", ".coffee"]
+    debug: true
+
+  bundler = if shared.isWatching
+  then watchify browserify _.extend(bOpts, watchify.args)
+  else browserify bOpts
 
   handleErrors = () ->
     args = Array::slice.call(arguments)
@@ -97,7 +100,7 @@ gulp.task "browserify", () ->
   bundle = () ->
     startLog()
     return bundler
-      .bundle {debug: true}
+      .bundle()
       .on 'error', handleErrors
       .pipe(plumber())
       .pipe source(browserifyMain.dest)
