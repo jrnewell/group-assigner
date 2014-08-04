@@ -67,6 +67,38 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
       saveProject data
       toastr.success "Project #{data} Saved"
 
+  $scope.importProjectDiag = () ->
+
+  $scope.exportProject = () ->
+    project =
+      students: $scope.students
+      simulations: $scope.simulations
+      assignments: $scope.assignments
+    project.projectName = $scope.projectName if $scope.projectName
+
+    blob = new Blob([angular.toJson(project)], { type: "text/plain;charset=utf-8" })
+    saveAs blob, (if project.projectName? then "#{project.projectName}.json" else "project.json")
+
+  $scope.newProject = () ->
+    isolate = $scope.$new(true)
+    isolate.confirmText = "Do you want to clear the current project?"
+    promise = ngDialog.openConfirm
+      template: "/js/templates/confirm.html"
+      className: 'ngdialog-theme-default'
+      scope: isolate
+
+    promise.then () ->
+      $scope.students = []
+      $scope.simulations = []
+      $scope.assignments = null
+      $scope.isCalculating = false
+      delete $scope.projectName
+      updateLastProject()
+      toastr.success "New Project Created"
+      isolate.$destroy()
+    , () ->
+      isolate.$destroy()
+
   resetNewSim = () ->
     $scope.newSim =
       groupSize: 1

@@ -3,6 +3,7 @@
 AppCtrl = require "./controllers/app"
 selecter = require "./directives/selecter"
 laddaButton = require "./directives/laddaButton"
+fileInput = require "./directives/fileInput"
 storage = require "./services/storage"
 
 app = angular.module("GroupAssigner", ["ngAnimate", "ngDialog"])
@@ -11,6 +12,7 @@ app.controller "AppCtrl", ["$scope", "$timeout", "ngDialog", "storage", AppCtrl]
 
 app.directive "selecter", ["$timeout", selecter]
 app.directive "laddaButton", [laddaButton]
+app.directive "fileInput", ["$parse", fileInput]
 
 app.factory "storage", [storage]
 

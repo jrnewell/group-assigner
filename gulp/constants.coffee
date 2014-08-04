@@ -76,6 +76,7 @@ jadeLocals =
     "toastr.js"
     "FileSaver.js"
     "moment.js"
+    "bootstrap-filestyle.js"
     "app.js"
   ]
 

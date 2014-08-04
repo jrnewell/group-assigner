@@ -5,14 +5,14 @@ storage = () ->
   save = (key, obj) ->
     return unless obj?
     try
-      localStorage.setItem key, JSON.stringify(obj)
+      localStorage.setItem key, angular.toJson(obj)
     catch err
       console.error "storage save error: #{err}"
 
   load = (key) ->
     try
       ret = localStorage.getItem key
-      (if ret? then JSON.parse(ret) else undefined)
+      (if ret? then angular.fromJson(ret) else undefined)
     catch err
       console.error "storage load error: #{err}"
       return undefined

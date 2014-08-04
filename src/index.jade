@@ -36,10 +36,30 @@ html(lang="en" ng-app="GroupAssigner")
                         | Load Project
                   .col-md-6
                     .form-group
-                      button.btn.btn-info.btn-block(type="button" ng-click="saveProjectDiag()")
+                      button.btn.btn-block(type="button" ng-click="saveProjectDiag()")
                         span.pad-right
                           i.fa.fa-save.fa-lg
                         | Save Project
+                .row
+                  .col-md-6
+                    .form-group
+                      button.btn.btn-block(type="button" ng-click="importProjectDiag()")
+                        span.pad-right
+                          i.fa.fa-download.fa-lg
+                        | Import Project
+                  .col-md-6
+                    .form-group
+                      button.btn.btn-block(type="button" ng-click="exportProject()")
+                        span.pad-right
+                          i.fa.fa-upload.fa-lg
+                        | Export Project
+                .row
+                  .col-md-12
+                    .form-group
+                      button.btn.btn-block.btn-danger(type="button" ng-click="newProject()")
+                        span.pad-right
+                          i.fa.fa-trash-o.fa-lg
+                        | New Project
 
           .panel.panel-primary
             .panel-heading

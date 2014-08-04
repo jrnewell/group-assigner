@@ -1,0 +1,16 @@
+.ga-modal-header
+  h4
+    span
+      i.fa.fa-warning
+    | Confirm Action
+.ga-modal-body
+  p {{confirmText}}
+.ga-modal-footer
+  .container-fluid
+    .row
+      .col-md-6
+        .form-group
+          button.btn.btn-primary.btn-block(type="button" ng-click="confirm()") OK
+      .col-md-6
+        .form-group
+          button.btn.btn-default.btn-block(type="button" ng-click="closeThisDialog()") Cancel
