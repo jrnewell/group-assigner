@@ -1,0 +1,21 @@
+.ga-modal-header
+  h4
+    span
+      i.fa.fa-male
+    | Manage Project Roles
+.ga-modal-body
+  .form-group
+    label(for="new-role") New Role
+    .input-group
+      input.form-control(type="text" name="new-role" placeholder="Role Name" ng-model="newRoleName" ng-keyup="$event.keyCode == 13 && addRole(newRoleName) && (newRoleName = '')")
+      .input-group-btn
+        button.btn.btn-primary(type="button" ng-click="addRole(newRoleName) && (newRoleName = '')") Add
+  label.pre-padding Existing Roles
+  div(ng-show="roles.length == 0")
+    p None
+  .list-group
+    .list-group-item(ng-repeat="role in roles")
+      button.close(type="button" aria-hidden="true" ng-click="delProject(name)") ×
+      | {{role}}
+.ga-modal-footer
+  button.btn.btn-primary.btn-block(type="button" ng-click="closeThisDialog()") Done

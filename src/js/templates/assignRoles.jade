@@ -1,0 +1,20 @@
+.ga-modal-header
+  h4
+    span
+      i.fa.fa-male
+    | Assign Roles to Simulation
+.ga-modal-body
+  label.pre-padding Existing Roles
+  .list-group
+    .list-group-item(ng-repeat="role in roles")
+      .form-group
+        label(for="{{role}}") {{role}}
+        select(name="{{role}}" selecter selecter-val="simRoles[role]")
+          option(value="0") Zero
+          option(value="1") One
+          option(value="2") Two
+          option(value="3") Three
+          option(value="4") Four
+          option(value="5") Five
+.ga-modal-footer
+  button.btn.btn-info.btn-block(type="button" ng-click="closeThisDialog()") Done

@@ -11,6 +11,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
   #   {name: "My Simulation7", groupSize: 2}, {name: "My Simulation8", groupSize: 2}, {name: "My Simulation9", groupSize: 2}]
   $scope.students = ["A", "B", "C", "D", "E", "F", "G"]
   $scope.simulations = [{name: "My Simulation", groupSize: 2, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}]}, {name: "My Simulation2", groupSize: 1, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}]}, {name: "My Simulation3", groupSize: 3, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}]}]
+  $scope.roles = []
   $scope.isCalculating = false
 
   numbers = [ "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty"]
@@ -20,6 +21,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
       students: $scope.students
       simulations: $scope.simulations
       assignments: $scope.assignments
+      roles: $scope.roles
     storage.saveProject name, project
 
   loadProject = (name) ->
@@ -29,6 +31,8 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
       $scope.students = obj.project.students
       $scope.simulations = obj.project.simulations
       $scope.assignments = obj.project.assignments
+      $scope.roles = obj.project.roles
+    updateLastProject()
 
   updateLastProject = () ->
     saveProject "_last"
@@ -75,6 +79,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
         $scope.students = project.students
         $scope.simulations = project.simulations
         $scope.assignments = project.assignments
+        $scope.roles = project.roles
         $scope.projectName = project.projectName if project.projectName
         $timeout () ->
           toastr.success (if project.projectName then "Project '#{project.projectName}' Imported" else "Project Imported")
@@ -87,6 +92,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
       students: $scope.students
       simulations: $scope.simulations
       assignments: $scope.assignments
+      roles: $scope.roles
     project.projectName = $scope.projectName if $scope.projectName
 
     blob = new Blob([angular.toJson(project)], { type: "text/plain;charset=utf-8" })
@@ -103,6 +109,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
     promise.then () ->
       $scope.students = []
       $scope.simulations = []
+      $scope.roles = []
       $scope.assignments = null
       $scope.isCalculating = false
       delete $scope.projectName
@@ -128,6 +135,24 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
     $scope.newSimName = ""
 
   resetNewSim()
+
+  $scope.manageRolesDiag = () ->
+    ngDialog.open
+      template: "/js/templates/manageRoles.html"
+      className: 'ngdialog-theme-default'
+      scope: $scope
+
+  $scope.addRole = (newRoleName) ->
+    return false if _.isEmpty(newRoleName) or _.contains($scope.roles, newRoleName)
+    $scope.roles.push newRoleName
+    updateLastProject()
+    return true
+
+  $scope.assignRolesDiag = () ->
+    ngDialog.open
+      template: "/js/templates/assignRoles.html"
+      className: 'ngdialog-theme-default'
+      scope: $scope
 
   $scope.addStudent = () ->
     return if _.isEmpty($scope.newStudent) or _.contains($scope.students, $scope.newStudent)

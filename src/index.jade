@@ -60,6 +60,13 @@ html(lang="en" ng-app="GroupAssigner")
                         span.pad-right
                           i.fa.fa-trash-o.fa-lg
                         | New Project
+                .row
+                  .col-md-12
+                    .form-group
+                      button.btn.btn-block.btn-default(type="button" ng-click="manageRolesDiag()")
+                        span.pad-right
+                          i.fa.fa-male.fa-lg
+                        | Manage Roles
 
           .panel.panel-primary
             .panel-heading
@@ -102,6 +109,9 @@ html(lang="en" ng-app="GroupAssigner")
                     option(value="4") Four
                 .form-group
                   button.btn.btn-default.btn-block(type="button" ng-click="giveNamesToGroups()") Give Names to Groups
+                .form-group
+                  label(for="assign-roles-btn") Assign Roles
+                  button.btn.btn-default.btn-block(type="button" name="assign-roles-btn" ng-click="assignRolesDiag()") Assign Roles to Simulation
                 .form-group
                   label(for="simulation-name") Simulation Name
                   .input-group
