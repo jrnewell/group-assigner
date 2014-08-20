@@ -4,7 +4,7 @@
       i.fa.fa-male
     | Assign Roles to Simulation
 .ga-modal-body
-  .assign-role-wrapper(ng-show="unassignedRoles.length > 0")
+  .assign-role-wrapper(ng-show="showAssignment()")
     label Assign Role
     div.pre-padding
       select(name="assignRoleName" selecter selecter-opts="unassignedRoles" selecter-val="assignment.role")
@@ -19,7 +19,10 @@
       p None
     .list-group
       .list-group-item(ng-repeat="assign in roles")
-        button.close(type="button" aria-hidden="true" ng-click="delRoleAssignemnt(assign.role)") ×
-        | {{assign.val}} {{assign.role}}
+        h4.list-group-item-heading
+          button.close(type="button" aria-hidden="true" ng-click="delRoleAssignemnt(assign.role)") ×
+          | {{assign.val}} {{assign.role}}
+        input(id="{{assign.role}}-radio" name="assign-radio" type="radio" i-check i-check-val="assign.excess")
+        label.rolesRadioLabel(for="{{assign.role}}-radio") Assign Excess Students to this Role
 .ga-modal-footer
   button.btn.btn-info.btn-block(type="button" ng-click="closeThisDialog()") Done

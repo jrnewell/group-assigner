@@ -156,23 +156,16 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
 
   $scope.assignRolesDiag = () ->
     isolate = $scope.$new(true)
-    #isolate.unassignedRoles = _.difference($scope.roles, _.pluck($scope.newSim.roles, "role"))
     isolate.roles = $scope.newSim.roles
 
     resetAssignDiag = () ->
       isolate.assignment = {}
-
       isolate.unassignedRoles = _.difference($scope.roles, _.pluck(isolate.roles, "role"))
-
-      # isolate.unassignedRoles = _.reduce(_.difference($scope.roles, _.pluck(isolate.roles, "role")), (obj, role) ->
-      #   obj[role] = role
-      #   return obj
-      # , {})
 
       maxVal = _.reduce(isolate.roles, (left, assign) ->
           return left - assign.val
       , $scope.newSim.groupSize)
-      return isolate.roleValOpts = [] if maxVal == 0
+      return isolate.roleValOpts = {} if maxVal == 0
 
       minVal = (if isolate.unassignedRoles.length > 1 then 1 else maxVal)
 
@@ -191,13 +184,17 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
     console.log "isolate.roles: #{JSON.stringify(isolate.roles)}"
     console.log "isolate.unassignedRoles: #{JSON.stringify(isolate.unassignedRoles)}"
 
+    isolate.showAssignment = () ->
+      return (isolate.unassignedRoles.length > 0) && (_.keys(isolate.roleValOpts).length > 0)
+
     isolate.assignRole = (assign) ->
       console.log "assignRole: #{assign.role}"
       return if _.isEmpty(assign) or _.contains(_.pluck(isolate.roles, "role"), assign.role)
-      isolate.roles.push
+      obj =
         role: isolate.unassignedRoles[assign.role]
         val: assign.val
-      #isolate.unassignedRoles = _.difference($scope.roles, _.pluck(isolate.roles, "role"))
+        excess: !_.some(isolate.roles, "excess")
+      isolate.roles.push obj
       resetAssignDiag()
 
       console.log "assign: #{JSON.stringify(assign)}"
@@ -208,8 +205,10 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
     isolate.delRoleAssignemnt = (role) ->
       isolate.roles = _.reject(isolate.roles, {role: role})
       $scope.newSim.roles = isolate.roles
-      #isolate.unassignedRoles = _.difference($scope.roles, _.pluck(isolate.roles, "role"))
       resetAssignDiag()
+
+      unless _.some(isolate.roles, "excess") || isolate.roles.length == 0
+        isolate.roles[0].excess = true
 
       console.log "role: #{JSON.stringify(role)}"
       console.log "isolate.roles: #{JSON.stringify(isolate.roles)}"
