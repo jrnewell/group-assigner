@@ -32,7 +32,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
       $scope.simulations = obj.project.simulations
       $scope.assignments = obj.project.assignments
       $scope.roles = obj.project.roles
-    updateLastProject()
+    #updateLastProject()
 
   updateLastProject = () ->
     saveProject "_last"
@@ -132,6 +132,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
         {name: null}
         {name: null}
       ]
+      roles: []
     $scope.newSimName = ""
 
   resetNewSim()
@@ -148,11 +149,77 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
     updateLastProject()
     return true
 
+  $scope.delRole = (role) ->
+    console.log "delRole: #{role}"
+    $scope.roles = _.without($scope.roles, role)
+    updateLastProject()
+
   $scope.assignRolesDiag = () ->
+    isolate = $scope.$new(true)
+    #isolate.unassignedRoles = _.difference($scope.roles, _.pluck($scope.newSim.roles, "role"))
+    isolate.roles = $scope.newSim.roles
+
+    resetAssignDiag = () ->
+      isolate.assignment = {}
+
+      isolate.unassignedRoles = _.difference($scope.roles, _.pluck(isolate.roles, "role"))
+
+      # isolate.unassignedRoles = _.reduce(_.difference($scope.roles, _.pluck(isolate.roles, "role")), (obj, role) ->
+      #   obj[role] = role
+      #   return obj
+      # , {})
+
+      maxVal = _.reduce(isolate.roles, (left, assign) ->
+          return left - assign.val
+      , $scope.newSim.groupSize)
+      return isolate.roleValOpts = [] if maxVal == 0
+
+      minVal = (if isolate.unassignedRoles.length > 1 then 1 else maxVal)
+
+      isolate.roleValOpts = _.reduce([minVal..maxVal], (obj, num) ->
+          obj[num] = numbers[num]
+          return obj
+      , {})
+
+      if isolate.unassignedRoles.length > 0
+        isolate.assignment =
+          role: 0
+          val: minVal
+
+    resetAssignDiag()
+
+    console.log "isolate.roles: #{JSON.stringify(isolate.roles)}"
+    console.log "isolate.unassignedRoles: #{JSON.stringify(isolate.unassignedRoles)}"
+
+    isolate.assignRole = (assign) ->
+      console.log "assignRole: #{assign.role}"
+      return if _.isEmpty(assign) or _.contains(_.pluck(isolate.roles, "role"), assign.role)
+      isolate.roles.push
+        role: isolate.unassignedRoles[assign.role]
+        val: assign.val
+      #isolate.unassignedRoles = _.difference($scope.roles, _.pluck(isolate.roles, "role"))
+      resetAssignDiag()
+
+      console.log "assign: #{JSON.stringify(assign)}"
+      console.log "isolate.roles: #{JSON.stringify(isolate.roles)}"
+      console.log "isolate.unassignedRoles: #{JSON.stringify(isolate.unassignedRoles)}"
+      console.log "isolate.roleValOpts: #{JSON.stringify(isolate.roleValOpts)}"
+
+    isolate.delRoleAssignemnt = (role) ->
+      isolate.roles = _.reject(isolate.roles, {role: role})
+      $scope.newSim.roles = isolate.roles
+      #isolate.unassignedRoles = _.difference($scope.roles, _.pluck(isolate.roles, "role"))
+      resetAssignDiag()
+
+      console.log "role: #{JSON.stringify(role)}"
+      console.log "isolate.roles: #{JSON.stringify(isolate.roles)}"
+      console.log "isolate.unassignedRoles: #{JSON.stringify(isolate.unassignedRoles)}"
+      console.log "isolate.roleValOpts: #{JSON.stringify(isolate.roleValOpts)}"
+
     ngDialog.open
       template: "/js/templates/assignRoles.html"
       className: 'ngdialog-theme-default'
-      scope: $scope
+      scope: isolate
 
   $scope.addStudent = () ->
     return if _.isEmpty($scope.newStudent) or _.contains($scope.students, $scope.newStudent)

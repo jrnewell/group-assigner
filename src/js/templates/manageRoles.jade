@@ -15,7 +15,7 @@
     p None
   .list-group
     .list-group-item(ng-repeat="role in roles")
-      button.close(type="button" aria-hidden="true" ng-click="delProject(name)") ×
+      button.close(type="button" aria-hidden="true" ng-click="delRole(role)") ×
       | {{role}}
 .ga-modal-footer
   button.btn.btn-primary.btn-block(type="button" ng-click="closeThisDialog()") Done

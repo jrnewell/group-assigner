@@ -109,7 +109,7 @@ html(lang="en" ng-app="GroupAssigner")
                     option(value="4") Four
                 .form-group
                   button.btn.btn-default.btn-block(type="button" ng-click="giveNamesToGroups()") Give Names to Groups
-                .form-group
+                .form-group(ng-show="roles.length > 0")
                   label(for="assign-roles-btn") Assign Roles
                   button.btn.btn-default.btn-block(type="button" name="assign-roles-btn" ng-click="assignRolesDiag()") Assign Roles to Simulation
                 .form-group

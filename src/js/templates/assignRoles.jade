@@ -4,17 +4,22 @@
       i.fa.fa-male
     | Assign Roles to Simulation
 .ga-modal-body
-  label.pre-padding Existing Roles
-  .list-group
-    .list-group-item(ng-repeat="role in roles")
-      .form-group
-        label(for="{{role}}") {{role}}
-        select(name="{{role}}" selecter selecter-val="simRoles[role]")
-          option(value="0") Zero
-          option(value="1") One
-          option(value="2") Two
-          option(value="3") Three
-          option(value="4") Four
-          option(value="5") Five
+  .assign-role-wrapper(ng-show="unassignedRoles.length > 0")
+    label Assign Role
+    div.pre-padding
+      select(name="assignRoleName" selecter selecter-opts="unassignedRoles" selecter-val="assignment.role")
+    div.pre-padding
+      select(name="assignRoleVal" selecter selecter-opts="roleValOpts" selecter-val="assignment.val")
+    div.pre-padding
+      button.btn.btn-block(type="button" ng-click="assignRole(assignment)") Assign
+    hr
+  .roles-assigned-wrapper
+    label Roles Assigned
+    div(ng-show="roles.length == 0")
+      p None
+    .list-group
+      .list-group-item(ng-repeat="assign in roles")
+        button.close(type="button" aria-hidden="true" ng-click="delRoleAssignemnt(assign.role)") ×
+        | {{assign.val}} {{assign.role}}
 .ga-modal-footer
   button.btn.btn-info.btn-block(type="button" ng-click="closeThisDialog()") Done
