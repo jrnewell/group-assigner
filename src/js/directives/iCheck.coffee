@@ -28,6 +28,10 @@ iCheck = ($timeout) ->
 
       $(document).ready () ->
         inputEl.iCheck(opts)
+
+      scope.$on "$destroy", () ->
+        inputEl.iCheck("destroy")
+        inputEl.off()
   }
 
 module.exports = iCheck

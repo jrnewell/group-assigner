@@ -32,6 +32,7 @@ selecter = ($timeout) ->
       if attrs.selecterOpts?
         scope.$watchCollection "selecterOpts", (obj, oldObj) ->
           return unless scope.selecterOpts?
+          return if _.isEmpty(scope.selecterOpts) and attrs.selecterNoBlank
           inputEl.selecter("destroy") if obj != oldObj
           console.log "updating #{attrs.selecterOpts}: #{JSON.stringify(scope.selecterOpts)}"
           inputEl.empty()
@@ -44,6 +45,10 @@ selecter = ($timeout) ->
       else
         $(document).ready () ->
           inputEl.selecter(opts)
+
+      scope.$on "$destroy", () ->
+        inputEl.selecter("destroy")
+        inputEl.off()
   }
 
 module.exports = selecter

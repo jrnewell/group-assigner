@@ -4,12 +4,12 @@
       i.fa.fa-male
     | Assign Roles to Simulation
 .ga-modal-body
-  .assign-role-wrapper(ng-show="showAssignment()")
+  .assign-role-wrapper(ng-show="showAssignment()" data-ng-attr-style="{{ initHide && 'display: none!important' || '' }}")
     label Assign Role
     div.pre-padding
-      select(name="assignRoleName" selecter selecter-opts="unassignedRoles" selecter-val="assignment.role")
+      select(name="assignRoleName" selecter selecter-opts="unassignedRoles" selecter-val="assignment.role" selecter-no-blank)
     div.pre-padding
-      select(name="assignRoleVal" selecter selecter-opts="roleValOpts" selecter-val="assignment.val")
+      select(name="assignRoleVal" selecter selecter-opts="roleValOpts" selecter-val="assignment.val" selecter-no-blank)
     div.pre-padding
       button.btn.btn-block(type="button" ng-click="assignRole(assignment)") Assign
     hr

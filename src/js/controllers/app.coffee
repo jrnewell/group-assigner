@@ -174,6 +174,8 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
           return obj
       , {})
 
+      isolate.initHide = false if isolate.initHide
+
       if isolate.unassignedRoles.length > 0
         isolate.assignment =
           role: 0
@@ -186,6 +188,8 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
 
     isolate.showAssignment = () ->
       return (isolate.unassignedRoles.length > 0) && (_.keys(isolate.roleValOpts).length > 0)
+
+    isolate.initHide = !isolate.showAssignment()
 
     isolate.assignRole = (assign) ->
       console.log "assignRole: #{assign.role}"
@@ -291,6 +295,12 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
     console.log JSON.stringify($scope.newSim.groupNames)
 
   $scope.$watch "newSim.numGroups", resizeGroupNames
+
+  $scope.$watch "newSim.groupSize", () ->
+    return if _.isEmpty($scope.newSim.roles)
+    $scope.newSim.roles = []
+    $timeout () ->
+      toastr.warning "Role assignment has been cleared due to group size change. Please reassign roles."
 
   $scope.assignToGroups = (ev, ladda) ->
     console.log "assignToGroups"

@@ -22,6 +22,10 @@ laddaButton = () ->
       inputEl.on 'click', (event) ->
         ladda.start()
         scope.laddaClick {event: event, ladda: laddaApi}
+
+      scope.$on "$destroy", () ->
+        ladda.remove()
+        inputEl.off()
   }
 
 module.exports = laddaButton

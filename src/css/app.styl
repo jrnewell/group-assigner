@@ -119,6 +119,16 @@ body
       input[name="new-role"]
         margin-bottom 0px
 
+      .assign-role-wrapper
+        transition height 0.5s ease-out, opacity 0.3s ease-out 0.2s
+        height 184px
+        overflow hidden
+        opacity 1
+
+        &.ng-hide
+          height 0
+          opacity 0
+
       .rolesRadioLabel
         position relative
         top 1px
