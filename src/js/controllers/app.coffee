@@ -1,21 +1,9 @@
 'use strict'
 
-AppCtrl = ($scope, $timeout, ngDialog, storage) ->
+AppCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
 
-  $scope.assignments = []
-  #$scope.assignments = [{"name":"My Simulation","groupSize":2,"minSize":2,"numGroups":2,"groupNames":[{"name":"Group 1"},{"name":"Group 2"}],"games":[[["C","F"],["D","E"]],[["G","B"],["A"]]]},{"name":"My Simulation2","groupSize":1,"minSize":2,"numGroups":2,"groupNames":[{"name":"Group 1"},{"name":"Group 2"}],"games":[[["D"],["F"]],[["C"],["B"]],[["G","A"],["E"]]]},{"name":"My Simulation3","groupSize":3,"minSize":2,"numGroups":2,"groupNames":[{"name":"Group 1"},{"name":"Group 2"}],"games":[[["G","C","B","F"],["D","A","E"]]]}]
-
-  # $scope.students = (i.toString() for i in [1..30])
-  # $scope.simulations = [
-  #   {name: "My Simulation", groupSize: 2}, {name: "My Simulation2", groupSize: 2}, {name: "My Simulation3", groupSize: 3},
-  #   {name: "My Simulation4", groupSize: 2}, {name: "My Simulation5", groupSize: 1}, {name: "My Simulation6", groupSize: 2},
-  #   {name: "My Simulation7", groupSize: 2}, {name: "My Simulation8", groupSize: 2}, {name: "My Simulation9", groupSize: 2}]
-  $scope.students = ["A", "B", "C", "D", "E", "F", "G"]
-  $scope.simulations = [{name: "My Simulation", groupSize: 2, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}], roles: [{role: "Student", val: 1, excess: true}, {role: "Teacher", val: 1, excess: false}]}, {name: "My Simulation2", groupSize: 1, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}], roles: []}, {name: "My Simulation3", groupSize: 3, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}], roles: [{role: "Student", val: 2, excess: true}, {role: "Teacher", val: 1, excess: false}]}]
-  $scope.roles = []
-  $scope.isCalculating = false
-
-  numbers = [ "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty"]
+  $scope.shared = shared
+  notify = shared.notify
 
   saveProject = (name) ->
     project =
@@ -112,7 +100,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
       $scope.simulations = []
       $scope.roles = []
       $scope.assignments = null
-      $scope.isCalculating = false
+      shared.isCalculating = false
       delete $scope.projectName
       updateLastProject()
       toastr.success "New Project Created"
@@ -171,7 +159,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
       minVal = (if isolate.unassignedRoles.length > 1 then 1 else maxVal)
 
       isolate.roleValOpts = _.reduce([minVal..maxVal], (obj, num) ->
-          obj[num] = numbers[num]
+          obj[num] = shared.numToWord(num)
           return obj
       , {})
 
@@ -281,7 +269,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
     minBottom = numGroups
     minTop = (numGroups * groupSize)
     $scope.newSim.minOptions = _.reduce([minBottom..minTop], (obj, num) ->
-        obj[num] = numbers[num]
+        obj[num] = shared.numToWord(num)
         return obj
     , {})
     $scope.newSim.minSize = minBottom if minSize < minBottom
@@ -308,7 +296,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
   $scope.assignToGroups = (ev, ladda) ->
     console.log "assignToGroups"
 
-    $scope.isCalculating = true
+    shared.isCalculating = true
     $scope.calculatingProgress = "Calculating (0%)"
 
     # use web worker
@@ -323,7 +311,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
             scope.assignments = data.assignments
             ladda.done()
             updateLastProject()
-            scope.isCalculating = false
+            shared.isCalculating = false
 
           $timeout () ->
             toastr.success "Calculation Finished"
@@ -337,7 +325,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
 
     worker.addEventListener('error', (err) ->
       ladda.done()
-      $scope.isCalculating = false
+      shared.isCalculating = false
       $timeout () ->
         toastr.error "Error Encountered while Calculating"
       , 700
