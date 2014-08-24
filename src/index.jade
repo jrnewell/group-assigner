@@ -22,109 +22,10 @@ html(lang="en" ng-app="GroupAssigner")
             | Group Assigner
       .row
         .col-md-6
-          .panel.panel-primary
-            .panel-heading
-              h3.panel-title {{(projectName ? projectName : "Project")}}
-            .panel-body
-              .container-fluid
-                .row
-                  .col-md-6
-                    .form-group
-                      button.btn.btn-block(type="button" ng-click="loadProjectDiag()")
-                        span.pad-right
-                          i.fa.fa-file-text.fa-lg
-                        | Load Project
-                  .col-md-6
-                    .form-group
-                      button.btn.btn-block(type="button" ng-click="saveProjectDiag()")
-                        span.pad-right
-                          i.fa.fa-save.fa-lg
-                        | Save Project
-                .row
-                  .col-md-6
-                    .form-group
-                      button.btn.btn-block(type="button" ng-click="importProjectDiag()" file-input on-file-load="importProject(data)")
-                        span.pad-right()
-                          i.fa.fa-download.fa-lg
-                        | Import Project
-                  .col-md-6
-                    .form-group
-                      button.btn.btn-block(type="button" ng-click="exportProject()")
-                        span.pad-right
-                          i.fa.fa-upload.fa-lg
-                        | Export Project
-                .row
-                  .col-md-12
-                    .form-group
-                      button.btn.btn-block.btn-danger(type="button" ng-click="newProject()")
-                        span.pad-right
-                          i.fa.fa-trash-o.fa-lg
-                        | New Project
-                .row
-                  .col-md-12
-                    .form-group
-                      button.btn.btn-block.btn-default(type="button" ng-click="manageRolesDiag()")
-                        span.pad-right
-                          i.fa.fa-male.fa-lg
-                        | Manage Roles
-
-          .panel.panel-primary
-            .panel-heading
-              h3.panel-title Students
-            .panel-body
-              #add-student.input-group
-                input.form-control(type="text" placeholder="New Student" ng-model="newStudent" ng-keyup="$event.keyCode == 13 && addStudent()")
-                .input-group-btn
-                  button.btn.btn-primary(type="button" ng-click="addStudent()") Add
-              ul.list-group
-                li.list-group-item
-                  h4 {{students.length}} Student{{students.length == 1 ? '' : 's'}}
-                li.list-group-item(ng-repeat="student in students | orderBy:'toString()'")
-                  button.close(type="button" aria-hidden="true" ng-click="delStudent(student)") ×
-                  span.studentIcon
-                    i.fa.fa-user.fa-lg
-                  | {{student}}
+          include ./includes/_projectPanel
+          include ./includes/_studentsPanel
         .col-md-6
-          .panel.panel-primary
-            .panel-heading
-              h3.panel-title Simulations
-            .panel-body
-              #add-simulation
-                .form-group
-                  label(for="selector-simulator-groupsize") Students per Group
-                  select(id="selector-simulator-groupsize" name="selector-simulator-groupsize" selecter selecter-val="newSim.groupSize" selecter-chg="changeMinSize()")
-                    option(value="1") One
-                    option(value="2") Two
-                    option(value="3") Three
-                    option(value="4") Four
-                    option(value="5") Five
-                .form-group
-                  label(for="selector-simulator-min") Minimum Number of Students Required for Simulation
-                  select(id="selector-simulator-min" name="selector-simulator-min" selecter selecter-val="newSim.minSize" selecter-opts="newSim.minOptions")
-                .form-group
-                  label(for="selector-simulator-numgroups") Number of Groups per Simulation
-                  select(id="selector-simulator-numgroups" name="selector-simulator-numgroups" selecter selecter-val="newSim.numGroups" selecter-chg="changeMinSize()")
-                    option(value="2") Two
-                    option(value="3") Three
-                    option(value="4") Four
-                .form-group
-                  button.btn.btn-default.btn-block(type="button" ng-click="giveNamesToGroups()") Give Names to Groups
-                .form-group(ng-show="roles.length > 0")
-                  label(for="assign-roles-btn") Assign Roles
-                  button.btn.btn-default.btn-block(type="button" name="assign-roles-btn" ng-click="assignRolesDiag()") Assign Roles to Group
-                .form-group
-                  label(for="simulation-name") Simulation Name
-                  .input-group
-                    input.form-control(type="text" name="simulation-name" placeholder="New Simulation" ng-model="newSimName" ng-keyup="$event.keyCode == 13 && addSimulation()")
-                    .input-group-btn
-                      button.btn.btn-primary(type="button" ng-click="addSimulation()") Add
-              ul.list-group
-                li.list-group-item
-                  h4 {{simulations.length}} Simulation{{simulations.length == 1 ? '' : 's'}}
-                li.list-group-item(ng-repeat="simulation in simulations | orderBy:'name'")
-                  button.close(type="button" aria-hidden="true" ng-click="delSimulation(simulation)") ×
-                  span.simGroupSizeItem {{simulation.groupSize}}
-                  | {{simulation.name}}
+          include ./includes/_simulationsPanel
       .row.padded-row
         .col-md-4.col-md-offset-4
           #calculating-progress.calc-progress-animate(ng-show="isCalculating")
@@ -132,51 +33,7 @@ html(lang="en" ng-app="GroupAssigner")
           ladda-button(id="assignBtn" ladda-opts="{color: 'red', mode: 'zoom-out'}" ladda-click="assignToGroups(event, ladda)" ng-transclude) Assign Students to Groups
       .row(ng-if="assignments !== null").padded-row
         .col-md-12
-          //- p {{assignments}}
-          h3
-            span.pull-right
-              button.btn.btn-primary(type="button" ng-click="downloadAssigments()")
-                i.fa.fa-cloud-download.fa-lg
-            | Results
-          .panel.panel-default(ng-repeat="assignment in assignments")
-            .panel-heading
-              h3.panel-title {{assignment.name}}
-            .panel-body
-              h5 Info
-              .row
-                .col-md-3.col-md-offset-1
-                  .text-center.well.well-sm
-                    h6 Group Size
-                    h4 {{assignment.groupSize}}
-                .col-md-4
-                  .text-center.well.well-sm
-                    h6 Min Num of Students
-                    h4 {{assignment.minSize}}
-                .col-md-3
-                  .text-center.well.well-sm
-                    h6 Num of Groups
-                    h4 {{assignment.numGroups}}
-              h5 Assignments
-              ul.list-group
-                li.list-group-item(ng-repeat="game in assignment.games")
-                  div.pull-left.game-label {{$index + 1}}
-                  .row
-                    div(ng-repeat="group in game" ng-class="getGroupClass(game, $index)")
-                      p {{assignment.groupNames[$index].name}}
-                      ul.list-unstyled.group-assignment(ng-class="'group-' + ($index + 1)")
-                        li(ng-repeat="student in group")
-                          span
-                            i.fa.fa-user
-                          | {{student}}
+          include ./includes/_resultsPanel
       .row.padded-row
         .col-md-12
-          .footer
-            .container
-              .clearfix
-                .footer-logo
-                  a(href="#")
-                    span.label.label-primary
-                      i.fa.fa-users
-                      | Group Assigner
-              .footer-copyright.text-center Copyright © 2014 James Newell.  All rights reserved.
-
+          include ./includes/_footer

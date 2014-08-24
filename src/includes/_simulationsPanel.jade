@@ -1,0 +1,40 @@
+.panel.panel-primary
+  .panel-heading
+    h3.panel-title Simulations
+  .panel-body
+    #add-simulation
+      .form-group
+        label(for="selector-simulator-groupsize") Students per Group
+        select(id="selector-simulator-groupsize" name="selector-simulator-groupsize" selecter selecter-val="newSim.groupSize" selecter-chg="changeMinSize()")
+          option(value="1") One
+          option(value="2") Two
+          option(value="3") Three
+          option(value="4") Four
+          option(value="5") Five
+      .form-group
+        label(for="selector-simulator-min") Minimum Number of Students Required for Simulation
+        select(id="selector-simulator-min" name="selector-simulator-min" selecter selecter-val="newSim.minSize" selecter-opts="newSim.minOptions")
+      .form-group
+        label(for="selector-simulator-numgroups") Number of Groups per Simulation
+        select(id="selector-simulator-numgroups" name="selector-simulator-numgroups" selecter selecter-val="newSim.numGroups" selecter-chg="changeMinSize()")
+          option(value="2") Two
+          option(value="3") Three
+          option(value="4") Four
+      .form-group
+        button.btn.btn-default.btn-block(type="button" ng-click="giveNamesToGroups()") Give Names to Groups
+      .form-group(ng-show="roles.length > 0")
+        label(for="assign-roles-btn") Assign Roles
+        button.btn.btn-default.btn-block(type="button" name="assign-roles-btn" ng-click="assignRolesDiag()") Assign Roles to Group
+      .form-group
+        label(for="simulation-name") Simulation Name
+        .input-group
+          input.form-control(type="text" name="simulation-name" placeholder="New Simulation" ng-model="newSimName" ng-keyup="$event.keyCode == 13 && addSimulation()")
+          .input-group-btn
+            button.btn.btn-primary(type="button" ng-click="addSimulation()") Add
+    ul.list-group
+      li.list-group-item
+        h4 {{simulations.length}} Simulation{{simulations.length == 1 ? '' : 's'}}
+      li.list-group-item(ng-repeat="simulation in simulations | orderBy:'name'")
+        button.close(type="button" aria-hidden="true" ng-click="delSimulation(simulation)") ×
+        span.simGroupSizeItem {{simulation.groupSize}}
+        | {{simulation.name}}
