@@ -2,7 +2,8 @@
 
 AppCtrl = ($scope, $timeout, ngDialog, storage) ->
 
-  $scope.assignments = [{"name":"My Simulation","groupSize":2,"minSize":2,"numGroups":2,"groupNames":[{"name":"Group 1"},{"name":"Group 2"}],"games":[[["C","F"],["D","E"]],[["G","B"],["A"]]]},{"name":"My Simulation2","groupSize":1,"minSize":2,"numGroups":2,"groupNames":[{"name":"Group 1"},{"name":"Group 2"}],"games":[[["D"],["F"]],[["C"],["B"]],[["G","A"],["E"]]]},{"name":"My Simulation3","groupSize":3,"minSize":2,"numGroups":2,"groupNames":[{"name":"Group 1"},{"name":"Group 2"}],"games":[[["G","C","B","F"],["D","A","E"]]]}]
+  $scope.assignments = []
+  #$scope.assignments = [{"name":"My Simulation","groupSize":2,"minSize":2,"numGroups":2,"groupNames":[{"name":"Group 1"},{"name":"Group 2"}],"games":[[["C","F"],["D","E"]],[["G","B"],["A"]]]},{"name":"My Simulation2","groupSize":1,"minSize":2,"numGroups":2,"groupNames":[{"name":"Group 1"},{"name":"Group 2"}],"games":[[["D"],["F"]],[["C"],["B"]],[["G","A"],["E"]]]},{"name":"My Simulation3","groupSize":3,"minSize":2,"numGroups":2,"groupNames":[{"name":"Group 1"},{"name":"Group 2"}],"games":[[["G","C","B","F"],["D","A","E"]]]}]
 
   # $scope.students = (i.toString() for i in [1..30])
   # $scope.simulations = [
@@ -10,7 +11,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
   #   {name: "My Simulation4", groupSize: 2}, {name: "My Simulation5", groupSize: 1}, {name: "My Simulation6", groupSize: 2},
   #   {name: "My Simulation7", groupSize: 2}, {name: "My Simulation8", groupSize: 2}, {name: "My Simulation9", groupSize: 2}]
   $scope.students = ["A", "B", "C", "D", "E", "F", "G"]
-  $scope.simulations = [{name: "My Simulation", groupSize: 2, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}]}, {name: "My Simulation2", groupSize: 1, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}]}, {name: "My Simulation3", groupSize: 3, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}]}]
+  $scope.simulations = [{name: "My Simulation", groupSize: 2, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}], roles: [{role: "Student", val: 1, excess: true}, {role: "Teacher", val: 1, excess: false}]}, {name: "My Simulation2", groupSize: 1, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}], roles: []}, {name: "My Simulation3", groupSize: 3, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}], roles: [{role: "Student", val: 2, excess: true}, {role: "Teacher", val: 1, excess: false}]}]
   $scope.roles = []
   $scope.isCalculating = false
 
@@ -239,7 +240,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
   $scope.addSimulation = () ->
     return if _.isEmpty($scope.newSimName) or _.contains($scope.simulations, $scope.newSimName)
 
-    {groupSize, minSize, numGroups, groupNames} = $scope.newSim
+    {groupSize, minSize, numGroups, groupNames, roles} = $scope.newSim
     minSize = numGroups if minSize < numGroups
     return if groupSize < 1 or groupSize > 5
 
@@ -248,13 +249,15 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
     for groupName, index in groupNames
       groupNames.name = "Group #{index + 1}" unless groupName.name?
 
-    console.log "addSimulation: #{$scope.newSimName} #{groupSize} #{minSize} #{numGroups}"
+    roles = [] unless _.isArray(roles)
+    console.log "addSimulation: #{$scope.newSimName} #{groupSize} #{minSize} #{numGroups} #{JSON.stringify(roles)}"
     $scope.simulations.push
       name: $scope.newSimName
       groupSize: numGroups
       minSize: minSize
       numGroups: numGroups
       groupNames: groupNames
+      roles: roles
     resetNewSim()
     updateLastProject()
 
@@ -362,9 +365,10 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
       for game, gameIdx in assignment.games
         for group, groupIdx in game
           for student in group
-            studentMap[student] =
+            studentMap[student.name] =
               gameIdx: gameIdx
               groupIdx: groupIdx
+              role: student.role
 
       numGames = assignment.games.length
       str += "#{assignment.name}\n,"
@@ -373,8 +377,8 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
       str += "\n"
 
       _.each _.keys(studentMap).sort(), (student) ->
-        {gameIdx, groupIdx} = studentMap[student]
-        str += "#{student},"
+        {gameIdx, groupIdx, role} = studentMap[student]
+        str += "#{student}#{(if role then ' (' + role + ')' else '')},"
         str += ((if i == gameIdx then assignment.groupNames[groupIdx].name else null) for i in [0..(numGames-1)]).join ","
         str += "\n"
 

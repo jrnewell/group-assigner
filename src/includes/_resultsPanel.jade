@@ -33,4 +33,4 @@ h3
               li(ng-repeat="student in group")
                 span
                   i.fa.fa-user
-                | {{student}}
+                | {{student.name}}{{(student.role ? ' (' + student.role + ')' : '')}}

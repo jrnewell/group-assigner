@@ -10,13 +10,15 @@ calculateGroups = (students, simulations) ->
   randAssignments = () ->
     assignments = []
     for simulation in simulations
-      {name, groupSize, minSize, numGroups, groupNames} = simulation
+      {name, groupSize, minSize, numGroups, groupNames, roles} = simulation
+      #console.log "sim roles: #{JSON.stringify(roles)}"
       assignment =
         name: name
         groupSize: groupSize
         minSize: minSize
         numGroups: numGroups
         groupNames: groupNames
+        roles: roles
         games: []
       assignments.push assignment
 
@@ -26,7 +28,9 @@ calculateGroups = (students, simulations) ->
 
       for student in randShuffle
         group = groups[groupIdx]
-        group.push student
+        group.push
+          name: student
+          role: null
         if (groupIdx == (numGroups - 1) and group.length == groupSize)
           assignment.games.push groups
           groups = ([] for i in [1..numGroups])
@@ -56,6 +60,29 @@ calculateGroups = (students, simulations) ->
 
             dispIdx += 1
 
+      # assign roles randomly
+      continue unless roles.length > 0
+      for game in assignment.games
+        for group in game
+          randRoles = _.shuffle(roles)
+          roleIdx = 0
+          numIdx = 0
+          excessIdx = 0
+          for student in group
+            #console.log "role assignment: #{student.name} #{roleIdx} #{numIdx} #{excessIdx}"
+            if roleIdx < randRoles.length
+              role = randRoles[roleIdx]
+              excessIdx = roleIdx if role.excess and excessIdx != roleIdx
+              student.role = role.role
+              #console.log "role assignment1: #{student.name} #{student.role}"
+              numIdx += 1
+              if numIdx >= role.val
+                roleIdx += 1
+                numIdx = 0
+            else
+              student.role = randRoles[excessIdx].role
+              #console.log "role assignment2: #{student.name} #{student.role}"
+
     return assignments
 
   getRandomInt = (min, max) ->
@@ -69,30 +96,40 @@ calculateGroups = (students, simulations) ->
       dataObj =
         partners: {}
         opponents: {}
+        roles: {}
       partnerData[student] = dataObj
 
       # initialize to zero
       for mate in mates
         dataObj.partners[mate] = 0
         dataObj.opponents[mate] = 0
+      roles = _.union.apply(null, assignment.roles for assignment in assignments)
+      #console.log "all roles: #{JSON.stringify(roles)}"
+      for role in roles
+        dataObj.roles[role.role] = 0
 
     #console.log "partnerData: #{JSON.stringify(partnerData)}"
 
     for assignment in assignments
+      #console.log "assignment: #{JSON.stringify(assignment)}"
       for game in assignment.games
         updatePartnerData = (side, opponents) ->
+          #console.log "side: #{JSON.stringify(side)}"
           for student in side
-            dataObj = partnerData[student]
+            #console.log "dataObj (#{student.name}): #{JSON.stringify(dataObj)}"
+            dataObj = partnerData[student.name]
             mates = _.without(side, student)
             for mate in mates
-              dataObj.partners[mate] += 1
+              dataObj.partners[mate.name] += 1
             for opponent in opponents
-              dataObj.partners[opponent] += 1
+              dataObj.partners[opponent.name] += 1
 
         for party in game
           opponents = _.without(game, party)
           for opponent in opponents
             updatePartnerData party, opponent
+          for student in party
+            dataObj.roles[student.role] += 1 if student.role
 
     #console.log "partnerData: #{JSON.stringify(partnerData)}"
 
@@ -102,32 +139,63 @@ calculateGroups = (students, simulations) ->
         score += (partnerVal ** 2) * 2
       for opponent, oppVal of dataObj.opponents
         score += (partnerVal ** 2)
+      for role, roleVal of dataObj.roles
+        score += (roleVal ** 2) * 3
     return score
+
+  getRandomStudent = (assignment) ->
+    {games} = assignment
+    gameIdx = getRandomInt 0, games.length
+    groupIdx = getRandomInt 0, games[gameIdx].length
+    leng = games[gameIdx][groupIdx].length
+    return null unless leng > 0
+    studentIdx = getRandomInt 0, leng
+    return {
+      gameIdx: gameIdx
+      groupIdx: groupIdx
+      studentIdx: studentIdx
+      student: games[gameIdx][groupIdx][studentIdx]
+    }
 
   mutateAssignments = (assignments) ->
     for assignment in assignments
+      {games} = assignment
+
+      # mutate groups
       mutations = getRandomInt 1, 50
-      #console.log "mutations: #{mutations}"
+      #console.log "group mutations: #{mutations}"
       for i in [1..mutations]
-        {games} = assignment
-        game1 = getRandomInt 0, games.length
-        group1 = getRandomInt 0, games[game1].length
-        leng1 = games[game1][group1].length
-        continue unless leng1 > 0
-        idx1 = getRandomInt 0, leng1
+        s1 = getRandomStudent assignment
+        s2 = getRandomStudent assignment
 
-        game2 = getRandomInt 0, games.length
-        group2 = getRandomInt 0, games[game2].length
-        leng2 = games[game2][group2].length
-        continue unless leng2 > 0
-        idx2 = getRandomInt 0, leng2
+        continue unless s1?.student?
+        continue unless s2?.student?
+        continue if s1.student == s2.student
 
-        continue if game1 == game2 and group1 == group2 and idx1 == idx2
-        swap1 = games[game1][group1][idx1]
-        swap2 = games[game2][group2][idx2]
-        continue unless swap1 and swap2
-        games[game1][group1][idx1] = swap2
-        games[game2][group2][idx2] = swap1
+        s1Name = s1.student.name
+        s1.student.name = s2.student.name
+        s2.student.name = s1Name
+
+      # mutate roles
+      continue unless assignment.roles.length > 0
+      mutations = getRandomInt 1, 50
+      #console.log "role mutations: #{mutations}"
+      for i in [1..mutations]
+        s1 = getRandomStudent assignment
+
+        # get student in same group
+        mates = _.without(games[s1.gameIdx][s1.groupIdx], s1)
+        continue unless mates.length > 0
+        studentIdx = getRandomInt 0, mates.length
+        student2 = mates[studentIdx]
+
+        continue unless s1?.student?
+        continue unless student2?
+        continue if s1.student == student2
+
+        s1Role = s1.student.role
+        s1.student.role = student2.role
+        student2.role = s1Role
 
     return assignments
 
@@ -162,11 +230,12 @@ calculateGroups = (students, simulations) ->
 
   # initialize with random assignments
   generation = (randAssignments() for i in [1..100])
+  #console.log "init: #{JSON.stringify(generation)}"
   checkForWinner generation
 
   maxIterations = 100
   for iteration in [1..maxIterations]
-    console.log "iteration: #{iteration}"
+    #console.log "iteration: #{iteration}"
     self.postMessage
       cmd: "progress"
       progress: iteration / maxIterations
