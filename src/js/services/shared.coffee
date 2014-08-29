@@ -28,6 +28,7 @@ shared = () ->
     hideMethod: "fadeOut"
 
   return {
+    projectName: null
     assignments: _assignments
     students: _students
     simulations: _simulations
@@ -41,4 +42,4 @@ shared = () ->
       failure: toastr.error
   }
 
-module.exports = storage
+module.exports = shared

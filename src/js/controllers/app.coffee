@@ -7,20 +7,20 @@ AppCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
 
   saveProject = (name) ->
     project =
-      students: $scope.students
-      simulations: $scope.simulations
-      assignments: $scope.assignments
-      roles: $scope.roles
+      students: shared.students
+      simulations: shared.simulations
+      assignments: shared.assignments
+      roles: shared.roles
     storage.saveProject name, project
 
   loadProject = (name) ->
     obj = storage.loadProject name
     return unless obj?
     $timeout () ->
-      $scope.students = obj.project.students
-      $scope.simulations = obj.project.simulations
-      $scope.assignments = obj.project.assignments
-      $scope.roles = obj.project.roles
+      shared.students = obj.project.students
+      shared.simulations = obj.project.simulations
+      shared.assignments = obj.project.assignments
+      shared.roles = obj.project.roles
     #updateLastProject()
 
   updateLastProject = () ->
@@ -33,19 +33,19 @@ AppCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
 
   $scope.delProject = (name) ->
     storage.deleteProject(name)
-    $scope.projectList = storage.projectList()
 
   $scope.loadProjectDiag = () ->
-    $scope.projectList = storage.projectList()
+    isolate = $scope.$new(true)
+    isolate.projectList = storage.projectList()
     ngDialog.open
       template: "js/templates/loadProject.html"
       className: 'ngdialog-theme-default'
-      scope: $scope
+      scope: isolate
 
   $scope.loadProjectDiagSelected = (name) ->
     loadProject name
-    toastr.success "Project #{name} Loaded"
-    $scope.projectName = name
+    notify.success "Project #{name} Loaded"
+    shared.projectName = name
 
   $scope.saveProjectDiag = () ->
     promise = ngDialog.openConfirm
@@ -55,34 +55,34 @@ AppCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
 
     promise.then (data) ->
       return unless data?
-      $scope.projectName = data
+      shared.projectName = data
       console.log "projectName: #{data}"
       saveProject data
-      toastr.success "Project #{data} Saved"
+      notify.success "Project #{data} Saved"
 
   $scope.importProject = (data) ->
     try
       project = angular.fromJson(data)
       return unless project?
       $timeout () ->
-        $scope.students = project.students
-        $scope.simulations = project.simulations
-        $scope.assignments = project.assignments
-        $scope.roles = project.roles
-        $scope.projectName = project.projectName if project.projectName
+        shared.students = project.students
+        shared.simulations = project.simulations
+        shared.assignments = project.assignments
+        shared.roles = project.roles
+        shared.projectName = project.projectName if project.projectName
         $timeout () ->
-          toastr.success (if project.projectName then "Project '#{project.projectName}' Imported" else "Project Imported")
+          notify.success (if project.projectName then "Project '#{project.projectName}' Imported" else "Project Imported")
     catch ex
       $timeout () ->
-        toastr.error "Problem Importing Project"
+        notify.error "Problem Importing Project"
 
   $scope.exportProject = () ->
     project =
-      students: $scope.students
-      simulations: $scope.simulations
-      assignments: $scope.assignments
-      roles: $scope.roles
-    project.projectName = $scope.projectName if $scope.projectName
+      students: shared.students
+      simulations: shared.simulations
+      assignments: shared.assignments
+      roles: shared.roles
+    project.projectName = shared.projectName if shared.projectName
 
     blob = new Blob([angular.toJson(project)], { type: "text/plain;charset=utf-8" })
     saveAs blob, (if project.projectName? then "#{project.projectName}.json" else "project.json")
@@ -96,14 +96,14 @@ AppCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
       scope: isolate
 
     promise.then () ->
-      $scope.students = []
-      $scope.simulations = []
-      $scope.roles = []
-      $scope.assignments = null
+      shared.students = []
+      shared.simulations = []
+      shared.roles = []
+      shared.assignments = null
       shared.isCalculating = false
-      delete $scope.projectName
+      delete shared.projectName
       updateLastProject()
-      toastr.success "New Project Created"
+      notify.success "New Project Created"
       isolate.$destroy()
     , () ->
       isolate.$destroy()
@@ -133,14 +133,14 @@ AppCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
       scope: $scope
 
   $scope.addRole = (newRoleName) ->
-    return false if _.isEmpty(newRoleName) or _.contains($scope.roles, newRoleName)
-    $scope.roles.push newRoleName
+    return false if _.isEmpty(newRoleName) or _.contains(shared.roles, newRoleName)
+    shared.roles.push newRoleName
     updateLastProject()
     return true
 
   $scope.delRole = (role) ->
     console.log "delRole: #{role}"
-    $scope.roles = _.without($scope.roles, role)
+    shared.roles = _.without(shared.roles, role)
     updateLastProject()
 
   $scope.assignRolesDiag = () ->
@@ -149,7 +149,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
 
     resetAssignDiag = () ->
       isolate.assignment = {}
-      isolate.unassignedRoles = _.difference($scope.roles, _.pluck(isolate.roles, "role"))
+      isolate.unassignedRoles = _.difference(shared.roles, _.pluck(isolate.roles, "role"))
 
       maxVal = _.reduce(isolate.roles, (left, assign) ->
           return left - assign.val
@@ -214,19 +214,19 @@ AppCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
       scope: isolate
 
   $scope.addStudent = () ->
-    return if _.isEmpty($scope.newStudent) or _.contains($scope.students, $scope.newStudent)
+    return if _.isEmpty($scope.newStudent) or _.contains(shared.students, $scope.newStudent)
     console.log "addStudent: #{$scope.newStudent}"
-    $scope.students.push $scope.newStudent
+    shared.students.push $scope.newStudent
     $scope.newStudent = ""
     updateLastProject()
 
   $scope.delStudent = (student) ->
     console.log "delStudent: #{student}"
-    $scope.students = _.without($scope.students, student)
+    shared.students = _.without(shared.students, student)
     updateLastProject()
 
   $scope.addSimulation = () ->
-    return if _.isEmpty($scope.newSimName) or _.contains($scope.simulations, $scope.newSimName)
+    return if _.isEmpty($scope.newSimName) or _.contains(shared.simulations, $scope.newSimName)
 
     {groupSize, minSize, numGroups, groupNames, roles} = $scope.newSim
     minSize = numGroups if minSize < numGroups
@@ -239,7 +239,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
 
     roles = [] unless _.isArray(roles)
     console.log "addSimulation: #{$scope.newSimName} #{groupSize} #{minSize} #{numGroups} #{JSON.stringify(roles)}"
-    $scope.simulations.push
+    shared.simulations.push
       name: $scope.newSimName
       groupSize: numGroups
       minSize: minSize
@@ -251,7 +251,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
 
   $scope.delSimulation = (simulation) ->
     console.log "delSimulation: #{simulation}"
-    $scope.simulations = _.without($scope.simulations, simulation)
+    shared.simulations = _.without(shared.simulations, simulation)
     updateLastProject()
 
   # to directive?
@@ -291,7 +291,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
     return if _.isEmpty($scope.newSim.roles)
     $scope.newSim.roles = []
     $timeout () ->
-      toastr.warning "Role assignment has been cleared due to group size change. Please reassign roles."
+      notify.warning "Role assignment has been cleared due to group size change. Please reassign roles."
 
   $scope.assignToGroups = (ev, ladda) ->
     console.log "assignToGroups"
@@ -314,7 +314,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
             shared.isCalculating = false
 
           $timeout () ->
-            toastr.success "Calculation Finished"
+            notify.success "Calculation Finished"
           , 700
         when "progress"
           ladda.progress data.progress
@@ -327,7 +327,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
       ladda.done()
       shared.isCalculating = false
       $timeout () ->
-        toastr.error "Error Encountered while Calculating"
+        notify.error "Error Encountered while Calculating"
       , 700
       console.error "Error: #{err.message}"
     , false)
@@ -335,8 +335,8 @@ AppCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
     console.log "posting msg to worker"
     worker.postMessage
       cmd: "calculate"
-      students: $scope.students
-      simulations: $scope.simulations
+      students: shared.students
+      simulations: shared.simulations
 
   $scope.giveNamesToGroups = () ->
     ngDialog.open
@@ -348,7 +348,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
     console.log "downloadAssigments"
     str = ""
 
-    for assignment in $scope.assignments
+    for assignment in shared.assignments
       studentMap = {}
       for game, gameIdx in assignment.games
         for group, groupIdx in game
