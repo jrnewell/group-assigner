@@ -50,7 +50,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
   $scope.loadProjectDiag = () ->
     $scope.projectList = storage.projectList()
     ngDialog.open
-      template: "/js/templates/loadProject.html"
+      template: "js/templates/loadProject.html"
       className: 'ngdialog-theme-default'
       scope: $scope
 
@@ -61,7 +61,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
 
   $scope.saveProjectDiag = () ->
     promise = ngDialog.openConfirm
-      template: "/js/templates/saveProject.html"
+      template: "js/templates/saveProject.html"
       className: 'ngdialog-theme-default'
       scope: $scope
 
@@ -103,7 +103,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
     isolate = $scope.$new(true)
     isolate.confirmText = "Do you want to clear the current project?"
     promise = ngDialog.openConfirm
-      template: "/js/templates/confirm.html"
+      template: "js/templates/confirm.html"
       className: 'ngdialog-theme-default'
       scope: isolate
 
@@ -140,7 +140,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
 
   $scope.manageRolesDiag = () ->
     ngDialog.open
-      template: "/js/templates/manageRoles.html"
+      template: "js/templates/manageRoles.html"
       className: 'ngdialog-theme-default'
       scope: $scope
 
@@ -221,7 +221,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
       console.log "isolate.roleValOpts: #{JSON.stringify(isolate.roleValOpts)}"
 
     ngDialog.open
-      template: "/js/templates/assignRoles.html"
+      template: "js/templates/assignRoles.html"
       className: 'ngdialog-theme-default'
       scope: isolate
 
@@ -312,7 +312,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
     $scope.calculatingProgress = "Calculating (0%)"
 
     # use web worker
-    worker = new Worker("/js/workers/assigner.js")
+    worker = new Worker("js/workers/assigner.js")
     worker.addEventListener('message', (ev) ->
       data = ev.data
       switch data.cmd
@@ -352,7 +352,7 @@ AppCtrl = ($scope, $timeout, ngDialog, storage) ->
 
   $scope.giveNamesToGroups = () ->
     ngDialog.open
-      template: "/js/templates/namesToGroups.html"
+      template: "js/templates/namesToGroups.html"
       className: 'ngdialog-theme-default'
       scope: $scope
 

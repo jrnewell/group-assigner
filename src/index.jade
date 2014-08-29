@@ -6,11 +6,11 @@ html(lang="en" ng-app="GroupAssigner")
 
     // stylesheets
     for css in stylesheets
-      link(rel="stylesheet", type="text/css", href="/css/#{css}")
+      link(rel="stylesheet", type="text/css", href="css/#{css}")
 
     // scripts
     for js in scripts
-      script(type="text/javascript" src="/js/#{js}")
+      script(type="text/javascript" src="js/#{js}")
 
   body(ng-cloak="", ng-controller="AppCtrl")
     .container
