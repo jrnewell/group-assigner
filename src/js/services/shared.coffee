@@ -1,6 +1,6 @@
 'use strict'
 
-shared = () ->
+shared = (storage) ->
 
   # defaults for now
   _assignments = [{"name":"My Simulation","groupSize":2,"minSize":2,"numGroups":2,"groupNames":[{"name":"Group 1"},{"name":"Group 2"}],"games":[[["C","F"],["D","E"]],[["G","B"],["A"]]]},{"name":"My Simulation2","groupSize":1,"minSize":2,"numGroups":2,"groupNames":[{"name":"Group 1"},{"name":"Group 2"}],"games":[[["D"],["F"]],[["C"],["B"]],[["G","A"],["E"]]]},{"name":"My Simulation3","groupSize":3,"minSize":2,"numGroups":2,"groupNames":[{"name":"Group 1"},{"name":"Group 2"}],"games":[[["G","C","B","F"],["D","A","E"]]]}]
@@ -27,7 +27,29 @@ shared = () ->
     showMethod: "fadeIn"
     hideMethod: "fadeOut"
 
-  return {
+  storage.saveProject = (name) ->
+    project =
+      students: shared.students
+      simulations: shared.simulations
+      assignments: shared.assignments
+      roles: shared.roles
+    storage.saveProject name, project
+
+  storage.loadProject = (name) ->
+    obj = storage.loadProject name
+    return unless obj?
+    shared.students = obj.project.students
+    shared.simulations = obj.project.simulations
+    shared.assignments = obj.project.assignments
+    shared.roles = obj.project.roles
+
+  storage.updateLastProject = () ->
+    saveProject "_last"
+
+  storage.lastProject = () ->
+    loadProject "_last"
+
+  shared =
     projectName: null
     assignments: _assignments
     students: _students
@@ -40,6 +62,11 @@ shared = () ->
       info:    toastr.info
       warning: toastr.warning
       failure: toastr.error
-  }
+    saveProject: saveProject
+    loadProject: loadProject
+    updateLastProject: updateLastProject
+    lastProject: lastProject
+
+  return shared
 
 module.exports = shared

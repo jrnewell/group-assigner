@@ -1,6 +1,10 @@
 'use strict'
 
 AppCtrl = require "./controllers/app"
+ProjectsCtrl = require "./controllers/projects"
+ResultsCtrl = require "./controllers/results"
+SimulationsCtrl = require "./controllers/simulations"
+StudentsCtrl = require "./controllers/students"
 selecter = require "./directives/selecter"
 iCheck = require "./directives/iCheck"
 laddaButton = require "./directives/laddaButton"
@@ -11,6 +15,10 @@ shared = require "./services/shared"
 app = angular.module("GroupAssigner", ["ngAnimate", "ngDialog"])
 
 app.controller "AppCtrl", ["$scope", "$timeout", "ngDialog", "storage", "shared", AppCtrl]
+app.controller "ProjectsCtrl", ["$scope", "$timeout", "shared", ProjectsCtrl]
+app.controller "ResultsCtrl", ["$scope", "$timeout", "shared", ResultsCtrl]
+app.controller "SimulationsCtrl", ["$scope", "$timeout", "shared", SimulationsCtrl]
+app.controller "StudentsCtrl", ["$scope", "$timeout", "shared", StudentsCtrl]
 
 app.directive "selecter", ["$timeout", selecter]
 app.directive "iCheck", ["$timeout", iCheck]
@@ -18,4 +26,4 @@ app.directive "laddaButton", [laddaButton]
 app.directive "fileInput", ["$parse", fileInput]
 
 app.factory "storage", [storage]
-app.factory "shared", [shared]
+app.factory "shared", ["storage", shared]
