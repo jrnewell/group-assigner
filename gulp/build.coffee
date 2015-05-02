@@ -3,7 +3,6 @@ gutil = require "gulp-util"
 jade = require "gulp-jade"
 coffee = require "gulp-coffee"
 sourcemaps = require "gulp-sourcemaps"
-rimraf = require "gulp-rimraf"
 stylus = require "gulp-stylus"
 nib = require "nib"
 plumber = require "gulp-plumber"
@@ -17,6 +16,7 @@ source = require "vinyl-source-stream"
 notify = require "gulp-notify"
 prettyHrtime = require "pretty-hrtime"
 _ = require "lodash"
+del = require "del"
 constants = require "./constants"
 
 {tlr, srcPaths, destPaths, shared, browserifyMain, jadeLocals} = constants
@@ -172,10 +172,8 @@ gulp.task "fonts", ->
 
 gulp.task "assets", ["images", "fonts"]
 
-gulp.task "clean", ->
-  gulp.src("build", read: false)
-    .pipe(plumber())
-    .pipe(rimraf())
+gulp.task "clean", (cb) ->
+  del(["build"], cb)
 
 gulp.task "build", (callback) ->
   runSequence "clean", ["vendor", "scripts", "stylesheets", "templates", "assets"], callback

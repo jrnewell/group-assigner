@@ -1,5 +1,4 @@
 gulp = require "gulp"
-rimraf = require "gulp-rimraf"
 uglify = require "gulp-uglify"
 concat = require "gulp-concat"
 minifyCss = require "gulp-minify-css"
@@ -11,6 +10,7 @@ runSequence = require "run-sequence"
 es = require "event-stream"
 minMap = require "gulp-min-map"
 imagemin = require "gulp-imagemin"
+del = require "del"
 constants = require "./constants"
 
 {headerText} = constants
@@ -19,10 +19,8 @@ constants = require "./constants"
 # deploy (production)
 #
 
-gulp.task "deploy-clean", ->
-  gulp.src(["release"], read: false)
-    .pipe(plumber())
-    .pipe(rimraf())
+gulp.task "deploy-clean", (cb) ->
+  del(["release"], cb)
 
 minFiles = {}
 

@@ -1,6 +1,6 @@
 {
   "name": "group-assigner",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "James Newell <james.newell@gmail.com>",
   "description": "Starter project using the gulp build system to make single page apps",
   "repository": {
@@ -14,8 +14,8 @@
     "gulp", "starter", "seed", "project", "spa", "angular"
   ],
   "engines": [
-    "node >= 0.10.29",
-    "coffee-script >= 1.7.1"
+    "node >= 0.12.2",
+    "coffee-script >= 1.9.2"
   ],
   "browserify": {
     "transform": [
@@ -23,41 +23,41 @@
     ]
   },
   "dependencies": {
-    "lodash": "*"
+    "lodash": "~3.8.0"
   },
   "devDependencies": {
-    "coffee-script": "*",
-    "gulp": "*",
-    "gulp-util": "*",
-    "gulp-jade": "*",
-    "gulp-coffee": "*",
-    "gulp-sourcemaps": "*",
-    "gulp-concat": "*",
-    "gulp-uglify": "*",
-    "gulp-imagemin": "*",
-    "gulp-rimraf": "*",
-    "gulp-stylus": "*",
-    "nib": "*",
-    "gulp-changed": "*",
-    "gulp-open": "*",
-    "gulp-minify-css": "*",
-    "gulp-strip-debug": "*",
-    "gulp-plumber": "*",
-    "gulp-header": "*",
-    "gulp-replace": "*",
-    "gulp-if": "*",
-    "gulp-min-map": "*",
-    "gulp-notify": "*",
-    "gulp-livereload": "~1.5.0",
-    "pretty-hrtime": "*",
-    "run-sequence": "*",
+    "coffee-script": "~1.9.2",
+    "browserify": "~10.0.0",
+    "coffeeify": "~1.1.0",
     "connect": "~2.23.0",
-    "connect-livereload": "*",
-    "tiny-lr": "*",
-    "event-stream": "*",
-    "browserify": "*",
-    "coffeeify": "*",
-    "vinyl-source-stream": "*",
-    "watchify": "*"
+    "del": "~1.1.1",
+    "connect-livereload": "~0.5.3",
+    "event-stream": "~3.3.0",
+    "gulp": "~3.8.11",
+    "gulp-changed": "~1.2.1",
+    "gulp-coffee": "~2.3.1",
+    "gulp-concat": "~2.5.2",
+    "gulp-header": "~1.2.2",
+    "gulp-imagemin": "~2.2.1",
+    "gulp-if": "~1.2.5",
+    "gulp-jade": "~1.0.0",
+    "gulp-livereload": "~1.5.0",
+    "gulp-min-map": "~0.0.2",
+    "gulp-minify-css": "~1.1.0",
+    "gulp-open": "~0.3.2",
+    "gulp-notify": "~2.2.0",
+    "gulp-plumber": "~1.0.0",
+    "gulp-replace": "~0.5.3",
+    "gulp-strip-debug": "~1.0.2",
+    "gulp-sourcemaps": "~1.5.2",
+    "gulp-stylus": "~2.0.1",
+    "gulp-uglify": "~1.2.0",
+    "gulp-util": "~3.0.4",
+    "nib": "~1.1.0",
+    "run-sequence": "~1.1.0",
+    "pretty-hrtime": "~1.0.0",
+    "tiny-lr": "~0.1.5",
+    "vinyl-source-stream": "~1.1.0",
+    "watchify": "~3.2.1"
   }
 }
