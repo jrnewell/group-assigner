@@ -1,0 +1,992 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"SC",
+				"SCRIPT"
+			],
+			[
+				"SCR",
+				"SCRIPT_DIR"
+			],
+			[
+				"pro",
+				"progress"
+			],
+			[
+				"in",
+				"infile"
+			],
+			[
+				"out",
+				"outStream"
+			],
+			[
+				"un",
+				"unpipe"
+			],
+			[
+				"file",
+				"fileInStream"
+			],
+			[
+				"ci",
+				"cipherStream"
+			],
+			[
+				"stream",
+				"streamCounter"
+			],
+			[
+				"req",
+				"require"
+			],
+			[
+				"chec",
+				"checkFunc"
+			],
+			[
+				"ful",
+				"fullPath"
+			],
+			[
+				"alt",
+				"altVersion"
+			],
+			[
+				"get",
+				"getFullPath"
+			],
+			[
+				"ver",
+				"version"
+			],
+			[
+				"ex",
+				"exists"
+			],
+			[
+				"res",
+				"results"
+			],
+			[
+				"mar",
+				"margin-bottom"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/Users/james/node.js/group-assigner/gulp/constants.coffee",
+			"settings":
+			{
+				"buffer_size": 2145,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/james/node.js/group-assigner/src/js/services/shared.coffee",
+			"settings":
+			{
+				"buffer_size": 2705,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Searching 20 files for \"saveProject\"\n\n/Users/james/node.js/group-assigner/src/js/controllers/projects.coffee:\n   24      shared.projectName = name\n   25  \n   26:   $scope.saveProjectDiag = () ->\n   27      promise = ngDialog.openConfirm\n   28:       template: \"js/templates/saveProject.html\"\n   29        className: 'ngdialog-theme-default'\n   30        scope: $scope\n   ..\n   34        shared.projectName = data\n   35        console.log \"projectName: #{data}\"\n   36:       saveProject data\n   37        notify.success \"Project #{data} Saved\"\n   38  \n\n/Users/james/node.js/group-assigner/src/js/services/shared.coffee:\n   28      hideMethod: \"fadeOut\"\n   29  \n   30:   storage.saveProject = (name) ->\n   31      project =\n   32        students: shared.students\n   ..\n   34        assignments: shared.assignments\n   35        roles: shared.roles\n   36:     storage.saveProject name, project\n   37  \n   38    storage.loadProject = (name) ->\n   ..\n   45  \n   46    storage.updateLastProject = () ->\n   47:     saveProject \"_last\"\n   48  \n   49    storage.lastProject = () ->\n   ..\n   63        warning: toastr.warning\n   64        failure: toastr.error\n   65:     saveProject: saveProject\n   66      loadProject: loadProject\n   67      updateLastProject: updateLastProject\n\n/Users/james/node.js/group-assigner/src/js/services/storage.coffee:\n   24      localStorage.clear()\n   25  \n   26:   saveProject = (name, project) ->\n   27      obj = load name\n   28      if obj\n   ..\n   65  \n   66    return {\n   67:     saveProject: saveProject\n   68      loadProject: loadProject\n   69      deleteProject: deleteProject\n\n11 matches across 3 files\n",
+			"settings":
+			{
+				"buffer_size": 1637,
+				"line_ending": "Unix",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "/Users/james/node.js/group-assigner/src/js/services/storage.coffee",
+			"settings":
+			{
+				"buffer_size": 1638,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/james/node.js/group-assigner/gulp/build.coffee",
+			"settings":
+			{
+				"buffer_size": 5146,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/james/node.js/group-assigner/src/js/workers/assigner.coffee",
+			"settings":
+			{
+				"buffer_size": 8238,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 368.0,
+		"last_filter": "coffe",
+		"selected_items":
+		[
+			[
+				"coffe",
+				"Coffee: Display JavaScript"
+			],
+			[
+				"packag",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Preferences: Browse Packages"
+			]
+		],
+		"width": 489.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092775ccb37ca9d6b2e4b7d'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/james/node.js/group-assigner",
+		"/Users/james/node.js/group-assigner/build",
+		"/Users/james/node.js/group-assigner/gulp",
+		"/Users/james/node.js/group-assigner/src",
+		"/Users/james/node.js/group-assigner/src/includes",
+		"/Users/james/node.js/group-assigner/src/js",
+		"/Users/james/node.js/group-assigner/src/js/controllers",
+		"/Users/james/node.js/group-assigner/src/js/directives",
+		"/Users/james/node.js/group-assigner/src/js/services",
+		"/Users/james/node.js/group-assigner/src/js/templates",
+		"/Users/james/node.js/group-assigner/src/js/workers",
+		"/Users/james/node.js/group-assigner/vendor",
+		"/Users/james/node.js/group-assigner/vendor/angular/js",
+		"/Users/james/node.js/group-assigner/vendor/bootstrap",
+		"/Users/james/node.js/group-assigner/vendor/bootstrap/css"
+	],
+	"file_history":
+	[
+		"/Users/james/node.js/group-assigner/package.json",
+		"/Users/james/node.js/group-assigner/gulp/deploy.coffee",
+		"/Users/james/node.js/group-assigner/vendor/bootstrap/css/bootstrap.css",
+		"/Users/james/node.js/group-assigner/vendor/ladda/css/ladda.css",
+		"/Users/james/node.js/group-assigner/gulp/build.coffee",
+		"/Users/james/node.js/group-assigner/package.json.bak2",
+		"/Users/james/node.js/group-assigner/gulp/constants.coffee",
+		"/var/folders/vx/9c15f3cn57b4rlnzlc4qy2lm0000gn/T/rsub-9ivfw_/term.log",
+		"/var/folders/vx/9c15f3cn57b4rlnzlc4qy2lm0000gn/T/rsub-pidaqb/session.log",
+		"/var/folders/vx/9c15f3cn57b4rlnzlc4qy2lm0000gn/T/rsub-fde63g/yafu.ini",
+		"/var/folders/vx/9c15f3cn57b4rlnzlc4qy2lm0000gn/T/rsub-avk3rj/number.txt",
+		"/Users/james/ram/com.flexibits.fantastical2.mac.plist",
+		"/Users/james/.bash_profile",
+		"/usr/local/sbin/unmount-ram-disk",
+		"/usr/local/sbin/mount-ram-disk",
+		"/Users/james/.ssh/known_hosts",
+		"/Users/james/.ssh/config",
+		"/var/folders/vx/9c15f3cn57b4rlnzlc4qy2lm0000gn/T/rsub-1d7pw1/shairport.txt",
+		"/var/folders/vx/9c15f3cn57b4rlnzlc4qy2lm0000gn/T/rsub-1rpb9m/shairport",
+		"/var/folders/vx/9c15f3cn57b4rlnzlc4qy2lm0000gn/T/rsub-frgii6/history.log",
+		"/var/folders/vx/9c15f3cn57b4rlnzlc4qy2lm0000gn/T/rsub-6i3_p8/term.log",
+		"/Users/james/Downloads/forked-daapd.conf",
+		"/var/folders/vx/9c15f3cn57b4rlnzlc4qy2lm0000gn/T/rsub-zcbs39/forked-daapd",
+		"/var/folders/vx/9c15f3cn57b4rlnzlc4qy2lm0000gn/T/rsub-vaxkp9/forked-daapd.conf",
+		"/Users/james/Downloads/debug/class-dump.m",
+		"/Users/james/Downloads/debug/otool.txt",
+		"/Users/james/Downloads/debug/otool2.txt",
+		"/usr/local/sbin/ram-temp-disks",
+		"/Volumes/HDMIAudio/install.sh",
+		"/Users/james/Downloads/MoveTemporaryFoldersToRamdisk_MacOSX.sh",
+		"/Users/james/Downloads/MoveTemporaryFoldersToRamdisk_MacOSX.s",
+		"/Users/james/Downloads/MoveTemporaryFoldersToRamdisk_MacOSX.sh.1",
+		"/Library/LaunchDaemons/local.macspoof.plist",
+		"/usr/local/sbin/ram-temp-disks.sh",
+		"/var/folders/vx/9c15f3cn57b4rlnzlc4qy2lm0000gn/T/rsub-rdtonv/create-alt-versions.coffee",
+		"/Users/james/node.js/crypto-video/create-alt-versions.coffee",
+		"/Users/james/node.js/crypto-video/routes/index.coffee",
+		"/Users/james/Documents/Serials/vmware fusion 7.txt",
+		"/Users/james/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/james/node.js/crypto-video/views/stream.jade",
+		"/Users/james/node.js/crypto-video/app.coffee",
+		"/Volumes/EFI/EFI/CLOVER/config.plist",
+		"/usr/local/sbin/set-clover-nvram-vars"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 94.0,
+		"where_history":
+		[
+			"/Users/james/node.js/group-assigner/src/js",
+			"/Users/james/node.js/group-assigner",
+			"/Users/james/Downloads/debug/otool2.txt"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"saveProject",
+			"vendor-css",
+			"^",
+			"lodash",
+			"rimraf",
+			"gulp-rimraf",
+			"license",
+			"Register",
+			"License",
+			":armhf , ",
+			"\\([\\S, ]*?\\)",
+			"@\"",
+			"@\"1",
+			"blacklist",
+			"verif",
+			"license",
+			".144",
+			"console.log \"#{err}\" if err",
+			".error",
+			"medium",
+			"outStream",
+			"outFile",
+			"isDirectory",
+			"getPartialStream",
+			"capitalize",
+			"getFullPath",
+			"getPartialStream",
+			"readFileName",
+			"\"#{outputPath}/#{file}\"",
+			"readFileName",
+			"outputPath",
+			"version"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"~",
+			" ",
+			"",
+			"console.error \"#{err}\" if err"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/Users/james/node.js/group-assigner/gulp/constants.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2145,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								576,
+								589
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
+							],
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/Users/james/node.js/group-assigner/src/js/services/shared.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2705,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2182,
+								2182
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
+							],
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 364.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1637,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										171,
+										182
+									],
+									[
+										274,
+										285
+									],
+									[
+										474,
+										485
+									],
+									[
+										677,
+										688
+									],
+									[
+										864,
+										875
+									],
+									[
+										1007,
+										1018
+									],
+									[
+										1161,
+										1172
+									],
+									[
+										1174,
+										1185
+									],
+									[
+										1388,
+										1399
+									],
+									[
+										1509,
+										1520
+									],
+									[
+										1522,
+										1533
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								1397,
+								1397
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
+							],
+							"default_dir": "/Users/james/node.js/group-assigner",
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 209.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/Users/james/node.js/group-assigner/src/js/services/storage.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1638,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								504,
+								504
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
+							],
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 140.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/Users/james/node.js/group-assigner/gulp/build.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5146,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1082,
+								1082
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
+							],
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 143.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/Users/james/node.js/group-assigner/src/js/workers/assigner.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8238,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
+							],
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1132.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "group-assigner.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 275.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

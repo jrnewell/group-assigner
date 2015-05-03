@@ -32,7 +32,9 @@ gulp.task "vendor-js", ->
   .pipe gulpIf(shared.isWatching, liveReload(tlr))
 
 gulp.task "vendor-css", ->
-  gulp.src _.map(srcPaths.vendors, (x) -> "#{x}/css/**/*.css")
+  gulp.src _.map(srcPaths.vendors, (x) -> "#{x}/css/**/*.css").concat(
+    _.map(srcPaths.vendors, (x) -> "#{x}/css/**/*.css.map")
+  )
   .pipe(changed(destPaths.stylesheets))
   .pipe(gulp.dest(destPaths.stylesheets))
   .pipe gulpIf(shared.isWatching, liveReload(tlr))
