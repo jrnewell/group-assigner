@@ -15,7 +15,7 @@ shared = require "./services/shared"
 app = angular.module("GroupAssigner", ["ngAnimate", "ngDialog"])
 
 app.controller "AppCtrl", ["$scope", "$timeout", "ngDialog", "storage", "shared", AppCtrl]
-app.controller "ProjectsCtrl", ["$scope", "$timeout", "shared", ProjectsCtrl]
+app.controller "ProjectsCtrl", ["$scope", "$timeout", "storage", "shared", ProjectsCtrl]
 app.controller "ResultsCtrl", ["$scope", "$timeout", "shared", ResultsCtrl]
 app.controller "SimulationsCtrl", ["$scope", "$timeout", "shared", SimulationsCtrl]
 app.controller "StudentsCtrl", ["$scope", "$timeout", "shared", StudentsCtrl]

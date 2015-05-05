@@ -1,36 +1,37 @@
 //- p {{assignments}}
-h3
-  span.pull-right
-    button.btn.btn-primary(type="button" ng-click="downloadAssigments()")
-      i.fa.fa-cloud-download.fa-lg
-  | Results
-.panel.panel-default(ng-repeat="assignment in shared.assignments")
-  .panel-heading
-    h3.panel-title {{assignment.name}}
-  .panel-body
-    h5 Info
-    .row
-      .col-md-3.col-md-offset-1
-        .text-center.well.well-sm
-          h6 Group Size
-          h4 {{assignment.groupSize}}
-      .col-md-4
-        .text-center.well.well-sm
-          h6 Min Num of Students
-          h4 {{assignment.minSize}}
-      .col-md-3
-        .text-center.well.well-sm
-          h6 Num of Groups
-          h4 {{assignment.numGroups}}
-    h5 Assignments
-    ul.list-group
-      li.list-group-item(ng-repeat="game in assignment.games")
-        div.pull-left.game-label {{$index + 1}}
-        .row
-          div(ng-repeat="group in game" ng-class="getGroupClass(game, $index)")
-            p {{assignment.groupNames[$index].name}}
-            ul.list-unstyled.group-assignment(ng-class="'group-' + ($index + 1)")
-              li(ng-repeat="student in group")
-                span
-                  i.fa.fa-user
-                | {{student.name}}{{(student.role ? ' (' + student.role + ')' : '')}}
+#results(ng-controller="ResultsCtrl")
+  h3
+    span.pull-right
+      button.btn.btn-primary(type="button" ng-click="downloadAssigments()")
+        i.fa.fa-cloud-download.fa-lg
+    | Results
+  .panel.panel-default(ng-repeat="assignment in shared.assignments")
+    .panel-heading
+      h3.panel-title {{assignment.name}}
+    .panel-body
+      h5 Info
+      .row
+        .col-md-3.col-md-offset-1
+          .text-center.well.well-sm
+            h6 Group Size
+            h4 {{assignment.groupSize}}
+        .col-md-4
+          .text-center.well.well-sm
+            h6 Min Num of Students
+            h4 {{assignment.minSize}}
+        .col-md-3
+          .text-center.well.well-sm
+            h6 Num of Groups
+            h4 {{assignment.numGroups}}
+      h5 Assignments
+      ul.list-group
+        li.list-group-item(ng-repeat="game in assignment.games")
+          div.pull-left.game-label {{$index + 1}}
+          .row
+            div(ng-repeat="group in game" ng-class="getGroupClass(game, $index)")
+              p {{assignment.groupNames[$index].name}}
+              ul.list-unstyled.group-assignment(ng-class="'group-' + ($index + 1)")
+                li(ng-repeat="student in group")
+                  span
+                    i.fa.fa-user
+                  | {{student.name}}{{(student.role ? ' (' + student.role + ')' : '')}}

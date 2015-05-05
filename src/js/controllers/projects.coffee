@@ -5,7 +5,7 @@ ProjectsCtrl = ($scope, $timeout, storage, shared) ->
   $scope.shared = shared
   notify = shared.notify
 
-  storage.lastProject()
+  shared.lastProject()
 
   $scope.delProject = (name) ->
     storage.deleteProject(name)

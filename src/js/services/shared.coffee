@@ -49,7 +49,7 @@ shared = (storage) ->
   lastProject = () ->
     loadProject "_last"
 
-  shared =
+  _shared =
     projectName: null
     assignments: _assignments
     students: _students
@@ -67,6 +67,6 @@ shared = (storage) ->
     updateLastProject: updateLastProject
     lastProject: lastProject
 
-  return shared
+  return _shared
 
 module.exports = shared
