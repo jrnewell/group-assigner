@@ -1,4 +1,3 @@
-tlr = require("tiny-lr")()
 fs = require "fs"
 
 getVendorDirs = () ->
@@ -93,7 +92,6 @@ headerText = "/***\n * \n * Group Assigner 2014 - Copyright James Newell\n *\n *
 shared = isWatching: false
 
 module.exports = {
-  tlr: tlr
   srcPaths: srcPaths
   watchPaths: watchPaths
   destPaths: destPaths

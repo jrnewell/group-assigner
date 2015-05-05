@@ -19,7 +19,7 @@ prettyHrtime = require "pretty-hrtime"
 _ = require "lodash"
 constants = require "./constants"
 
-{tlr, srcPaths, destPaths, shared, browserifyMain, jadeLocals} = constants
+{srcPaths, destPaths, shared, browserifyMain, jadeLocals} = constants
 
 #
 # vendor tasks
@@ -29,25 +29,25 @@ gulp.task "vendor-js", ->
   gulp.src _.map(srcPaths.vendors, (x) -> "#{x}/js/**/*.js")
   .pipe(changed(destPaths.scripts))
   .pipe(gulp.dest(destPaths.scripts))
-  .pipe gulpIf(shared.isWatching, liveReload(tlr))
+  .pipe gulpIf(shared.isWatching, liveReload())
 
 gulp.task "vendor-css", ->
   gulp.src _.map(srcPaths.vendors, (x) -> "#{x}/css/**/*.css")
   .pipe(changed(destPaths.stylesheets))
   .pipe(gulp.dest(destPaths.stylesheets))
-  .pipe gulpIf(shared.isWatching, liveReload(tlr))
+  .pipe gulpIf(shared.isWatching, liveReload())
 
 gulp.task "vendor-img", ->
   gulp.src _.map(srcPaths.vendors, (x) -> "#{x}/img/**/*")
   .pipe(changed(destPaths.images))
   .pipe(gulp.dest(destPaths.images))
-  .pipe gulpIf(shared.isWatching, liveReload(tlr))
+  .pipe gulpIf(shared.isWatching, liveReload())
 
 gulp.task "vendor-fonts", ->
   gulp.src _.map(srcPaths.vendors, (x) -> "#{x}/fonts/**/*")
   .pipe(changed(destPaths.fonts))
   .pipe(gulp.dest(destPaths.fonts))
-  .pipe gulpIf(shared.isWatching, liveReload(tlr))
+  .pipe gulpIf(shared.isWatching, liveReload())
 
 gulp.task "vendor", ["vendor-js", "vendor-css", "vendor-img", "vendor-fonts"]
 
@@ -65,7 +65,7 @@ gulp.task "web-workers", () ->
     .pipe(coffee())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(destPaths.workers))
-    .pipe gulpIf(shared.isWatching, liveReload(tlr))
+    .pipe gulpIf(shared.isWatching, liveReload())
 
 gulp.task "browserify", () ->
   bOpts =
@@ -106,7 +106,7 @@ gulp.task "browserify", () ->
       .pipe source(browserifyMain.dest)
       .pipe gulp.dest(destPaths.scripts)
       .on "end", endLog
-      .pipe gulpIf(shared.isWatching, liveReload(tlr))
+      .pipe gulpIf(shared.isWatching, liveReload())
 
   bundler.on "update", bundle if shared.isWatching
 
@@ -122,14 +122,14 @@ gulp.task "stylus", ->
     .pipe(changed(destPaths.stylesheets, {extension: ".css"}))
     .pipe(stylus({use: [nib()]}))
     .pipe(gulp.dest(destPaths.stylesheets))
-    .pipe gulpIf(shared.isWatching, liveReload(tlr))
+    .pipe gulpIf(shared.isWatching, liveReload())
 
 gulp.task "css", ->
   gulp.src(srcPaths.css)
     .pipe(plumber())
     .pipe(changed(destPaths.stylesheets))
     .pipe(gulp.dest(destPaths.stylesheets))
-    .pipe gulpIf(shared.isWatching, liveReload(tlr))
+    .pipe gulpIf(shared.isWatching, liveReload())
 
 gulp.task "stylesheets", ["stylus", "css"]
 
@@ -143,14 +143,14 @@ gulp.task "jade", ->
       locals: jadeLocals
       pretty: true
     )).pipe(gulp.dest(destPaths.html))
-    .pipe gulpIf(shared.isWatching, liveReload(tlr))
+    .pipe gulpIf(shared.isWatching, liveReload())
 
 gulp.task "html", ->
   gulp.src(srcPaths.html)
     .pipe(plumber())
     .pipe(changed(destPaths.html))
     .pipe(gulp.dest(destPaths.html))
-    .pipe gulpIf(shared.isWatching, liveReload(tlr))
+    .pipe gulpIf(shared.isWatching, liveReload())
 
 gulp.task "templates", ["jade", "html"]
 
@@ -161,14 +161,14 @@ gulp.task "images", ->
     .pipe(plumber())
     .pipe(changed(destPaths.images))
     .pipe(gulp.dest(destPaths.images))
-    .pipe gulpIf(shared.isWatching, liveReload(tlr))
+    .pipe gulpIf(shared.isWatching, liveReload())
 
 gulp.task "fonts", ->
   gulp.src(srcPaths.fonts)
     .pipe(plumber())
     .pipe(changed(destPaths.fonts))
     .pipe(gulp.dest(destPaths.fonts))
-    .pipe gulpIf(shared.isWatching, liveReload(tlr))
+    .pipe gulpIf(shared.isWatching, liveReload())
 
 gulp.task "assets", ["images", "fonts"]
 
