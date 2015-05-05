@@ -3,7 +3,6 @@ gutil = require "gulp-util"
 jade = require "gulp-jade"
 coffee = require "gulp-coffee"
 sourcemaps = require "gulp-sourcemaps"
-rimraf = require "gulp-rimraf"
 stylus = require "gulp-stylus"
 nib = require "nib"
 plumber = require "gulp-plumber"
@@ -17,6 +16,7 @@ source = require "vinyl-source-stream"
 notify = require "gulp-notify"
 prettyHrtime = require "pretty-hrtime"
 _ = require "lodash"
+del = require "del"
 constants = require "./constants"
 
 {srcPaths, destPaths, shared, browserifyMain, jadeLocals} = constants
@@ -32,7 +32,9 @@ gulp.task "vendor-js", ->
   .pipe gulpIf(shared.isWatching, liveReload())
 
 gulp.task "vendor-css", ->
-  gulp.src _.map(srcPaths.vendors, (x) -> "#{x}/css/**/*.css")
+  gulp.src _.map(srcPaths.vendors, (x) -> "#{x}/css/**/*.css").concat(
+    _.map(srcPaths.vendors, (x) -> "#{x}/css/**/*.css.map")
+  )
   .pipe(changed(destPaths.stylesheets))
   .pipe(gulp.dest(destPaths.stylesheets))
   .pipe gulpIf(shared.isWatching, liveReload())
@@ -172,10 +174,8 @@ gulp.task "fonts", ->
 
 gulp.task "assets", ["images", "fonts"]
 
-gulp.task "clean", ->
-  gulp.src("build", read: false)
-    .pipe(plumber())
-    .pipe(rimraf())
+gulp.task "clean", (cb) ->
+  del(["build"], cb)
 
 gulp.task "build", (callback) ->
   runSequence "clean", ["vendor", "scripts", "stylesheets", "templates", "assets"], callback

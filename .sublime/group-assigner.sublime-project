@@ -1,0 +1,25 @@
+{
+	"folders":
+	[
+		{
+			"file_exclude_patterns":
+			[
+				".bash_completions",
+				".coffeelint",
+				".env"
+			],
+			"folder_exclude_patterns":
+			[
+				"node_modules",
+				".sublime"
+			],
+			"path": "/Users/james/node.js/group-assigner"
+		}
+	],
+	"settings":
+	{
+		"FuzzyFilePath":
+		{
+		}
+	}
+}

@@ -27,7 +27,7 @@ shared = (storage) ->
     showMethod: "fadeIn"
     hideMethod: "fadeOut"
 
-  storage.saveProject = (name) ->
+  saveProject = (name) ->
     project =
       students: shared.students
       simulations: shared.simulations
@@ -35,7 +35,7 @@ shared = (storage) ->
       roles: shared.roles
     storage.saveProject name, project
 
-  storage.loadProject = (name) ->
+  loadProject = (name) ->
     obj = storage.loadProject name
     return unless obj?
     shared.students = obj.project.students
@@ -43,10 +43,10 @@ shared = (storage) ->
     shared.assignments = obj.project.assignments
     shared.roles = obj.project.roles
 
-  storage.updateLastProject = () ->
+  updateLastProject = () ->
     saveProject "_last"
 
-  storage.lastProject = () ->
+  lastProject = () ->
     loadProject "_last"
 
   shared =

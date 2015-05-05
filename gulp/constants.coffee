@@ -60,7 +60,7 @@ jadeLocals =
     "app.css"
   ]
   scripts: [
-    "jquery-2.1.1.js"
+    "jquery.js"
     "jquery.fs.selecter.min.js"
     "jquery.fs.stepper.min.js"
     "modernizr.js"
