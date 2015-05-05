@@ -30,7 +30,7 @@
     "browserify": "~10.0.0",
     "coffeeify": "~1.1.0",
     "connect": "~3.3.5",
-    "serve-static": "~1.9.2"
+    "serve-static": "~1.9.2",
     "del": "~1.1.1",
     "connect-livereload": "~0.5.3",
     "event-stream": "~3.3.0",
