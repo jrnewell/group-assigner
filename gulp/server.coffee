@@ -2,11 +2,12 @@ gulp = require "gulp"
 gutil = require "gulp-util"
 plumber = require "gulp-plumber"
 gopen = require "gulp-open"
+liveReload = require "gulp-livereload"
 events = require "events"
 constants = require "./constants"
 
 
-{tlr, httpPort, httpURL, lrPort, watchPaths, shared} = constants
+{httpPort, httpURL, lrPort, watchPaths, shared} = constants
 
 #
 # server-related tasks
@@ -16,8 +17,9 @@ notifier = new events.EventEmitter()
 
 gulp.task "server", ["build"], (callback) ->
   connect = require("connect")
+  serveStatic = require("serve-static")
   http = require("http")
-  server = connect().use(require("connect-livereload")(port: lrPort)).use(connect.static("./build"))
+  server = connect().use(require("connect-livereload")(port: lrPort)).use(serveStatic("./build"))
   http.createServer(server).listen httpPort, ->
     gutil.log "connect server listening on port " + httpPort
     notifier.emit('start')
@@ -31,7 +33,8 @@ gulp.task "watch", (callback) ->
   # need to run this after the watch flag is set
   gulp.start "server"
 
-  tlr.listen lrPort, ->
+  # start tiny-lr server
+  liveReload.listen port: lrPort, ->
     gutil.log "tiny-lr server listening on port #{lrPort}"
     callback()
 
