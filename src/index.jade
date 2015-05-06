@@ -26,7 +26,7 @@ html(lang="en" ng-app="GroupAssigner")
           include ./includes/_studentsPanel
         .col-md-6
           include ./includes/_simulationsPanel
-      .row.padded-row
+      .row.padded-row(ng-controller="AssignerCtrl")
         .col-md-4.col-md-offset-4
           #calculating-progress.calc-progress-animate(ng-show="isCalculating")
             h4 {{calculatingProgress}}

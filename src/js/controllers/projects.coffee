@@ -50,7 +50,7 @@ ProjectsCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
           notify.success (if project.projectName then "Project '#{project.projectName}' Imported" else "Project Imported")
     catch ex
       $timeout () ->
-        notify.error "Problem Importing Project"
+        notify.failure "Problem Importing Project"
 
   $scope.exportProject = () ->
     project =

@@ -18,8 +18,10 @@ notifier = new events.EventEmitter()
 gulp.task "server", ["build"], (callback) ->
   connect = require("connect")
   serveStatic = require("serve-static")
+  favicon = require('serve-favicon')
   http = require("http")
   server = connect().use(require("connect-livereload")(port: lrPort)).use(serveStatic("./build"))
+  server.use(favicon('./build/img/favicon.ico'))
   http.createServer(server).listen httpPort, ->
     gutil.log "connect server listening on port " + httpPort
     notifier.emit('start')

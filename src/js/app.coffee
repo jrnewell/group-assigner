@@ -2,6 +2,7 @@
 
 AppCtrl = require "./controllers/app"
 ProjectsCtrl = require "./controllers/projects"
+AssignerCtrl = require "./controllers/assigner"
 ResultsCtrl = require "./controllers/results"
 SimulationsCtrl = require "./controllers/simulations"
 StudentsCtrl = require "./controllers/students"
@@ -16,6 +17,7 @@ app = angular.module("GroupAssigner", ["ngAnimate", "ngDialog"])
 
 app.controller "AppCtrl", ["$scope", "$timeout", "shared", AppCtrl]
 app.controller "ProjectsCtrl", ["$scope", "$timeout", "ngDialog", "storage", "shared", ProjectsCtrl]
+app.controller "AssignerCtrl", ["$scope", "$timeout", "shared", AssignerCtrl]
 app.controller "ResultsCtrl", ["$scope", "$timeout", "shared", ResultsCtrl]
 app.controller "SimulationsCtrl", ["$scope", "$timeout", "ngDialog", "shared", SimulationsCtrl]
 app.controller "StudentsCtrl", ["$scope", "$timeout", "shared", StudentsCtrl]
