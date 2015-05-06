@@ -121,8 +121,8 @@ gulp.task "scripts", ["web-workers", "browserify"]
 gulp.task "stylus", ->
   gulp.src(srcPaths.stylus)
     .pipe(plumber())
-    .pipe(changed(destPaths.stylesheets, {extension: ".css"}))
     .pipe(stylus({use: [nib()]}))
+    .pipe(changed(destPaths.html, {hasChanged: changed.compareSha1Digest}))
     .pipe(gulp.dest(destPaths.stylesheets))
     .pipe gulpIf(shared.isWatching, liveReload())
 
@@ -140,11 +140,12 @@ gulp.task "stylesheets", ["stylus", "css"]
 gulp.task "jade", ->
   gulp.src(srcPaths.jade)
     .pipe(plumber())
-    .pipe(changed(destPaths.html, {extension: ".html"}))
     .pipe(jade(
       locals: jadeLocals
       pretty: true
-    )).pipe(gulp.dest(destPaths.html))
+    ))
+    .pipe(changed(destPaths.html, {hasChanged: changed.compareSha1Digest}))
+    .pipe(gulp.dest(destPaths.html))
     .pipe gulpIf(shared.isWatching, liveReload())
 
 gulp.task "html", ->
