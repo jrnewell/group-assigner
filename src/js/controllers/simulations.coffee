@@ -1,6 +1,6 @@
 'use strict'
 
-SimulationsCtrl = ($scope, $timeout, shared) ->
+SimulationsCtrl = ($scope, $timeout, ngDialog, shared) ->
 
   $scope.shared = shared
   notify = shared.notify

@@ -1,6 +1,6 @@
 'use strict'
 
-AppCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
+AppCtrl = ($scope, $timeout, shared) ->
 
   $scope.shared = shared
   notify = shared.notify
