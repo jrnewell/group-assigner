@@ -13,7 +13,16 @@ fileInput = require "./directives/fileInput"
 storage = require "./services/storage"
 shared = require "./services/shared"
 
-app = angular.module("GroupAssigner", ["ngAnimate", "ngDialog"])
+app = angular.module("GroupAssigner", ["ngRoute", "ngAnimate", "ngDialog"])
+
+# routing
+app.config ($routeProvider) ->
+  $routeProvider
+    .when "/",
+      templateUrl: "js/templates/projects.html"
+      controller: "ProjectsCtrl"
+    .otherwise
+      redirectTo: "/"
 
 app.controller "AppCtrl", ["$scope", "$timeout", "shared", AppCtrl]
 app.controller "ProjectsCtrl", ["$scope", "$timeout", "ngDialog", "storage", "shared", ProjectsCtrl]

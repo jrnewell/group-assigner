@@ -1,0 +1,54 @@
+.row
+  .col-md-6.col-md-offset-3
+    .panel.panel-primary
+      .panel-heading
+        h3.panel-title {{(shared.projectName ? shared.projectName : "Project")}}
+      .panel-body
+        .container-fluid
+          .row
+            .col-md-6
+              .form-group
+                button.btn.btn-block(type="button" ng-click="loadProjectDiag()")
+                  span.pad-right
+                    i.fa.fa-file-text.fa-lg
+                  | Load Project
+            .col-md-6
+              .form-group
+                button.btn.btn-block(type="button" ng-click="saveProjectDiag()")
+                  span.pad-right
+                    i.fa.fa-save.fa-lg
+                  | Save Project
+          .row
+            .col-md-6
+              .form-group
+                button.btn.btn-block(type="button" ng-click="importProjectDiag()" file-input on-file-load="importProject(data)")
+                  span.pad-right()
+                    i.fa.fa-download.fa-lg
+                  | Import Project
+            .col-md-6
+              .form-group
+                button.btn.btn-block(type="button" ng-click="exportProject()")
+                  span.pad-right
+                    i.fa.fa-upload.fa-lg
+                  | Export Project
+          .row
+            .col-md-12
+              .form-group
+                button.btn.btn-block.btn-danger(type="button" ng-click="newProject()")
+                  span.pad-right
+                    i.fa.fa-trash-o.fa-lg
+                  | New Project
+          .row
+            .col-md-12
+              .form-group
+                button.btn.btn-block.btn-default(type="button" ng-click="manageRolesDiag()")
+                  span.pad-right
+                    i.fa.fa-male.fa-lg
+                  | Manage Roles
+.row
+  .col-md-6.col-md-offset-3
+    ul.pager
+      li.previous.disabled
+        a(href="#/") Previous
+      li.next
+        a(href="#/students") Students

@@ -21,19 +21,34 @@ html(lang="en" ng-app="GroupAssigner")
               i.fa.fa-users
             | Group Assigner
       .row
-        .col-md-6
-          include ./includes/_projectPanel
-          include ./includes/_studentsPanel
-        .col-md-6
-          include ./includes/_simulationsPanel
-      .row.padded-row(ng-controller="AssignerCtrl")
-        .col-md-4.col-md-offset-4
-          #calculating-progress.calc-progress-animate(ng-show="isCalculating")
-            h4 {{calculatingProgress}}
-          ladda-button(id="assignBtn" ladda-opts="{color: 'red', mode: 'zoom-out'}" ladda-click="assignToGroups(event, ladda)" ng-transclude) Assign Students to Groups
-      .row(ng-if="assignments !== null").padded-row
-        .col-md-12
-          include ./includes/_resultsPanel
+        .col-md-12#project-name
+          h3.project-title
+            span.label.label-default {{(shared.projectName ? shared.projectName : "New Project")}}
+      .row
+        .col-md-12#nav-menu
+          ul.nav.nav-pills.nav-justified
+            li.active
+              a(href="#/") Project / Roles
+            li
+              a(href="#/students") Students
+            li
+              a(href="#/simulations") Simulations
+            li
+              a(href="#/assignments") Assignments
+      .view(ng-view)
+      //-   .col-md-6
+      //-     include ./includes/_projectPanel
+      //-     include ./includes/_studentsPanel
+      //-   .col-md-6
+      //-     include ./includes/_simulationsPanel
+      //- .row.padded-row(ng-controller="AssignerCtrl")
+      //-   .col-md-4.col-md-offset-4
+      //-     #calculating-progress.calc-progress-animate(ng-show="isCalculating")
+      //-       h4 {{calculatingProgress}}
+      //-     ladda-button(id="assignBtn" ladda-opts="{color: 'red', mode: 'zoom-out'}" ladda-click="assignToGroups(event, ladda)" ng-transclude) Assign Students to Groups
+      //- .row(ng-if="assignments !== null").padded-row
+      //-   .col-md-12
+      //-     include ./includes/_resultsPanel
       .row.padded-row
         .col-md-12
-          include ./includes/_footer
+        include ./includes/_footer

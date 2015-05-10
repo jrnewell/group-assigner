@@ -69,6 +69,7 @@ jadeLocals =
     "spin.js"
     "ladda.js"
     "angular.js"
+    "angular-route.js"
     "angular-animate.js"
     "lodash.js"
     "ngDialog.js"
