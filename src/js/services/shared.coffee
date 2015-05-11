@@ -29,10 +29,10 @@ shared = (storage) ->
 
   saveProject = (name) ->
     project =
-      students: shared.students
-      simulations: shared.simulations
-      assignments: shared.assignments
-      roles: shared.roles
+      students: _shared.students
+      simulations: _shared.simulations
+      assignments: _shared.assignments
+      roles: _shared.roles
     storage.saveProject name, project
 
   loadProject = (name) ->
@@ -48,6 +48,10 @@ shared = (storage) ->
 
   lastProject = () ->
     loadProject "_last"
+
+  getSimulation = (name) ->
+    _.find _shared.simulations, (sim) ->
+      sim.name is name
 
   _shared =
     projectName: null
@@ -66,6 +70,7 @@ shared = (storage) ->
     loadProject: loadProject
     updateLastProject: updateLastProject
     lastProject: lastProject
+    getSimulation: getSimulation
 
   return _shared
 

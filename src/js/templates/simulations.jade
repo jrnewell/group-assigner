@@ -1,0 +1,56 @@
+.row
+  .col-md-4.col-md-offset-1
+    .panel.panel-primary(ng-controller="SimulationsCtrl")
+      .panel-heading
+        h3.panel-title Simulations
+      .panel-body
+        #add-simulation.input-group
+            input.form-control(type="text" name="simulation-name" placeholder="New Simulation" ng-model="newSimName" ng-keyup="$event.keyCode == 13 && addSimulation()")
+            .input-group-btn
+              button.btn.btn-primary(type="button" ng-click="addSimulation()") Add
+        ul.list-group
+          li.list-group-item
+            h4 {{shared.simulations.length}} Simulation{{shared.simulations.length == 1 ? '' : 's'}}
+          li.list-group-item(ng-repeat="simulation in shared.simulations | orderBy:'name'")
+            button.close(type="button" aria-hidden="true" ng-click="delSimulation(simulation)") ×
+            span.simGroupSizeItem {{simulation.groupSize}}
+            a(ng-href="#/simulations/{{simulation.name | escape}}") {{simulation.name}}
+  .col-md-6(ng-show="sims.selected")
+    .panel.panel-primary(ng-controller="SimulationsCtrl")
+      .panel-heading
+        h3.panel-title {{sims.selected.name}}
+      .panel-body
+        #add-simulation
+          .form-group
+            label(for="selector-simulator-groupsize") Students per Group
+            select(id="selector-simulator-groupsize" name="selector-simulator-groupsize" selecter selecter-val="sims.selected.groupSize" selecter-chg="changeMinSize()")
+              option(value="1") One
+              option(value="2") Two
+              option(value="3") Three
+              option(value="4") Four
+              option(value="5") Five
+          .form-group
+            label(for="selector-simulator-min") Minimum Number of Students Required for Simulation
+            select(id="selector-simulator-min" name="selector-simulator-min" selecter selecter-val="sims.selected.minSize" selecter-opts="newSim.minOptions")
+          .form-group
+            label(for="selector-simulator-numgroups") Number of Groups per Simulation
+            select(id="selector-simulator-numgroups" name="selector-simulator-numgroups" selecter selecter-val="sims.selected.numGroups" selecter-chg="changeMinSize()")
+              option(value="2") Two
+              option(value="3") Three
+              option(value="4") Four
+          .form-group
+            button.btn.btn-default.btn-block(type="button" ng-click="giveNamesToGroups()") Give Names to Groups
+          .form-group(ng-show="roles.length > 0")
+            label(for="assign-roles-btn") Assign Roles
+            button.btn.btn-default.btn-block(type="button" name="assign-roles-btn" ng-click="assignRolesDiag()") Assign Roles to Group
+          .form-group
+            button.btn.btn-default.btn-block(type="button" ng-click="giveNamesToGroups()") Students that will Skip the Simulation
+          .form-group
+            button.btn.btn-danger.btn-block(type="button" ng-click="giveNamesToGroups()") Simulation has Already Taken Place
+.row
+  .col-md-6.col-md-offset-3
+    ul.pager
+      li.previous
+        a(href="#/students") Previous
+      li.next
+        a(href="#/assignments") Next

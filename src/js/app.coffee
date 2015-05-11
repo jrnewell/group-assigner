@@ -18,17 +18,23 @@ app = angular.module("GroupAssigner", ["ngRoute", "ngAnimate", "ngDialog"])
 # routing
 app.config ($routeProvider) ->
   $routeProvider
-    .when "/",
-      templateUrl: "js/templates/projects.html"
+    .when "/project",
+      templateUrl: "js/templates/project.html"
       controller: "ProjectsCtrl"
+    .when "/students",
+      templateUrl: "js/templates/students.html"
+      controller: "StudentsCtrl"
+    .when "/simulations/:simId?",
+      templateUrl: "js/templates/simulations.html"
+      controller: "SimulationsCtrl"
     .otherwise
-      redirectTo: "/"
+      redirectTo: "/project"
 
-app.controller "AppCtrl", ["$scope", "$timeout", "shared", AppCtrl]
+app.controller "AppCtrl", ["$scope", "$timeout", "$location", "shared", AppCtrl]
 app.controller "ProjectsCtrl", ["$scope", "$timeout", "ngDialog", "storage", "shared", ProjectsCtrl]
 app.controller "AssignerCtrl", ["$scope", "$timeout", "shared", AssignerCtrl]
 app.controller "ResultsCtrl", ["$scope", "$timeout", "shared", ResultsCtrl]
-app.controller "SimulationsCtrl", ["$scope", "$timeout", "ngDialog", "shared", SimulationsCtrl]
+app.controller "SimulationsCtrl", ["$scope", "$timeout", "$location", "$routeParams", "ngDialog", "shared", SimulationsCtrl]
 app.controller "StudentsCtrl", ["$scope", "$timeout", "shared", StudentsCtrl]
 
 app.directive "selecter", ["$timeout", selecter]
@@ -38,3 +44,7 @@ app.directive "fileInput", ["$parse", fileInput]
 
 app.factory "storage", [storage]
 app.factory "shared", ["storage", shared]
+
+# simple filters
+app.filter "escape", () ->
+    window.encodeURIComponent

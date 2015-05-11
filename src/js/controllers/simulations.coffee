@@ -1,9 +1,17 @@
 'use strict'
 
-SimulationsCtrl = ($scope, $timeout, ngDialog, shared) ->
+SimulationsCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) ->
 
   $scope.shared = shared
   notify = shared.notify
+
+  console.log "routeParams: "
+  console.dir $routeParams
+
+  $scope.sims = {}
+  if $routeParams.simId?
+    sim = shared.getSimulation($routeParams.simId)
+    $scope.sims.selected = sim if sim?
 
   resetNewSim = () ->
     $scope.newSim =
@@ -23,7 +31,32 @@ SimulationsCtrl = ($scope, $timeout, ngDialog, shared) ->
 
   resetNewSim()
 
+  defaultSimlation = (simName) ->
+    return {
+      name: simName
+      groupSize: 1
+      minSize: 2
+      minOptions:
+        2: "Two"
+        3: "Three"
+        4: "Four"
+      numGroups: 2
+      groupNames: [
+        {name: null}
+        {name: null}
+      ]
+      roles: []
+    }
+
   $scope.addSimulation = () ->
+    return if _.isEmpty($scope.newSimName) or shared.getSimulation($scope.newSimName)
+    console.log "addSimulation: #{$scope.newSimName}"
+    newSim = defaultSimlation $scope.newSimName
+    shared.simulations.push newSim
+    $scope.newSimName = ""
+    $location.url "/simulations/#{newSim.name}"
+
+  $scope.addSimulation2 = () ->
     return if _.isEmpty($scope.newSimName) or _.contains(shared.simulations, $scope.newSimName)
 
     {groupSize, minSize, numGroups, groupNames, roles} = $scope.newSim
@@ -50,7 +83,8 @@ SimulationsCtrl = ($scope, $timeout, ngDialog, shared) ->
   $scope.delSimulation = (simulation) ->
     console.log "delSimulation: #{simulation}"
     shared.simulations = _.without(shared.simulations, simulation)
-    updateLastProject()
+    $location.url "/simulations"
+    #updateLastProject()
 
   $scope.changeMinSize = () ->
     {groupSize, minSize, numGroups} = $scope.newSim
