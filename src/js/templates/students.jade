@@ -1,6 +1,6 @@
 .row
-  .col-md-6.col-md-offset-3
-    .panel.panel-primary(ng-controller="StudentsCtrl")
+  .col-md-6
+    .panel.panel-primary()
       .panel-heading
         h3.panel-title Students
       .panel-body
@@ -16,6 +16,23 @@
             span.studentIcon
               i.fa.fa-user.fa-lg
             | {{student}}
+  .col-md-6
+    .panel.panel-primary()
+      .panel-heading
+        h3.panel-title Roles
+      .panel-body
+        #add-role.input-group
+          input.form-control(type="text" placeholder="New Role" ng-model="newRole" ng-keyup="$event.keyCode == 13 && addRole()")
+          .input-group-btn
+            button.btn.btn-primary(type="button" ng-click="addRole()") Add
+        ul.list-group
+          li.list-group-item
+            h4 {{shared.roles.length}} Role{{shared.roles.length == 1 ? '' : 's'}}
+          li.list-group-item(ng-repeat="role in shared.roles | orderBy:'toString()'")
+            button.close(type="button" aria-hidden="true" ng-click="delRole(role)") ×
+            span.studentIcon
+              i.fa.fa-male.fa-lg
+            | {{role}}
 .row
   .col-md-6.col-md-offset-3
     ul.pager

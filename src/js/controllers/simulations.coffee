@@ -123,4 +123,10 @@ SimulationsCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) 
       className: 'ngdialog-theme-default'
       scope: $scope
 
+  $scope.skippingStudentsDiag = () ->
+    ngDialog.open
+      template: "js/templates/skippingStudents.html"
+      className: 'ngdialog-theme-default'
+      scope: $scope
+
 module.exports = SimulationsCtrl

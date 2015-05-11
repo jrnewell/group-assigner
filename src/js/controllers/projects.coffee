@@ -84,23 +84,5 @@ ProjectsCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
     , () ->
       isolate.$destroy()
 
-  # TODO: put in different controller
-  $scope.manageRolesDiag = () ->
-    ngDialog.open
-      template: "js/templates/manageRoles.html"
-      className: 'ngdialog-theme-default'
-      scope: $scope
-
-  $scope.addRole = (newRoleName) ->
-    return false if _.isEmpty(newRoleName) or _.contains(shared.roles, newRoleName)
-    shared.roles.push newRoleName
-    updateLastProject()
-    return true
-
-  $scope.delRole = (role) ->
-    console.log "delRole: #{role}"
-    shared.roles = _.without(shared.roles, role)
-    updateLastProject()
-
 
 module.exports = ProjectsCtrl
