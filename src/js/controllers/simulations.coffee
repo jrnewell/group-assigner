@@ -136,6 +136,10 @@ SimulationsCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) 
       isolate.$destroy()
 
   $scope.simulationIsDone = () ->
+    unless $scope.simulation.done?
+      $scope.simulation.done =
+        games: []
+
     $scope.simulation.isDone = true
 
 module.exports = SimulationsCtrl
