@@ -16,7 +16,7 @@
             span.simGroupSizeItem {{simulation.groupSize}}
             a(ng-href="#/simulations/{{simulation.name | escape}}") {{simulation.name}}
   .col-md-6(ng-show="simulation")
-    .panel.panel-primary
+    .panel.panel-primary(ng-show="!simulation.isDone")
       .panel-heading
         h3.panel-title {{simulation.name}}
       .panel-body
@@ -46,7 +46,9 @@
           .form-group
             button.btn.btn-default.btn-block(type="button" ng-click="absentStudentsDiag()") Students that will be Absent
           .form-group
-            button.btn.btn-danger.btn-block(type="button" ng-click="giveNamesToGroups()") This Simulation has Already Taken Place
+            button.btn.btn-danger.btn-block(type="button" ng-click="simulationIsDone()") This Simulation has Transpired
+    include ../../includes/_transpiredPanel
+
 .row
   .col-md-6.col-md-offset-3
     ul.pager

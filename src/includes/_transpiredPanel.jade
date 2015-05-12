@@ -1,0 +1,7 @@
+.panel.panel-danger(ng-show="simulation.isDone" ng-controller="TranspiredCtrl")
+  .panel-heading
+      h3.panel-title {{simulation.name}}
+  .panel-body
+    #add-done-simulation
+      .form-group
+        button.btn.btn-primary.btn-block(type="button" ng-click="simulationIsNotDone()") This Simulation has not Transpired

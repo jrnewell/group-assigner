@@ -21,6 +21,7 @@ SimulationsCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) 
       ]
       roles: []
       absent: []
+      isDone: false
     }
 
   # get possible selected simulation
@@ -133,5 +134,8 @@ SimulationsCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) 
       isolate.$destroy()
     , () ->
       isolate.$destroy()
+
+  $scope.simulationIsDone = () ->
+    $scope.simulation.isDone = true
 
 module.exports = SimulationsCtrl

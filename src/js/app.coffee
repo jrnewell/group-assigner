@@ -7,6 +7,7 @@ AssignRolesCtrl = require "./controllers/assignRoles"
 ResultsCtrl = require "./controllers/results"
 SimulationsCtrl = require "./controllers/simulations"
 StudentsCtrl = require "./controllers/students"
+TranspiredCtrl = require "./controllers/transpired"
 selecter = require "./directives/selecter"
 iCheck = require "./directives/iCheck"
 laddaButton = require "./directives/laddaButton"
@@ -38,6 +39,7 @@ app.controller "AssignRolesCtrl", ["$scope", "$timeout", "ngDialog", "shared", A
 app.controller "ResultsCtrl", ["$scope", "$timeout", "shared", ResultsCtrl]
 app.controller "SimulationsCtrl", ["$scope", "$timeout", "$location", "$routeParams", "ngDialog", "shared", SimulationsCtrl]
 app.controller "StudentsCtrl", ["$scope", "$timeout", "shared", StudentsCtrl]
+app.controller "TranspiredCtrl", ["$scope", "$timeout", "$location", "$routeParams", "ngDialog", "shared", TranspiredCtrl]
 
 app.directive "selecter", ["$timeout", selecter]
 app.directive "iCheck", ["$timeout", iCheck]
