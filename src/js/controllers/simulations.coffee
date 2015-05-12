@@ -108,9 +108,9 @@ SimulationsCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) 
       className: 'ngdialog-theme-default'
       scope: $scope
 
-  $scope.skippingStudentsDiag = () ->
+  $scope.absentStudentsDiag = () ->
     isolate = $scope.$new(true)
-    console.log "skippingStudentsDiag"
+    console.log "absentStudentsDiag"
     students = {}
     for student in $scope.simulation.absent
       students[student] = true
@@ -124,7 +124,7 @@ SimulationsCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) 
 
     isolate.students = studentsArray
     dialog = ngDialog.open
-      template: "js/templates/skippingStudents.html"
+      template: "js/templates/absentStudents.html"
       className: 'ngdialog-theme-default'
       scope: isolate
 
