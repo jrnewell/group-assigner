@@ -15,15 +15,15 @@
             button.close(type="button" aria-hidden="true" ng-click="delSimulation(simulation)") ×
             span.simGroupSizeItem {{simulation.groupSize}}
             a(ng-href="#/simulations/{{simulation.name | escape}}") {{simulation.name}}
-  .col-md-6(ng-show="sims.selected")
+  .col-md-6(ng-show="simulation")
     .panel.panel-primary
       .panel-heading
-        h3.panel-title {{sims.selected.name}}
+        h3.panel-title {{simulation.name}}
       .panel-body
         #add-simulation
           .form-group
             label(for="selector-simulator-groupsize") Students per Group
-            select(id="selector-simulator-groupsize" name="selector-simulator-groupsize" selecter selecter-val="sims.selected.groupSize" selecter-chg="changeMinSize()")
+            select(id="selector-simulator-groupsize" name="selector-simulator-groupsize" selecter selecter-val="simulation.groupSize" selecter-chg="changeMinSize()")
               option(value="1") One
               option(value="2") Two
               option(value="3") Three
@@ -31,16 +31,16 @@
               option(value="5") Five
           .form-group
             label(for="selector-simulator-min") Minimum Number of Students Required for Simulation
-            select(id="selector-simulator-min" name="selector-simulator-min" selecter selecter-val="sims.selected.minSize" selecter-opts="newSim.minOptions")
+            select(id="selector-simulator-min" name="selector-simulator-min" selecter selecter-val="simulation.minSize" selecter-opts="simulation.minOptions")
           .form-group
             label(for="selector-simulator-numgroups") Number of Groups per Simulation
-            select(id="selector-simulator-numgroups" name="selector-simulator-numgroups" selecter selecter-val="sims.selected.numGroups" selecter-chg="changeMinSize()")
+            select(id="selector-simulator-numgroups" name="selector-simulator-numgroups" selecter selecter-val="simulation.numGroups" selecter-chg="changeMinSize()")
               option(value="2") Two
               option(value="3") Three
               option(value="4") Four
           .form-group
             button.btn.btn-default.btn-block(type="button" ng-click="giveNamesToGroups()") Give Names to Groups
-          .form-group(ng-show="roles.length > 0")
+          .form-group(ng-show="shared.roles.length > 0" ng-controller="AssignRolesCtrl")
             label(for="assign-roles-btn") Assign Roles
             button.btn.btn-default.btn-block(type="button" name="assign-roles-btn" ng-click="assignRolesDiag()") Assign Roles to Group
           .form-group

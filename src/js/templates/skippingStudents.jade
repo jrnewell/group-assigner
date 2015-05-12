@@ -1,0 +1,11 @@
+.ga-modal-header
+  h4
+    span
+      i.fa.fa-users
+    | Absent Students
+.ga-modal-body
+  div(ng-repeat="student in students | orderBy:'name'")
+    input(name="{{student}}-checkbox" type="checkbox" i-check i-check-val="student.absent")
+    label.absentStudentsLabel(for="{{student}}-checkbox") {{student.name}}
+.ga-modal-footer
+    button.btn.btn-info.btn-block(type="button" ng-click="closeThisDialog()") Done

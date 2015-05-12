@@ -5,32 +5,6 @@ SimulationsCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) 
   $scope.shared = shared
   notify = shared.notify
 
-  console.log "routeParams: "
-  console.dir $routeParams
-
-  $scope.sims = {}
-  if $routeParams.simId?
-    sim = shared.getSimulation($routeParams.simId)
-    $scope.sims.selected = sim if sim?
-
-  resetNewSim = () ->
-    $scope.newSim =
-      groupSize: 1
-      minSize: 2
-      minOptions:
-        2: "Two"
-        3: "Three"
-        4: "Four"
-      numGroups: 2
-      groupNames: [
-        {name: null}
-        {name: null}
-      ]
-      roles: []
-    $scope.newSimName = ""
-
-  resetNewSim()
-
   defaultSimlation = (simName) ->
     return {
       name: simName
@@ -46,7 +20,15 @@ SimulationsCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) 
         {name: null}
       ]
       roles: []
+      absent: []
     }
+
+  # get possible selected simulation
+  if $routeParams.simId?
+    sim = shared.getSimulation($routeParams.simId)
+    if sim?
+      _.defaults sim, defaultSimlation($routeParams.simId)
+      $scope.simulation = sim
 
   $scope.addSimulation = () ->
     return if _.isEmpty($scope.newSimName) or shared.getSimulation($scope.newSimName)
@@ -87,33 +69,36 @@ SimulationsCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) 
     #updateLastProject()
 
   $scope.changeMinSize = () ->
-    {groupSize, minSize, numGroups} = $scope.newSim
+    return unless $scope.simulation?
+    {groupSize, minSize, numGroups} = $scope.simulation
     console.log "changeMinSize: #{groupSize} #{minSize} #{numGroups}"
 
     minBottom = numGroups
     minTop = (numGroups * groupSize)
-    $scope.newSim.minOptions = _.reduce([minBottom..minTop], (obj, num) ->
+    $scope.simulation.minOptions = _.reduce([minBottom..minTop], (obj, num) ->
         obj[num] = shared.numToWord(num)
         return obj
     , {})
-    $scope.newSim.minSize = minBottom if minSize < minBottom
-    $scope.newSim.minSize = minTop if minSize > minTop
+    $scope.simulation.minSize = minBottom if minSize < minBottom
+    $scope.simulation.minSize = minTop if minSize > minTop
 
   resizeGroupNames = () ->
-    {numGroups, groupNames} = $scope.newSim
+    return unless $scope.simulation?
+    {numGroups, groupNames} = $scope.simulation
     return if numGroups == groupNames.length
-    console.log "newSim.numGroups changed: #{numGroups}"
+    console.log "simulation.numGroups changed: #{numGroups}"
     if numGroups < groupNames.length
-      $scope.newSim.groupNames = groupNames[0..(numGroups - 1)]
+      $scope.simulation.groupNames = groupNames[0..(numGroups - 1)]
     else if numGroups > groupNames.length
-      $scope.newSim.groupNames = groupNames.concat ({name: null} for i in [1..(numGroups - groupNames.length)])
-    console.log JSON.stringify($scope.newSim.groupNames)
+      $scope.simulation.groupNames = groupNames.concat ({name: null} for i in [1..(numGroups - groupNames.length)])
+    console.log JSON.stringify($scope.simulation.groupNames)
 
-  $scope.$watch "newSim.numGroups", resizeGroupNames
+  $scope.$watch "simulation.numGroups", resizeGroupNames
 
-  $scope.$watch "newSim.groupSize", () ->
-    return if _.isEmpty($scope.newSim.roles)
-    $scope.newSim.roles = []
+  $scope.$watch "simulation.groupSize", () ->
+    return unless $scope.simulation?
+    return if _.isEmpty($scope.simulation.roles)
+    $scope.simulation.roles = []
     $timeout () ->
       notify.warning "Role assignment has been cleared due to group size change. Please reassign roles."
 
@@ -124,9 +109,29 @@ SimulationsCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) 
       scope: $scope
 
   $scope.skippingStudentsDiag = () ->
-    ngDialog.open
+    isolate = $scope.$new(true)
+    console.log "skippingStudentsDiag"
+    students = {}
+    for student in $scope.simulation.absent
+      students[student] = true
+    for student in shared.students
+      students[student] = false unless students[student]?
+    studentsArray = []
+    for student, absent of students
+      studentsArray.push
+        name: student
+        absent: absent
+
+    isolate.students = studentsArray
+    dialog = ngDialog.open
       template: "js/templates/skippingStudents.html"
       className: 'ngdialog-theme-default'
-      scope: $scope
+      scope: isolate
+
+    dialog.closePromise.then () ->
+      $scope.simulation.absent = _.pluck(_.filter(isolate.students, ((student) -> student.absent)), "name")
+      isolate.$destroy()
+    , () ->
+      isolate.$destroy()
 
 module.exports = SimulationsCtrl

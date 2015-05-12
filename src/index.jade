@@ -27,13 +27,13 @@ html(lang="en" ng-app="GroupAssigner")
       .row
         .col-md-12#nav-menu
           ul.nav.nav-pills.nav-justified
-            li(ng-class="menuClass('project')")
+            li(ng-class="isActivePath('project')")
               a(href="#/project") Project
-            li(ng-class="menuClass('students')")
+            li(ng-class="isActivePath('students')")
               a(href="#/students") Students / Roles
-            li(ng-class="menuClass('simulations')")
+            li(ng-class="isActivePath('simulations')")
               a(href="#/simulations") Simulations
-            li(ng-class="menuClass('assignments')")
+            li(ng-class="isActivePath('assignments')")
               a(href="#/assignments") Assignments
       .view(ng-view)
       //-   .col-md-6

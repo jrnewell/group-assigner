@@ -4,7 +4,7 @@
       i.fa.fa-users
     | Group Names
 .ga-modal-body
-  div(ng-repeat="groupName in newSim.groupNames")
+  div(ng-repeat="groupName in simulation.groupNames")
     input.form-control(type="text" name="groupName{{$index+1}}" placeholder="Group {{$index+1}}" ng-model="groupName.name")
 .ga-modal-footer
     button.btn.btn-info.btn-block(type="button" ng-click="closeThisDialog()") Update

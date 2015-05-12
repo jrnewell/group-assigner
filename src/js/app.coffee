@@ -3,6 +3,7 @@
 AppCtrl = require "./controllers/app"
 ProjectsCtrl = require "./controllers/projects"
 AssignerCtrl = require "./controllers/assigner"
+AssignRolesCtrl = require "./controllers/assignRoles"
 ResultsCtrl = require "./controllers/results"
 SimulationsCtrl = require "./controllers/simulations"
 StudentsCtrl = require "./controllers/students"
@@ -33,6 +34,7 @@ app.config ($routeProvider) ->
 app.controller "AppCtrl", ["$scope", "$timeout", "$location", "shared", AppCtrl]
 app.controller "ProjectsCtrl", ["$scope", "$timeout", "ngDialog", "storage", "shared", ProjectsCtrl]
 app.controller "AssignerCtrl", ["$scope", "$timeout", "shared", AssignerCtrl]
+app.controller "AssignRolesCtrl", ["$scope", "$timeout", "ngDialog", "shared", AssignRolesCtrl]
 app.controller "ResultsCtrl", ["$scope", "$timeout", "shared", ResultsCtrl]
 app.controller "SimulationsCtrl", ["$scope", "$timeout", "$location", "$routeParams", "ngDialog", "shared", SimulationsCtrl]
 app.controller "StudentsCtrl", ["$scope", "$timeout", "shared", StudentsCtrl]

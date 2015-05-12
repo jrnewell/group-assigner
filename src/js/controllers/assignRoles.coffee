@@ -7,7 +7,7 @@ AssignRoles = ($scope, $timeout, ngDialog, shared) ->
 
   $scope.assignRolesDiag = () ->
     isolate = $scope.$new(true)
-    isolate.roles = $scope.newSim.roles
+    isolate.roles = $scope.simulation.roles
 
     resetAssignDiag = () ->
       isolate.assignment = {}
@@ -15,7 +15,7 @@ AssignRoles = ($scope, $timeout, ngDialog, shared) ->
 
       maxVal = _.reduce(isolate.roles, (left, assign) ->
           return left - assign.val
-      , $scope.newSim.groupSize)
+      , $scope.simulation.groupSize)
       return isolate.roleValOpts = {} if maxVal == 0
 
       minVal = (if isolate.unassignedRoles.length > 1 then 1 else maxVal)
@@ -59,7 +59,7 @@ AssignRoles = ($scope, $timeout, ngDialog, shared) ->
 
     isolate.delRoleAssignemnt = (role) ->
       isolate.roles = _.reject(isolate.roles, {role: role})
-      $scope.newSim.roles = isolate.roles
+      $scope.simulation.roles = isolate.roles
       resetAssignDiag()
 
       unless _.some(isolate.roles, "excess") || isolate.roles.length == 0
