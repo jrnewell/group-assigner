@@ -14,7 +14,7 @@ ProjectsCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
     isolate = $scope.$new(true)
     isolate.projectList = storage.projectList()
     ngDialog.open
-      template: "js/templates/loadProject.html"
+      template: "js/templates/dialogs/projects/loadProject.html"
       className: 'ngdialog-theme-default'
       scope: isolate
 
@@ -25,7 +25,7 @@ ProjectsCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
 
   $scope.saveProjectDiag = () ->
     promise = ngDialog.openConfirm
-      template: "js/templates/saveProject.html"
+      template: "js/templates/dialogs/projects/saveProject.html"
       className: 'ngdialog-theme-default'
       scope: $scope
 
@@ -67,7 +67,7 @@ ProjectsCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
     isolate = $scope.$new(true)
     isolate.confirmText = "Do you want to clear the current project?"
     promise = ngDialog.openConfirm
-      template: "js/templates/confirm.html"
+      template: "js/templates/dialogs/common/confirm.html"
       className: 'ngdialog-theme-default'
       scope: isolate
 

@@ -12,7 +12,7 @@ TranspiredCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) -
     _.pull($scope.simulation.done.games, game)
 
   $scope.addGroup = (game) ->
-    game.push [{name: "Jim"}]
+    game.push []
 
   $scope.delGroup = (game, group) ->
     _.pull(game, group)
@@ -20,11 +20,13 @@ TranspiredCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) -
   $scope.delStudent = (group, student) ->
     _.pull(group, student)
 
-  findStudent = (name) ->
+  findStudent = (name, remove = false) ->
     for game in $scope.simulation.done.games
       for group in game
         for student in group
-          return student if student.name is name
+          if student.name is name
+            _.pull(group, student) if remove
+            return student
     return null
 
   #TODO: without -> pull
@@ -41,20 +43,20 @@ TranspiredCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) -
     for student in group
       students[student.name] = true
     studentsArray = []
-    for student, absent of students
+    for student, inGroup of students
       studentsArray.push
         name: student
-        absent: absent
+        inGroup: inGroup
 
     isolate.students = studentsArray
     dialog = ngDialog.open
-      template: "js/templates/absentStudents.html"
+      template: "js/templates/dialogs/transpired/assignStudents.html"
       className: 'ngdialog-theme-default'
       scope: isolate
 
     dialog.closePromise.then () ->
       oldStudentArray = _.pluck(group, "name")
-      newStudentArray = _.pluck(_.filter(isolate.students, ((student) -> student.absent)), "name")
+      newStudentArray = _.pluck(_.filter(isolate.students, ((student) -> student.inGroup)), "name")
       removedStudents = _.difference(oldStudentArray, newStudentArray)
       addedStudents = _.difference(newStudentArray, oldStudentArray)
 
@@ -64,10 +66,24 @@ TranspiredCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) -
         group.push student unless removedStudents.indexOf(student.name) >= 0
 
       for studentName in addedStudents
-        student = findStudent(studentName)
+        student = findStudent(studentName, true)
         student = {name: studentName} unless student?
         group.push student
 
+      isolate.$destroy()
+    , () ->
+      isolate.$destroy()
+
+  $scope.addRole = (student) ->
+    isolate = $scope.$new(true)
+    isolate.student = student
+    isolate.roles = shared.roles
+    dialog = ngDialog.open
+      template: "js/templates/dialogs/transpired/assignRoles.html"
+      className: 'ngdialog-theme-default'
+      scope: isolate
+
+    dialog.closePromise.then () ->
       isolate.$destroy()
     , () ->
       isolate.$destroy()

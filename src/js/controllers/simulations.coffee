@@ -105,7 +105,7 @@ SimulationsCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) 
 
   $scope.giveNamesToGroups = () ->
     ngDialog.open
-      template: "js/templates/namesToGroups.html"
+      template: "js/templates/dialogs/simulations/namesToGroups.html"
       className: 'ngdialog-theme-default'
       scope: $scope
 
@@ -125,7 +125,7 @@ SimulationsCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) 
 
     isolate.students = studentsArray
     dialog = ngDialog.open
-      template: "js/templates/absentStudents.html"
+      template: "js/templates/dialogs/simulations/absentStudents.html"
       className: 'ngdialog-theme-default'
       scope: isolate
 

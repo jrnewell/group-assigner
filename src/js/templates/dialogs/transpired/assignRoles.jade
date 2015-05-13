@@ -1,0 +1,11 @@
+.ga-modal-header
+  h4
+    span
+      i.fa.fa-male
+    | Assign Role
+.ga-modal-body
+  div(ng-repeat="role in roles | orderBy:'name'")
+    input(id="{{role}}-radio" name="assign-role" type="radio" i-check i-check-val="student.role")
+    label.rolesRadioLabel(for="{{role}}-radio") {{role}}
+.ga-modal-footer
+    button.btn.btn-info.btn-block(type="button" ng-click="closeThisDialog()") Done

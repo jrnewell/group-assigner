@@ -1,7 +1,8 @@
 .ga-modal-header
   h4
-    span
-      i.fa.fa-ban
+    span.fa-stack
+      i.fa.fa-user.fa-stack-1x
+      i.fa.fa-ban.fa-stack-2x.text-danger
     | Absent Students
 .ga-modal-body
   div(ng-repeat="student in students | orderBy:'name'")

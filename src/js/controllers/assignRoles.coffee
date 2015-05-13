@@ -71,7 +71,7 @@ AssignRoles = ($scope, $timeout, ngDialog, shared) ->
       console.log "isolate.roleValOpts: #{JSON.stringify(isolate.roleValOpts)}"
 
     ngDialog.open
-      template: "js/templates/assignRoles.html"
+      template: "js/templates/dialogs/simulations/assignRoles.html"
       className: 'ngdialog-theme-default'
       scope: isolate
 
