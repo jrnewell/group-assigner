@@ -23,6 +23,6 @@
                 button.close(type="button" aria-hidden="true" ng-click="delStudent(group, student)") ×
                 span
                   i.fa.fa-user
-                a.student-assignment(ng-click="addRole(student)") {{student.name}}{{(student.role ? ' (' + student.role + ')' : '')}}
+                a.student-assignment(ng-click="toggleRole(student)") {{student.name}}{{(student.role ? ' (' + student.role + ')' : '')}}
       .form-group
         button.btn.btn-block(type="button" ng-click="simulationIsNotDone()") This Simulation has not Transpired

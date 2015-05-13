@@ -74,19 +74,20 @@ TranspiredCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) -
     , () ->
       isolate.$destroy()
 
-  $scope.addRole = (student) ->
-    isolate = $scope.$new(true)
-    isolate.student = student
-    isolate.roles = shared.roles
-    dialog = ngDialog.open
-      template: "js/templates/dialogs/transpired/assignRoles.html"
-      className: 'ngdialog-theme-default'
-      scope: isolate
-
-    dialog.closePromise.then () ->
-      isolate.$destroy()
-    , () ->
-      isolate.$destroy()
+  $scope.toggleRole = (student) ->
+    return unless shared.roles.length > 0
+    if student.role?
+      idx = shared.roles.indexOf(student.role)
+      if idx < 0
+        student.role = shared.roles[0]
+      else
+        next = idx + 1 % student.role.length
+        if next == 0
+          delete student.role
+        else
+          student.role = shared.roles[next]
+    else
+      student.role = shared.roles[0]
 
   $scope.simulationIsNotDone = () ->
     $scope.simulation.isDone = false
