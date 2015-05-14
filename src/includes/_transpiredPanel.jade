@@ -4,7 +4,12 @@
   .panel-body
     #add-done-simulation
       .form-group
-        button.btn.btn-default.btn-block(type="button" ng-click="addGame()") Add Game
+        label(for="selector-simulator-min") Simulation Name
+        input.form-control(type="text" name="simulation-name" placeholder="New Simulation" ng-model="simulation.name" ng-keyup="$event.keyCode == 13 && addSimulation()")
+      .form-group(ng-show="simulation.done.groupNames.length > 0")
+        button.btn.btn-default.btn-block(type="button" ng-click="giveNamesToGroups()") Give Names to Groups
+      .form-group
+        button.btn.btn-info.btn-block(type="button" ng-click="addGame()") Add Game
       ul.list-group
         li.list-group-item(ng-repeat="game in simulation.done.games")
           button.close(type="button" aria-hidden="true" ng-click="delGame(game)") ×
@@ -17,7 +22,7 @@
             p
               a.add-group-btn(ng-click="addStudent(group)")
                 i.fa.fa-user-plus.fa-lg
-              | Group {{$index + 1}}
+              | {{simulation.done.groupNames[$index].name}}
             ul.list-unstyled.group-assignment(ng-class="'group-' + ($index + 1)")
               li(ng-repeat="student in group")
                 button.close(type="button" aria-hidden="true" ng-click="delStudent(group, student)") ×

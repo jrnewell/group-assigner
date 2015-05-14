@@ -13,9 +13,17 @@ TranspiredCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) -
 
   $scope.addGroup = (game) ->
     game.push []
+    if game.length > $scope.simulation.done.groupNames.length
+      $scope.simulation.done.groupNames.push {name: "Group #{game.length}"}
 
   $scope.delGroup = (game, group) ->
     _.pull(game, group)
+
+  $scope.giveNamesToGroups = () ->
+    ngDialog.open
+      template: "js/templates/dialogs/transpired/namesToGroups.html"
+      className: 'ngdialog-theme-default'
+      scope: $scope
 
   $scope.delStudent = (group, student) ->
     _.pull(group, student)
@@ -32,6 +40,7 @@ TranspiredCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) -
   #TODO: without -> pull
   #TODO: absent students -> indexBy
   #TODO: absent students -> stacked icon
+  #TODO: iCheck / ngDialog bugs
 
   $scope.addStudent = (group) ->
     isolate = $scope.$new(true)

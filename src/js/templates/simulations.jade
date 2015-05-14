@@ -13,7 +13,7 @@
             h4 {{shared.simulations.length}} Simulation{{shared.simulations.length == 1 ? '' : 's'}}
           li.list-group-item(ng-repeat="simulation in shared.simulations | orderBy:'name'")
             button.close(type="button" aria-hidden="true" ng-click="delSimulation(simulation)") ×
-            span.simGroupSizeItem {{simulation.groupSize}}
+            span.simGroupSizeItem(ng-class="simulation.isDone ? 'simGroupSizeItemRed' : 'simGroupSizeItemGreen'") {{simulation.isDone ? 'x' : simulation.groupSize}}
             a(ng-href="#/simulations/{{simulation.name | escape}}") {{simulation.name}}
   .col-md-6(ng-show="simulation")
     .panel.panel-primary(ng-show="!simulation.isDone")

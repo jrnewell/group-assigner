@@ -139,6 +139,7 @@ SimulationsCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) 
     unless $scope.simulation.done?
       $scope.simulation.done =
         games: []
+        groupNames: []
 
     $scope.simulation.isDone = true
 
