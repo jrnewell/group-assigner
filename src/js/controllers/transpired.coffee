@@ -39,7 +39,6 @@ TranspiredCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) -
 
   #TODO: without -> pull
   #TODO: absent students -> indexBy
-  #TODO: absent students -> stacked icon
   #TODO: iCheck / ngDialog bugs
 
   $scope.addStudent = (group) ->

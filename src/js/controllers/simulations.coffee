@@ -30,6 +30,7 @@ SimulationsCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) 
     if sim?
       _.defaults sim, defaultSimlation($routeParams.simId)
       $scope.simulation = sim
+      $scope.simRename = sim.name
 
   $scope.addSimulation = () ->
     return if _.isEmpty($scope.newSimName) or shared.getSimulation($scope.newSimName)
@@ -38,6 +39,18 @@ SimulationsCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) 
     shared.simulations.push newSim
     $scope.newSimName = ""
     $location.url "/simulations/#{newSim.name}"
+
+  $scope.renameSimulation = () ->
+    return if $scope.simRename is $scope.simulation.name
+    if _.isEmpty($scope.simRename) or shared.getSimulation($scope.simRename)
+      $scope.simRename = sim.name
+      $timeout () ->
+        notify.failure "Invalid or duplicate simulation name"
+      return
+
+    console.log "renameSimulation: #{$scope.simRename}"
+    $scope.simulation.name = $scope.simRename
+    $location.url "/simulations/#{$scope.simulation.name}"
 
   $scope.addSimulation2 = () ->
     return if _.isEmpty($scope.newSimName) or _.contains(shared.simulations, $scope.newSimName)

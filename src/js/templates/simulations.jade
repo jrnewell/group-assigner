@@ -5,9 +5,9 @@
         h3.panel-title Simulations
       .panel-body
         #add-simulation.input-group
-            input.form-control(type="text" name="simulation-name" placeholder="New Simulation" ng-model="newSimName" ng-keyup="$event.keyCode == 13 && addSimulation()")
-            .input-group-btn
-              button.btn.btn-primary(type="button" ng-click="addSimulation()") Add
+          input.form-control(type="text" name="simulation-name" placeholder="New Simulation" ng-model="newSimName" ng-keyup="$event.keyCode == 13 && addSimulation()")
+          .input-group-btn
+            button.btn.btn-primary(type="button" ng-click="addSimulation()") Add
         ul.list-group
           li.list-group-item
             h4 {{shared.simulations.length}} Simulation{{shared.simulations.length == 1 ? '' : 's'}}
@@ -21,6 +21,12 @@
         h3.panel-title {{simulation.name}}
       .panel-body
         #add-simulation
+          .form-group
+            label(for="simulation-rename") Simulation Name
+            .input-group
+              input.form-control(type="text" name="simulation-rename" ng-model="simRename" ng-keyup="$event.keyCode == 13 && renameSimulation()")
+              .input-group-btn
+                button.btn.btn-default(type="button" ng-click="renameSimulation()") Rename
           .form-group
             label(for="selector-simulator-groupsize") Students per Group
             select(id="selector-simulator-groupsize" name="selector-simulator-groupsize" selecter selecter-val="simulation.groupSize" selecter-chg="changeMinSize()")

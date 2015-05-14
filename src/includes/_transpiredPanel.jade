@@ -4,8 +4,11 @@
   .panel-body
     #add-done-simulation
       .form-group
-        label(for="selector-simulator-min") Simulation Name
-        input.form-control(type="text" name="simulation-name" placeholder="New Simulation" ng-model="simulation.name" ng-keyup="$event.keyCode == 13 && addSimulation()")
+        label(for="simulation-rename") Simulation Name
+        .input-group
+          input.form-control(type="text" name="simulation-rename" ng-model="$parent.simRename" ng-keyup="$event.keyCode == 13 && renameSimulation()")
+          .input-group-btn
+            button.btn.btn-default(type="button" ng-click="renameSimulation()") Rename
       .form-group(ng-show="simulation.done.groupNames.length > 0")
         button.btn.btn-default.btn-block(type="button" ng-click="giveNamesToGroups()") Give Names to Groups
       .form-group
