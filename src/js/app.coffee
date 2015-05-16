@@ -29,6 +29,9 @@ app.config ($routeProvider) ->
     .when "/simulations/:simId?",
       templateUrl: "js/templates/simulations.html"
       controller: "SimulationsCtrl"
+    .when "/assignments",
+      templateUrl: "js/templates/assignments.html"
+      controller: "ResultsCtrl"
     .otherwise
       redirectTo: "/project"
 
