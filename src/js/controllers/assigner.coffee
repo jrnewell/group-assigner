@@ -20,9 +20,9 @@ AssignerCtrl = ($scope, $timeout, shared) ->
           console.log "Recieved msg from web worker"
           console.log JSON.stringify(data.assignments)
           $scope.$apply (scope) ->
-            scope.assignments = data.assignments
+            shared.assignments = data.assignments
             ladda.done()
-            updateLastProject()
+            #updateLastProject()
             shared.isCalculating = false
 
           $timeout () ->
@@ -45,6 +45,7 @@ AssignerCtrl = ($scope, $timeout, shared) ->
     , false)
 
     console.log "posting msg to worker"
+    console.dir shared.simulations
     worker.postMessage
       cmd: "calculate"
       students: shared.students

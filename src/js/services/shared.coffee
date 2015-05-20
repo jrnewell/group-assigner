@@ -5,7 +5,7 @@ shared = (storage) ->
   # defaults for now
   _assignments = [{"name":"My Simulation","groupSize":2,"minSize":2,"numGroups":2,"groupNames":[{"name":"Group 1"},{"name":"Group 2"}],"games":[[[{name: "C"},{name: "F"}],[{name: "D"},{name: "E"}]],[[{name: "G"},{name: "B"}],[{name: "A"}]]]},{"name":"My Simulation2","groupSize":1,"minSize":2,"numGroups":2,"groupNames":[{"name":"Group 1"},{"name":"Group 2"}],"games":[[[{name: "D"}],[{name: "F"}]],[[{name: "C"}],[{name: "B"}]],[[{name: "G"},{name: "A"}],[{name: "E"}]]]},{"name":"My Simulation3","groupSize":3,"minSize":2,"numGroups":2,"groupNames":[{"name":"Group 1"},{"name":"Group 2"}],"games":[[[{name: "G"},{name: "C"},{name: "B"},{name: "F"}],[{name: "D"},{name: "A"},{name: "E"}]]]}]
   _students = ["A", "B", "C", "D", "E", "F", "G"]
-  _simulations = [{name: "My Simulation", groupSize: 2, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}]}, {name: "My Simulation2", groupSize: 1, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}]}, {name: "My Simulation3", groupSize: 3, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}]}]
+  _simulations = [{name: "My Simulation", groupSize: 2, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}], roles: []}, {name: "My Simulation2", groupSize: 1, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}], roles: []}, {name: "My Simulation3", groupSize: 3, minSize: 2, numGroups: 2, groupNames: [{name: "Group 1"}, {name: "Group 2"}], roles: []}]
   _roles = ["Client", "Lawyer"]
 
   # translate whole number (up to 20) to a word
