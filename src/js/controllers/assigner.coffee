@@ -22,7 +22,6 @@ AssignerCtrl = ($scope, $timeout, shared) ->
           $scope.$apply (scope) ->
             shared.assignments = data.assignments
             ladda.done()
-            #updateLastProject()
             shared.isCalculating = false
 
           $timeout () ->
@@ -49,6 +48,7 @@ AssignerCtrl = ($scope, $timeout, shared) ->
     worker.postMessage
       cmd: "calculate"
       students: shared.students
-      simulations: shared.simulations
+      simulations: _.filter(shared.simulations, isDone, true)
+      transpired: _.filter(shared.simulations, isDone, false)
 
 module.exports = AssignerCtrl

@@ -5,7 +5,7 @@ ProjectsCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
   $scope.shared = shared
   notify = shared.notify
 
-  shared.lastProject()
+  #shared.lastProject()
 
   $scope.delProject = (name) ->
     storage.deleteProject(name)
@@ -13,13 +13,33 @@ ProjectsCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
   $scope.loadProjectDiag = () ->
     isolate = $scope.$new(true)
     isolate.projectList = storage.projectList()
+
+    promise = ngDialog.openConfirm
+      template: "js/templates/dialogs/projects/loadProject.html"
+      className: 'ngdialog-theme-default'
+      scope: isolate
+
+    promise.then (name) ->
+      return unless name?
+      console.log "projectName: #{name}"
+      shared.loadProject name
+      notify.success "Project #{name} Loaded"
+      shared.projectName = name
+      isolate.$destroy()
+    , () ->
+      isolate.$destroy()
+
+  #TODO: switch to saveProjectDiag method?
+  $scope.loadProjectDiag2 = () ->
+    isolate = $scope.$new(true)
+    isolate.projectList = storage.projectList()
     ngDialog.open
       template: "js/templates/dialogs/projects/loadProject.html"
       className: 'ngdialog-theme-default'
       scope: isolate
 
-  $scope.loadProjectDiagSelected = (name) ->
-    loadProject name
+  $scope.loadProjectDiagSelected2 = (name) ->
+    shared.loadProject name
     notify.success "Project #{name} Loaded"
     shared.projectName = name
 
@@ -29,12 +49,11 @@ ProjectsCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
       className: 'ngdialog-theme-default'
       scope: $scope
 
-    promise.then (data) ->
-      return unless data?
-      shared.projectName = data
-      console.log "projectName: #{data}"
-      saveProject data
-      notify.success "Project #{data} Saved"
+    promise.then (name) ->
+      return unless name?
+      console.log "projectName: #{name}"
+      shared.saveProject name
+      notify.success "Project #{name} Saved"
 
   $scope.importProject = (data) ->
     try
@@ -42,10 +61,11 @@ ProjectsCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
       return unless project?
       $timeout () ->
         shared.students = project.students
+        shared.roles = project.roles
         shared.simulations = project.simulations
         shared.assignments = project.assignments
-        shared.roles = project.roles
-        shared.projectName = project.projectName if project.projectName
+        shared.projectName = (if project.projectName then project.projectName else null)
+        shared.isCalculating = false
         $timeout () ->
           notify.success (if project.projectName then "Project '#{project.projectName}' Imported" else "Project Imported")
     catch ex
@@ -55,9 +75,9 @@ ProjectsCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
   $scope.exportProject = () ->
     project =
       students: shared.students
+      roles: shared.roles
       simulations: shared.simulations
       assignments: shared.assignments
-      roles: shared.roles
     project.projectName = shared.projectName if shared.projectName
 
     blob = new Blob([angular.toJson(project)], { type: "text/plain;charset=utf-8" })
@@ -72,13 +92,13 @@ ProjectsCtrl = ($scope, $timeout, ngDialog, storage, shared) ->
       scope: isolate
 
     promise.then () ->
+      shared.projectName = null
       shared.students = []
-      shared.simulations = []
       shared.roles = []
+      shared.simulations = []
       shared.assignments = null
       shared.isCalculating = false
-      delete shared.projectName
-      updateLastProject()
+
       notify.success "New Project Created"
       isolate.$destroy()
     , () ->

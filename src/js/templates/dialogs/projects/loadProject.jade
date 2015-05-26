@@ -7,7 +7,7 @@
   div(ng-show="projectList.length == 0")
     p No Saved Projects
   .list-group
-    a.list-group-item(href="#" ng-repeat="name in projectList" ng-click="loadProjectDiagSelected(name); closeThisDialog()")
+    a.list-group-item(ng-repeat="name in projectList" ng-click="confirm(name)")
       button.close(type="button" aria-hidden="true" ng-click="delProject(name)") ×
       | {{name}}
 .ga-modal-footer

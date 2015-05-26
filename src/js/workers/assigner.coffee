@@ -3,14 +3,14 @@
 importScripts('../lodash.js');
 
 # main algorithm
-calculateGroups = (students, simulations) ->
+calculateGroups = (students, simulations, transpired) ->
 
   console.log "calculate!"
 
   randAssignments = () ->
     assignments = []
     for simulation in simulations
-      {name, groupSize, minSize, numGroups, groupNames, roles} = simulation
+      {name, groupSize, minSize, numGroups, groupNames, roles, absent} = simulation
       #console.log "sim roles: #{JSON.stringify(roles)}"
       assignment =
         name: name
@@ -20,9 +20,10 @@ calculateGroups = (students, simulations) ->
         groupNames: groupNames
         roles: roles
         games: []
+        isDone: false
       assignments.push assignment
 
-      randShuffle = _.shuffle(students)
+      randShuffle = _.shuffle(_.difference(students, absent))
       groups = ([] for i in [1..numGroups])
       groupIdx = 0
 
@@ -213,19 +214,26 @@ calculateGroups = (students, simulations) ->
 
     return progency
 
+  transpiredAssignment = (transpired) ->
+    assignment =
+      name: transpired.name
+      groupNames: transpired.done.groupNames
+      games: transpired.done.games
+      isDone: true
+
   winningAssignment = (generation) ->
-    scores = ({score: scoreAssignments(a), assignments: a} for a in generation)
+    # we need to include the transpired assignments when calculating the score
+    transpiredAssignments = (transpiredAssignment(t) for t in transpired)
+    scores = ({score: scoreAssignments(a.concat(transpiredAssignments)), assignments: a} for a in generation)
     scores = _.sortBy(scores, 'score')
-    return scores[0].assignments
+    return scores[0]
 
   winner = null
-  winnerScore = Number.MAX_VALUE
   checkForWinner = (generation) ->
     genWinner = winningAssignment(generation)
-    genScore = scoreAssignments(genWinner)
-    if genScore < winnerScore
-      console.log "new winner: #{genScore}"
-      winnerScore = genScore
+    #genScore = scoreAssignments(genWinner)
+    if not winner? or genWinner.score < winner.score
+      console.log "new winner: #{genWinner.score}"
       winner = genWinner
 
   # initialize with random assignments
@@ -244,7 +252,7 @@ calculateGroups = (students, simulations) ->
     checkForWinner generation
 
   #console.log JSON.stringify(winner)
-  console.log "winnerScore: #{winnerScore}"
+  console.log "winnerScore: #{winner.score}"
 
   self.postMessage
     cmd: "assignments"
@@ -255,6 +263,6 @@ calculateGroups = (students, simulations) ->
 self.addEventListener('message', (ev) ->
   data = ev.data
   switch data.cmd
-    when "calculate" then calculateGroups(data.students, data.simulations)
+    when "calculate" then calculateGroups(data.students, data.simulations, data.transpired)
     else console.log "Unknown assigner command: #{JSON.stringify(data)}"
 , false)

@@ -16,8 +16,8 @@ SimulationsCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) 
         4: "Four"
       numGroups: 2
       groupNames: [
-        {name: null}
-        {name: null}
+        {name: "Group 1"}
+        {name: "Group 2"}
       ]
       roles: []
       absent: []
@@ -52,35 +52,10 @@ SimulationsCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) 
     $scope.simulation.name = $scope.simRename
     $location.url "/simulations/#{$scope.simulation.name}"
 
-  $scope.addSimulation2 = () ->
-    return if _.isEmpty($scope.newSimName) or _.contains(shared.simulations, $scope.newSimName)
-
-    {groupSize, minSize, numGroups, groupNames, roles} = $scope.newSim
-    minSize = numGroups if minSize < numGroups
-    return if groupSize < 1 or groupSize > 5
-
-    # populate unset group names
-    resizeGroupNames()
-    for groupName, index in groupNames
-      groupNames.name = "Group #{index + 1}" unless groupName.name?
-
-    roles = [] unless _.isArray(roles)
-    console.log "addSimulation: #{$scope.newSimName} #{groupSize} #{minSize} #{numGroups} #{JSON.stringify(roles)}"
-    shared.simulations.push
-      name: $scope.newSimName
-      groupSize: numGroups
-      minSize: minSize
-      numGroups: numGroups
-      groupNames: groupNames
-      roles: roles
-    resetNewSim()
-    updateLastProject()
-
   $scope.delSimulation = (simulation) ->
     console.log "delSimulation: #{simulation}"
     shared.simulations = _.without(shared.simulations, simulation)
     $location.url "/simulations"
-    #updateLastProject()
 
   $scope.changeMinSize = () ->
     return unless $scope.simulation?
@@ -105,9 +80,15 @@ SimulationsCtrl = ($scope, $timeout, $location, $routeParams, ngDialog, shared) 
       $scope.simulation.groupNames = groupNames[0..(numGroups - 1)]
     else if numGroups > groupNames.length
       $scope.simulation.groupNames = groupNames.concat ({name: null} for i in [1..(numGroups - groupNames.length)])
+      for groupName, index in $scope.simulation.groupNames
+        groupName.name = "Group #{index + 1}" unless groupName.name?
     console.log JSON.stringify($scope.simulation.groupNames)
 
-  $scope.$watch "simulation.numGroups", resizeGroupNames
+  $scope.$watch "simulation.numGroups", () ->
+    return unless $scope.simulation?
+    resizeGroupNames()
+    {numGroups, minSize} = $scope.simulation
+    $scope.simulation.minSize = numGroups if minSize < numGroups
 
   $scope.$watch "simulation.groupSize", () ->
     return unless $scope.simulation?
